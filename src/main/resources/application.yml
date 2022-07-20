@@ -13,3 +13,5 @@ spring:
     init:
       schema-locations:
         - classpath:schema.sql
+      data-locations:
+        - classpath:data-h2.sql

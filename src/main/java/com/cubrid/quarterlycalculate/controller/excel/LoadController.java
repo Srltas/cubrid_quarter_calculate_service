@@ -1,6 +1,6 @@
 package com.cubrid.quarterlycalculate.controller.excel;
 
-import com.cubrid.quarterlycalculate.service.LoadService;
+import com.cubrid.quarterlycalculate.service.QuarterCalculateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class LoadController {
 
-    private final LoadService loadService;
+    private final QuarterCalculateService quarterCalculateService;
 
     @GetMapping
     public String uploadForm() {
@@ -26,7 +26,7 @@ public class LoadController {
     @PostMapping
     public String loadData(@RequestParam MultipartFile file, HttpServletRequest request) {
         if (!file.isEmpty()) {
-            loadService.loadData(file);
+            quarterCalculateService.calculate(file);
         }
 
         return "redirect:/excel/upload";

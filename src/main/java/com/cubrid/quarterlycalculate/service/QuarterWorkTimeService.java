@@ -1,6 +1,6 @@
 package com.cubrid.quarterlycalculate.service;
 
-import com.cubrid.quarterlycalculate.controller.excel.WorkTimeInfoDto;
+import com.cubrid.quarterlycalculate.controller.excel.WorkTimeDto;
 import com.cubrid.quarterlycalculate.model.QuarterWorkTime;
 import com.cubrid.quarterlycalculate.repository.QuarterWorkTimeRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +20,14 @@ public class QuarterWorkTimeService {
     private final QuarterWorkTimeRepository quarterWorkTimeRepository;
 
     @Transactional
-    public void calculate(List<WorkTimeInfoDto> workTimeList) {
+    public void calculate(List<WorkTimeDto> workTimes) {
 
-        List<WorkTimeInfoDto> adminWorkTimeList = findAdminWorkTimeList(workTimeList);
+        List<WorkTimeDto> adminWorkTimeList = findAdminWorkTimeList(workTimes);
 
         int totalWorkTime = 0;
 
-        for (WorkTimeInfoDto workTimeInfoDto : adminWorkTimeList)
-            if (!workTimeInfoDto.isHoliday() && !workTimeInfoDto.getDayOfTheWeek().equals("토"))
+        for (WorkTimeDto workTimeDto : adminWorkTimeList)
+            if (!workTimeDto.isHolidayCheck() && !workTimeDto.getDayWeek().equals("토"))
                 totalWorkTime++;
 
         log.debug("totalWorkTime : {}", totalWorkTime);
@@ -43,11 +43,11 @@ public class QuarterWorkTimeService {
         );
     }
 
-    private List<WorkTimeInfoDto> findAdminWorkTimeList(List<WorkTimeInfoDto> workTimeList) {
-        List<WorkTimeInfoDto> adminWorkTimeList = new ArrayList<>();
+    private List<WorkTimeDto> findAdminWorkTimeList(List<WorkTimeDto> workTimeList) {
+        List<WorkTimeDto> adminWorkTimeList = new ArrayList<>();
 
         //admin 계정의 근무기록 가져오기
-        for (WorkTimeInfoDto workTimeInfoDto : workTimeList) {
+        for (WorkTimeDto workTimeInfoDto : workTimeList) {
             if (workTimeInfoDto.getName().equals("admin")) {
                 adminWorkTimeList.add(workTimeInfoDto);
             }
@@ -58,13 +58,13 @@ public class QuarterWorkTimeService {
         return adminWorkTimeList;
     }
 
-    private int findYear(List<WorkTimeInfoDto> adminWorkTimeList) {
-        return adminWorkTimeList.get(0).getDate().getYear();
+    private int findYear(List<WorkTimeDto> adminWorkTimeList) {
+        return adminWorkTimeList.get(0).getDays().getYear();
     }
 
-    private int findFirstMonth(List<WorkTimeInfoDto> adminWorkTimeList) {
+    private int findFirstMonth(List<WorkTimeDto> adminWorkTimeList) {
         //분기의 시작월 구하기
-        return adminWorkTimeList.get(0).getDate().getMonthValue();
+        return adminWorkTimeList.get(0).getDays().getMonthValue();
     }
 
     private int totalWorkTime(int totalWorkTime) {
