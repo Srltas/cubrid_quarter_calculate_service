@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.cubrid.quarterlycalculate.util.DateTimeUtils.dateTimeOf;
+
 @RequiredArgsConstructor
 @Repository
 public class UserRepository {
@@ -15,11 +17,20 @@ public class UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public List<User> findAll() {
-        return jdbcTemplate.query("SELECT seq, id FROM users_tb", mapper);
+        return jdbcTemplate.query("SELECT seq, name, first_day_of_work FROM users_tb", mapper);
+    }
+
+    public User find(String name) {
+        return jdbcTemplate.queryForObject(
+                "SELECT seq, name, first_day_of_work FROM users_tb WHERE name=?",
+                mapper,
+                name
+        );
     }
 
     static RowMapper<User> mapper = (rs, rowNum) -> User.builder()
             .seq(rs.getLong("seq"))
-            .id(rs.getString("id"))
+            .name(rs.getString("name"))
+            .firstDayOfWork(dateTimeOf(rs.getDate("first_day_of_work")))
             .build();
 }

@@ -1,6 +1,6 @@
 package com.cubrid.quarterlycalculate.util;
 
-import com.cubrid.quarterlycalculate.controller.excel.WorkTimeDto;
+import com.cubrid.quarterlycalculate.controller.excel.ExcelDataDto;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -17,9 +17,9 @@ import java.util.List;
 
 public class ExcelUtil {
 
-    public static List<WorkTimeDto> loadExcelData(MultipartFile file, int startRowNum, int columnLength) {
+    public static List<ExcelDataDto> loadExcelData(MultipartFile file, int startRowNum, int columnLength) {
 
-        List<WorkTimeDto> excelList = new ArrayList<WorkTimeDto>();
+        List<ExcelDataDto> excelList = new ArrayList<ExcelDataDto>();
 
         try {
             OPCPackage opcPackage = OPCPackage.open(file.getInputStream());
@@ -37,7 +37,7 @@ public class ExcelUtil {
             for (rowIndex = startRowNum; rowIndex < sheet.getLastRowNum() + 1; rowIndex++) {
                 XSSFRow row = sheet.getRow(rowIndex);
 
-                WorkTimeDto loadDto = new WorkTimeDto();
+                ExcelDataDto loadDto = new ExcelDataDto();
 
                 loadDto.setDate(LocalDate.parse(getCellValue(row.getCell(0)), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 loadDto.setDayOfTheWeek(getCellValue(row.getCell(1)));
