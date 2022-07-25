@@ -20,6 +20,8 @@ public class ExcelLoadService {
 
     @Transactional
     public void loadData(MultipartFile file) {
+        excelLoadRepository.truncate();
+
         //TODO startRowNum, columnLength를 외부 파일에서 받을 수 있도록 변경
         excelLoadRepository.save(loadExcelData(file, 4, 26).stream()
                 .map(ExcelData::new)

@@ -16,6 +16,8 @@ import java.util.List;
 @Service
 public class HolidayWorkService {
 
+    private final int WORK_TIME = 28800;
+
     private final UserRepository userRepository;
 
     private final ExcelLoadRepository excelLoadRepository;
@@ -27,6 +29,8 @@ public class HolidayWorkService {
     }
 
     public void calculate() {
+        holidayRepository.truncate();
+
         List<User> users = userRepository.findAll();
 
         boolean holidayCheck = false;
@@ -75,15 +79,15 @@ public class HolidayWorkService {
         // 그외 새벽 시간(00:00 ~ 06:00)은 퇴근시간 - 출근시간 값으로 계산
         int workTime = excelData.getEndWorkTime() - excelData.getBeginWorkTime();
 
-        if(workTime < 0) { // 06:00 ~ 00:01
+        if(workTime < 0) { // 00:00~06:00 사이 값만 가져온다
             workTime = excelData.getEndWorkTime();
-        }else if((excelData.getBeginWorkTime() / 60) > 0 && (excelData.getEndWorkTime() / 60) <= 6){ // 06:01 ~ 23:59
+        }else if((excelData.getBeginWorkTime() / 3600) >= 0 && (excelData.getEndWorkTime() / 3600) <= 6){  // 00:00 ~ 05:59
             workTime = excelData.getEndWorkTime() - excelData.getBeginWorkTime();
-        } else {
+        } else { //나머지 휴일 근무가 아님
             workTime = 0;
         }
 
-        if (workTime <= 480) {
+        if (workTime <= WORK_TIME) {
             return HolidayWorkTime.builder()
                     .days(excelData.getDays())
                     .name(excelData.getName())
@@ -94,7 +98,7 @@ public class HolidayWorkService {
                     .days(excelData.getDays())
                     .name(excelData.getName())
                     .weekdayHoliday(workTime)
-                    .holiday8hOver(workTime - 480)
+                    .holiday8hOver(workTime - WORK_TIME)
                     .build();
         }
     }
@@ -111,7 +115,7 @@ public class HolidayWorkService {
             workTime = excelData.getHolidayWorkTime();
         }
 
-        if (excelData.getHolidayWorkTime() <= 480) {
+        if (excelData.getHolidayWorkTime() <= WORK_TIME) {
             return HolidayWorkTime.builder()
                     .days(excelData.getDays())
                     .name(excelData.getName())
@@ -122,13 +126,13 @@ public class HolidayWorkService {
                     .days(excelData.getDays())
                     .name(excelData.getName())
                     .holidayWeekday(workTime)
-                    .holiday8hOver(workTime - 480)
+                    .holiday8hOver(workTime - WORK_TIME)
                     .build();
         }
     }
 
     private HolidayWorkTime holidayHoliday(ExcelData excelData) {
-        if (excelData.getHolidayWorkTime() <= 480) {
+        if (excelData.getHolidayWorkTime() <= WORK_TIME) {
             return HolidayWorkTime.builder()
                     .days(excelData.getDays())
                     .name(excelData.getName())
@@ -139,7 +143,7 @@ public class HolidayWorkService {
                     .days(excelData.getDays())
                     .name(excelData.getName())
                     .holidayHoliday(excelData.getHolidayWorkTime())
-                    .holiday8hOver(excelData.getHolidayWorkTime() - 480)
+                    .holiday8hOver(excelData.getHolidayWorkTime() - WORK_TIME)
                     .build();
         }
     }

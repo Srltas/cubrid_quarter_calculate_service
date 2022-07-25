@@ -30,6 +30,10 @@ public class ExcelLoadRepository {
         );
     }
 
+    public void truncate() {
+        jdbcTemplate.execute("TRUNCATE TABLE excel_data_tb");
+    }
+
     public void save(List<ExcelData> excelData) {
         for (ExcelData workTime : excelData) {
             jdbcTemplate.update(conn -> {

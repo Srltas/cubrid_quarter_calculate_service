@@ -9,9 +9,11 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class QuarterWorkTime {
 
-    private final Long seq;
-
     private final String name;
+
+    private final String year;
+
+    private final Long seq;
 
     private final String quarter;
 

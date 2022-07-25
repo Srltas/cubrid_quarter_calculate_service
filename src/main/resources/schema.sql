@@ -7,7 +7,8 @@ CREATE TABLE users_tb
 (
     seq                  bigint      NOT NULL AUTO_INCREMENT,        -- PK
     name                 varchar(50) NOT NULL UNIQUE,                -- 이름
-    first_day_of_work    date        NOT NULL,                      -- 입사날짜
+    first_day_of_work    date        NOT NULL,                       -- 입사날짜
+    last_day_of_work     date        DEFAULT NULL,                   -- 퇴사날짜
     PRIMARY KEY (seq)
 );
 
@@ -44,6 +45,7 @@ CREATE TABLE quarter_work_time_tb                               -- 사용자 종
 (
     seq                            bigint      NOT NULL AUTO_INCREMENT,        -- PK
     name                           varchar(50) NOT NULL,                       -- 이름
+    `year`                         varchar     NOT NULL,                       -- 년도
     quarter                        char(1)     NOT NULL,                       -- 분기
     quarter_total_time             int         NOT NULL,                       -- 총 근무시간
     quarter_legal_time             int         NOT NULL,                       -- 법정 근로시간

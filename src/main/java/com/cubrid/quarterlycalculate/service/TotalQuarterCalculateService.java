@@ -29,7 +29,7 @@ public class TotalQuarterCalculateService {
 
         List<User> users = userService.findAll();
         for (User user : users) {
-            List<ExcelData> excelDataList = findUserWorkTimeList(user.getName(), user.getFirstDayOfWork());
+            List<ExcelData> excelDataList = findUserWorkTimeList(user);
             List<HolidayWorkTime> holidayWorkTimes = holidayWorkService.find(user.getName());
 
             //분기 총 근로시간(공휴일을 제외한 일을 해야하는 시간)
@@ -42,14 +42,17 @@ public class TotalQuarterCalculateService {
             int leaveTime = 0;
             //분기 야간 근로시간
             int nightWorkTime = 0;
-            //휴일 근로시간
-            int holidayWorkTime = 0;
 
             for (ExcelData excelData : excelDataList) {
                 quarterWorkTime += excelData.getWorkTime();
                 leaveTime += excelData.getLeaveTime();
                 nightWorkTime += excelData.getNightWorkTime();
-                holidayWorkTime += excelData.getHolidayWorkTime();
+            }
+
+            //휴일 근로시간
+            int holidayWorkTime = 0;
+            for (HolidayWorkTime holidayWork : holidayWorkTimes) {
+                holidayWorkTime += holidayWork.getHolidayHoliday() + holidayWork.getHolidayWeekday() + holidayWork.getWeekdayHoliday();
             }
 
             //휴일 8시간 이상 근무 했을 경우 초과된 시간
@@ -66,12 +69,12 @@ public class TotalQuarterCalculateService {
 
             //분기 수당
             //분기 수당 (분 제외) = 법정근로 연장시간(분 제외) * 1.5 + 야간 근로시간(분 포함) * 0.5 + 휴일 근로시간(분 포함) * 0.5 + 공휴일 8시간 초과(분 포함) * 0.5
-            //계산 편의를 위해서 분단위로 계산 진행
+            //계산 편의를 위해서 분단위로 계산 진행 후 초로 변환
             int calculateMoney = (int)
                     (Math.floor(((legalOverTime / 3600)) * 60 * 1.5) +
                      Math.floor((nightWorkTime / 60) * 0.5) +
                      Math.floor((holidayWorkTime / 60) * 0.5) +
-                     Math.floor((holiday8HOver / 60) * 0.5)) / 60;
+                     Math.floor((holiday8HOver / 60) * 0.5)) * 60;
 
             //분기 정산 총계
             int calculateTotal = regulationWorkOverTime + calculateMoney;
@@ -79,6 +82,7 @@ public class TotalQuarterCalculateService {
             quarterWorkTimes.add(
                     QuarterWorkTime.builder()
                             .name(user.getName())
+                            .year(getYear(excelDataList))
                             .quarter(quarterlyCalculation(excelDataList))
                             .quarterTotalTime(quarterTotalTime)
                             .quarterLegalTime(quarterLegalTime)
@@ -114,23 +118,37 @@ public class TotalQuarterCalculateService {
     }
 
     //사용자 별로 Excel Data 가져오기
-    private List<ExcelData> findUserWorkTimeList(String name, LocalDate firstDayOfWork) {
-        List<ExcelData> excelDataList = excelLoadService.find(name);
+    private List<ExcelData> findUserWorkTimeList(User user) {
+        List<ExcelData> excelDataList = excelLoadService.find(user.getName());
 
         //신규 입사자인 경우
-        if (firstDayOfWork.isAfter(excelDataList.get(0).getDays())) {
-            int index = 0;
+        int firstDayIndex = 0;
+        if (user.getFirstDayOfWork().isAfter(excelDataList.get(0).getDays())) {
             for (int i = 0; i < excelDataList.size(); i++) {
-                if (firstDayOfWork.isAfter(excelDataList.get(i).getDays())) {
-                    index = i;
+                if (user.getFirstDayOfWork().isEqual(excelDataList.get(i).getDays())) {
+                    firstDayIndex = i;
                 }
             }
-            excelDataList = excelDataList.subList(index + 1, excelDataList.size());
         }
 
+        //퇴사자인 경우
+        LocalDate lastDayOfWork = user.getLastDayOfWork();
+        LocalDate firstMonth = excelDataList.get(0).getDays();
+        LocalDate lastMonth = excelDataList.get(excelDataList.size() - 1).getDays();
         //새벽근무 확인을 위해서 다음 분기 첫날까지 근무기록이 있기 때문에 마지막 날은 빼준다. ex) 2분기(3월~6월) 시 7월 1일까지 근무기록이 있음
-        excelDataList.remove(excelDataList.size() - 1);
-        return excelDataList;
+        int lastDayIndex = excelDataList.size() - 1;
+        if (lastDayOfWork != null && lastDayOfWork.isAfter(firstMonth) && lastDayOfWork.isBefore(lastMonth)) {
+            for (int i = 0; i < excelDataList.size(); i++) {
+                if (lastDayOfWork.isEqual(excelDataList.get(i).getDays())) {
+                    lastDayIndex = i+1;
+                }
+            }
+        }
+        return new ArrayList<>(excelDataList.subList(firstDayIndex, lastDayIndex));
+    }
+
+    private String getYear(List<ExcelData> excelDataList) {
+        return String.valueOf(excelDataList.get(0).getDays().getYear());
     }
 
     private String quarterlyCalculation(List<ExcelData> excelDataList) {

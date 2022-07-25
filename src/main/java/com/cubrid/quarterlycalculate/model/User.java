@@ -14,10 +14,13 @@ public class User {
 
     private final LocalDate firstDayOfWork;
 
+    private final LocalDate lastDayOfWork;
+
     @Builder
-    public User(Long seq, String name, LocalDate firstDayOfWork) {
+    public User(Long seq, String name, LocalDate firstDayOfWork, LocalDate lastDayOfWork) {
         this.seq = seq;
         this.name = name;
         this.firstDayOfWork = firstDayOfWork;
+        this.lastDayOfWork = lastDayOfWork;
     }
 }

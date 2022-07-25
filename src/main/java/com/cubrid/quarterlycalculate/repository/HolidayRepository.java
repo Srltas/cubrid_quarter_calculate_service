@@ -26,6 +26,10 @@ public class HolidayRepository {
         return jdbcTemplate.query("SELECT * FROM holiday_work_tb WHERE name=?", mapper, name);
     }
 
+    public void truncate() {
+        jdbcTemplate.execute("TRUNCATE TABLE holiday_work_tb");
+    }
+
     public void save(List<HolidayWorkTime> list) {
         for (HolidayWorkTime holidayWorkTime : list) {
             jdbcTemplate.update(conn -> {

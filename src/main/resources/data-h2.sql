@@ -4,7 +4,7 @@ INSERT INTO users_tb (name, first_day_of_work) VALUES ('강두호', '2022-01-01'
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('강주원', '2022-01-01');
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('강태우', '2022-01-01');
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('권호일', '2022-01-01');
-INSERT INTO users_tb (name, first_day_of_work) VALUES ('김동민', '2022-01-01');
+INSERT INTO users_tb (name, first_day_of_work, last_day_of_work) VALUES ('김동민', '2021-10-01', '2022-05-23');
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('김명규', '2022-01-01');
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('김민종', '2022-01-01');
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('김병욱', '2022-01-01');
@@ -36,7 +36,7 @@ INSERT INTO users_tb (name, first_day_of_work) VALUES ('원종민', '2022-01-01'
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('유형규', '2022-01-01');
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('윤시온', '2022-01-01');
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('이송천', '2022-01-01');
-INSERT INTO users_tb (name, first_day_of_work) VALUES ('정강부', '2022-01-01');
+INSERT INTO users_tb (name, first_day_of_work) VALUES ('정강부', '2021-10-01');
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('정만영', '2022-01-01');
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('조아람', '2022-01-01');
 INSERT INTO users_tb (name, first_day_of_work) VALUES ('주영진', '2022-01-01');

@@ -17,12 +17,12 @@ public class UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public List<User> findAll() {
-        return jdbcTemplate.query("SELECT seq, name, first_day_of_work FROM users_tb", mapper);
+        return jdbcTemplate.query("SELECT * FROM users_tb", mapper);
     }
 
     public User find(String name) {
         return jdbcTemplate.queryForObject(
-                "SELECT seq, name, first_day_of_work FROM users_tb WHERE name=?",
+                "SELECT * FROM users_tb WHERE name=?",
                 mapper,
                 name
         );
@@ -32,5 +32,6 @@ public class UserRepository {
             .seq(rs.getLong("seq"))
             .name(rs.getString("name"))
             .firstDayOfWork(dateTimeOf(rs.getDate("first_day_of_work")))
+            .lastDayOfWork(dateTimeOf(rs.getDate("last_day_of_work")))
             .build();
 }
