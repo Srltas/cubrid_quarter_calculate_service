@@ -1,22 +1,47 @@
 package com.cubrid.quarterlycalculate.repository;
 
 import com.cubrid.quarterlycalculate.model.QuarterWorkTime;
+import com.cubrid.quarterlycalculate.request.TotalDataDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class TotalQuarterCalculateRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public List<QuarterWorkTime> find(String name, String year, String quarter) {
-        return jdbcTemplate.query("SELECT * FROM quarter_work_time_tb WHERE name=? AND `year`=? AND quarter=?", mapper, name, year, quarter);
+    public List<QuarterWorkTime> find(TotalDataDto totalDataDto) {
+        String sql = "SELECT * FROM quarter_work_time_tb";
+        List<String> conditions = new ArrayList<>();
+
+        if (totalDataDto.getName() != null && !totalDataDto.getName().equals("")) {
+            conditions.add("name=\'" + totalDataDto.getName() + "\' ");
+        }
+
+        if (totalDataDto.getYear() != null && !totalDataDto.getYear().equals("")) {
+            conditions.add("`year`=\'" + totalDataDto.getYear() + "\' ");
+        }
+
+        if (totalDataDto.getQuarter() != null && !totalDataDto.getQuarter().equals("")) {
+            conditions.add("quarter=\'" + totalDataDto.getQuarter() + "\' ");
+        }
+
+        if (conditions == null || conditions.isEmpty()) {
+            sql +=  "";
+        } else {
+            sql += " WHERE " + String.join("AND ", conditions);
+        }
+
+        return jdbcTemplate.query(sql, mapper);
     }
 
     public List<QuarterWorkTime> findAll() {

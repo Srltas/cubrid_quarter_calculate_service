@@ -21,10 +21,24 @@ public class TotalQuarterController {
         return "total-dashboard-form";
     }
 
-    @GetMapping("/{name}/{year}/{quarter}")
-    public String find(Model model, TotalDataDto totalDataDto) {
+    @GetMapping("/{name}")
+    public String findName(Model model, TotalDataDto totalDataDto) {
         model.addAttribute("quarterWorkTimeList",
-                totalQuarterWebService.find(totalDataDto.getName(), totalDataDto.getYear(), totalDataDto.getQuarter()));
+                totalQuarterWebService.find(totalDataDto));
+        return "total-dashboard-form";
+    }
+
+    @GetMapping("/{name}/{year}")
+    public String findNameYear(Model model, TotalDataDto totalDataDto) {
+        model.addAttribute("quarterWorkTimeList",
+                totalQuarterWebService.find(totalDataDto));
+        return "total-dashboard-form";
+    }
+
+    @GetMapping("/{name}/{year}/{quarter}")
+    public String findNameYearQuarter(Model model, TotalDataDto totalDataDto) {
+        model.addAttribute("quarterWorkTimeList",
+                totalQuarterWebService.find(totalDataDto));
         return "total-dashboard-form";
     }
 }
