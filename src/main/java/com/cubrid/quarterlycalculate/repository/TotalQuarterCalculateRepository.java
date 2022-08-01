@@ -15,8 +15,8 @@ public class TotalQuarterCalculateRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public List<QuarterWorkTime> find(String name) {
-        return jdbcTemplate.query("SELECT * FROM quarter_work_time_tb WHERE name=?", mapper, name);
+    public List<QuarterWorkTime> find(String name, String year, String quarter) {
+        return jdbcTemplate.query("SELECT * FROM quarter_work_time_tb WHERE name=? AND `year`=? AND quarter=?", mapper, name, year, quarter);
     }
 
     public List<QuarterWorkTime> findAll() {

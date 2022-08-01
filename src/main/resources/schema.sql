@@ -45,7 +45,7 @@ CREATE TABLE quarter_work_time_tb                               -- 사용자 종
 (
     seq                            bigint      NOT NULL AUTO_INCREMENT,        -- PK
     name                           varchar(50) NOT NULL,                       -- 이름
-    `year`                         varchar     NOT NULL,                       -- 년도
+    `year`                         varchar(4)  NOT NULL,                       -- 년도
     quarter                        char(1)     NOT NULL,                       -- 분기
     quarter_total_time             int         NOT NULL,                       -- 총 근무시간
     quarter_legal_time             int         NOT NULL,                       -- 법정 근로시간

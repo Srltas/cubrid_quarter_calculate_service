@@ -13,8 +13,8 @@ public class TotalQuarterWebService {
 
     private final TotalQuarterCalculateRepository totalQuarterCalculateRepository;
 
-    public List<QuarterWorkTime> find(String name) {
-        return totalQuarterCalculateRepository.find(name);
+    public List<QuarterWorkTime> find(String name, String year, String quarter) {
+        return totalQuarterCalculateRepository.find(name, year, quarter);
     }
 
     public List<QuarterWorkTime> findAll() {
