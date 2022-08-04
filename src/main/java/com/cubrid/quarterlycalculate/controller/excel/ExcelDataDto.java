@@ -9,7 +9,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 @Getter
-public class WorkTimeDto {
+public class ExcelDataDto {
 
     private LocalDate days;
 
@@ -17,15 +17,15 @@ public class WorkTimeDto {
 
     private String name;
 
-    private int beginTime;
+    private int beginWorkTime;
 
-    private int endTime;
+    private int endWorkTime;
 
-    private int totalTime;
+    private int workTime;
 
-    private int nightTime;
+    private int nightWorkTime;
 
-    private int holidayTime;
+    private int holidayWorkTime;
 
     private int leaveTime;
 
@@ -44,23 +44,23 @@ public class WorkTimeDto {
     }
 
     public void setBeginWork(String beginTime) {
-        this.beginTime = changeMinutes(beginTime);
+        this.beginWorkTime = changeMinutes(beginTime);
     }
 
     public void setEndWork(String endTime) {
-        this.endTime = changeMinutes(endTime);
+        this.endWorkTime = changeMinutes(endTime);
     }
 
     public void setTotalWork(String totalTime) {
-        this.totalTime = stringToInt(totalTime);
+        this.workTime = stringToInt(totalTime);
     }
 
     public void setNightWork(String nightTime) {
-        this.nightTime = stringToInt(nightTime);
+        this.nightWorkTime = stringToInt(nightTime);
     }
 
     public void setHolidayWork(String holidayTime) {
-        this.holidayTime = stringToInt(holidayTime);
+        this.holidayWorkTime = stringToInt(holidayTime);
     }
 
     public void setLeave(String leaveTime) {
