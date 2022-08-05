@@ -1,17 +1,27 @@
+# Datasource (CUBRID)
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   datasource:
-    driver-class-name: org.h2.Driver
-    jdbc-url: "jdbc:h2:mem:test;MODE=MYSQL;DB_CLOSE_DELAY=-1"
-    username: sa
-    generate-unique-name: false
-
-  sql:
-    init:
-      schema-locations:
-        - classpath:schema.sql
-      data-locations:
-        - classpath:data-h2.sql
+    url: jdbc:cubrid:172.31.202.25:33000:testdb:::?charset=UTF-8
+    username: dba
+    password:
+    driver-class-name: cubrid.jdbc.driver.CUBRIDDriver
+    type: org.springframework.jdbc.datasource.SimpleDriverDataSource # 해당 부분 없으면, hikari 를 자동으로 연동하려고 함
+   
+# Datasource (H2)
+#spring:
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    jdbc-url: "jdbc:h2:mem:test;MODE=MYSQL;DB_CLOSE_DELAY=-1"
+#    username: sa
+#    generate-unique-name: false
+#
+#  sql:
+#    init:
+#      schema-locations:
+#        - classpath:schema.sql
+#      data-locations:
+#        - classpath:data-h2.sql
