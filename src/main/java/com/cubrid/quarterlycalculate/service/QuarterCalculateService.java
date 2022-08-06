@@ -1,6 +1,7 @@
 package com.cubrid.quarterlycalculate.service;
 
 import com.cubrid.quarterlycalculate.service.holidayWork.HolidayWorkWebService;
+import com.cubrid.quarterlycalculate.service.totalQuarterCalculate.TotalQuarterCalculateWebService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ public class QuarterCalculateService {
 
     private final HolidayWorkWebService holidayWorkWebService;
 
-    private final TotalQuarterCalculateService totalQuarterCalculateService;
+    private final TotalQuarterCalculateWebService totalQuarterCalculateWebService;
 
     @Transactional
     public void calculate(MultipartFile file) {
@@ -22,6 +23,6 @@ public class QuarterCalculateService {
 
         holidayWorkWebService.calculate();
 
-        totalQuarterCalculateService.calculate();
+        totalQuarterCalculateWebService.calculate();
     }
 }

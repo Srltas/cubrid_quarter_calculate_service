@@ -1,7 +1,7 @@
 package com.cubrid.quarterlycalculate.controller;
 
 import com.cubrid.quarterlycalculate.request.TotalDataDto;
-import com.cubrid.quarterlycalculate.service.TotalQuarterWebService;
+import com.cubrid.quarterlycalculate.service.totalQuarterCalculate.TotalQuarterCalculateWebService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class TotalQuarterController {
 
-    private final TotalQuarterWebService totalQuarterWebService;
+    private final TotalQuarterCalculateWebService totalQuarterWebService;
 
     @GetMapping
     public String findAll(Model model) {
