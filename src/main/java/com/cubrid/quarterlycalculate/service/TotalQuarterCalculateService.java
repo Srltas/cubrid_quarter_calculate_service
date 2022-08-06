@@ -5,6 +5,7 @@ import com.cubrid.quarterlycalculate.model.HolidayWorkTime;
 import com.cubrid.quarterlycalculate.model.QuarterWorkTime;
 import com.cubrid.quarterlycalculate.model.User;
 import com.cubrid.quarterlycalculate.repository.TotalQuarterCalculateRepository;
+import com.cubrid.quarterlycalculate.service.holidayWork.HolidayWorkWebService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class TotalQuarterCalculateService {
 
     private final UserService userService;
 
-    private final HolidayWorkService holidayWorkService;
+    private final HolidayWorkWebService holidayWorkWebService;
 
     private final TotalQuarterCalculateRepository totalQuarterCalculateRepository;
 
@@ -30,7 +31,7 @@ public class TotalQuarterCalculateService {
         List<User> users = userService.findAll();
         for (User user : users) {
             List<ExcelData> excelDataList = findUserWorkTimeList(user);
-            List<HolidayWorkTime> holidayWorkTimes = holidayWorkService.find(user.getName());
+            List<HolidayWorkTime> holidayWorkTimes = holidayWorkWebService.find(user.getName());
 
             //분기 총 근로시간(공휴일을 제외한 일을 해야하는 시간)
             int quarterTotalTime = getQuarterTotalWorkTime(excelDataList);

@@ -1,11 +1,7 @@
-package com.cubrid.quarterlycalculate.service;
+package com.cubrid.quarterlycalculate.service.holidayWork;
 
-import com.cubrid.quarterlycalculate.model.HolidayWorkTime;
-import com.cubrid.quarterlycalculate.model.User;
 import com.cubrid.quarterlycalculate.model.ExcelData;
-import com.cubrid.quarterlycalculate.repository.ExcelLoadRepository;
-import com.cubrid.quarterlycalculate.repository.HolidayRepository;
-import com.cubrid.quarterlycalculate.repository.UserRepository;
+import com.cubrid.quarterlycalculate.model.HolidayWorkTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,51 +14,33 @@ public class HolidayWorkService {
 
     private final int WORK_TIME = 28800;
 
-    private final UserRepository userRepository;
-
-    private final ExcelLoadRepository excelLoadRepository;
-
-    private final HolidayRepository holidayRepository;
-
-    public List<HolidayWorkTime> find(String name) {
-        return holidayRepository.find(name);
-    }
-
-    public void calculate() {
-        holidayRepository.truncate();
-
-        List<User> users = userRepository.findAll();
-
+    public List<HolidayWorkTime> calculate(List<ExcelData> excelDataList) {
         boolean holidayCheck = false;
         boolean nextHolidayCheck = false;
 
         List<HolidayWorkTime> holidayWorkTimes = new ArrayList<>();
 
-        for (User user : users) {
-            List<ExcelData> excelDataList = excelLoadRepository.find(user.getName());
+        for (int i = 0; i < excelDataList.size(); i++) {
+            ExcelData workTime = excelDataList.get(i);
+            holidayCheck = workTime.isHolidayCheck();
 
-            for (int i = 0; i < excelDataList.size(); i++) {
-                ExcelData workTime = excelDataList.get(i);
-                holidayCheck = workTime.isHolidayCheck();
+            if (i < excelDataList.size() - 1) {
+                nextHolidayCheck = excelDataList.get(i + 1).isHolidayCheck();
+            } else {
+                nextHolidayCheck = false;
+            }
 
-                if (i < excelDataList.size() - 1) {
-                    nextHolidayCheck = excelDataList.get(i + 1).isHolidayCheck();
-                } else {
-                    nextHolidayCheck = false;
-                }
-
-                if (holidayCheck && nextHolidayCheck) {
-                    holidayWorkTimes.add(holidayHoliday(workTime));
-                } else if (holidayCheck && !nextHolidayCheck) {
-                    holidayWorkTimes.add(holidayWeekday(workTime));
-                } else if (!holidayCheck && nextHolidayCheck) {
-                    holidayWorkTimes.add(weekdayHoliday(workTime));
-                } else {
-                    holidayWorkTimes.add(weekdayWeekday(workTime));
-                }
+            if (holidayCheck && nextHolidayCheck) {
+                holidayWorkTimes.add(holidayHoliday(workTime));
+            } else if (holidayCheck && !nextHolidayCheck) {
+                holidayWorkTimes.add(holidayWeekday(workTime));
+            } else if (!holidayCheck && nextHolidayCheck) {
+                holidayWorkTimes.add(weekdayHoliday(workTime));
+            } else {
+                holidayWorkTimes.add(weekdayWeekday(workTime));
             }
         }
-        holidayRepository.save(holidayWorkTimes);
+        return holidayWorkTimes;
     }
 
     private HolidayWorkTime weekdayWeekday(ExcelData excelData) {
