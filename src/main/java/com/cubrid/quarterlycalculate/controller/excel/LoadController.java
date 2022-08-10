@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
-@RequestMapping("/excel/upload")
+@RequestMapping("/upload")
 @Controller
 public class LoadController {
 
