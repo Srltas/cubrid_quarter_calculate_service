@@ -16,14 +16,18 @@ configurations {
 
 repositories {
 	mavenCentral()
+	
+	// CUBRID를 위한 리파지토리 추가
+	maven {
+		url 'https://maven.cubrid.org'
+	}
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	//implementation 'org.apache.poi:poi:3.17'
 	implementation 'org.apache.poi:poi-ooxml:3.17'
@@ -32,9 +36,17 @@ dependencies {
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
+	//runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// CUBRID를 사용하기 위한 추가
+	// 하지만, 최신버전 jdbc드라이브 11.1.0.0027 을 사용할 경우 java.sql.* 부분이 충돌이 발생
+	// 하위버전 jdbc드라이브 11.0.x 를 사용할 경우는 괜찮음 
+	implementation group: 'cubrid', name: 'cubrid-jdbc', version: '11.0.8.0319'
 }
 
 tasks.named('test') {
