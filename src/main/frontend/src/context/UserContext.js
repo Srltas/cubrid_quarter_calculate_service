@@ -49,11 +49,17 @@ export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
 
 // ###########################################################
 
-function loginUser(dispatch, login, password, history, setIsLoading, setError) {
+function loginUser(dispatch, loginid, password, history, setIsLoading, setError, DB_logid) {
   setError(false);
   setIsLoading(true);
+  
+  if (DB_logid === loginid) {
+  	console.log("id 같음");
+  } else {
+	console.log("id 다름");
+  }
 
-  if (!!login && !!password) {
+  if (!!loginid && !!password) {
     setTimeout(() => {
       localStorage.setItem("id_token", "1");
       dispatch({ type: "LOGIN_SUCCESS" });
