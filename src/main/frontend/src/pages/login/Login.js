@@ -36,7 +36,7 @@ function Login(props) {
   var [loginValue, setLoginValue] = useState("");
   var [passwordValue, setPasswordValue] = useState("");
   
-  const DB_logid = LoginService();
+  const DB_logid = LoginService(loginValue);
   //console.log(DB_logid);
 
   return (
@@ -113,7 +113,7 @@ function Login(props) {
                         props.history,
                         setIsLoading,
                         setError,
-                        DB_logid,
+                        DB_logid
                       )
                     }
                     variant="contained"

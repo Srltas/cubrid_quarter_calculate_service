@@ -1,4 +1,6 @@
 import React from "react";
+// LoginService
+//import LoginService from "../service/LoginService";
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
@@ -7,6 +9,8 @@ function userReducer(state, action) {
   switch (action.type) {
     case "LOGIN_SUCCESS":
       return { ...state, isAuthenticated: true };
+    case "LOGIN_FAILURE":
+      return { ...state, isAuthenticated: false };
     case "SIGN_OUT_SUCCESS":
       return { ...state, isAuthenticated: false };
     default: {
@@ -54,24 +58,36 @@ function loginUser(dispatch, loginid, password, history, setIsLoading, setError,
   setIsLoading(true);
   
   if (DB_logid === loginid) {
-  	console.log("id 같음");
+  	console.log("dispatch! : " + dispatch);
+  	console.log("loginid! : " + loginid);
+  	console.log("password! : " + password);
+  	console.log("history! : " + history);
+  	console.log("setIsLoading! : " + setIsLoading);
+  	console.log("setError! : " + setError);
+  	console.log("DB_logid! : " + DB_logid);
   } else {
-	console.log("id 다름");
+  	console.log("dispatch@ : " + dispatch);
+  	console.log("loginid@ : " + loginid);
+  	console.log("password@ : " + password);
+  	console.log("history@ : " + history);
+  	console.log("setIsLoading@ : " + setIsLoading);
+  	console.log("setError@ : " + setError);
+  	console.log("DB_logid@ : " + DB_logid);
   }
-
-  if (!!loginid && !!password) {
+	
+  if (!!loginid && DB_logid === loginid && !!password) {
     setTimeout(() => {
       localStorage.setItem("id_token", "1");
       dispatch({ type: "LOGIN_SUCCESS" });
       setError(null);
       setIsLoading(false);
-
       history.push("/app/dashboard");
     }, 2000);
   } else {
     dispatch({ type: "LOGIN_FAILURE" });
     setError(true);
     setIsLoading(false);
+    history.push("/login");
   }
 }
 

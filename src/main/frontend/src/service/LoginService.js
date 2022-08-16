@@ -1,18 +1,34 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios'; 
 
-function LoginService() {
+function LoginService(log_id) {
 
 	const URL_PATH = "/api/login";
 	const [logins, setLogins] = useState([]);
 
 	useEffect(() => {
-        axios.get(URL_PATH)
-        .then(response => {
-			setLogins(response.data)
-		})
-        .catch(error => console.log(error))
-    }, []);
+		if(log_id !== null && log_id.length >= 3){
+			axios.get(URL_PATH, {
+				params:{
+					name : log_id
+				}
+			})
+	        .then(response => {
+				setLogins(response.data)
+			})
+	        .catch(error => console.log(error))	
+		}
+    }, [log_id]);
+    
+    //console.log("logins!!!! : " + JSON.stringify(logins));
+    //console.log("!!!! " + Object.keys(logins));
+    //var first_key = Object.keys(logins)[0];
+	//var first_value = logins[0];
+	//console.log("first_key : " + first_key);
+	//console.log("first_value : " + JSON.stringify(first_value));
+	//for(first_key in logins)  {
+	//  console.log(first_key + " : "  + logins[first_key]);
+	//}
     
     return logins;
     
