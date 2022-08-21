@@ -33,6 +33,13 @@ import Dot from "../../components/Sidebar/components/Dot";
 import Table from "./components/Table/Table";
 import BigStat from "./components/BigStat/BigStat";
 
+// context
+import { useUserState } from "../../context/UserContext";
+
+// DashboardService
+import DashboardService from "../../service/DashboardService";
+
+
 const mainChartData = getMainChartData();
 const PieChartData = [
   { name: "Group A", value: 400, color: "primary" },
@@ -47,10 +54,33 @@ export default function Dashboard(props) {
 
   // local
   var [mainChartState, setMainChartState] = useState("monthly");
-
+  var userInfo = useUserState();
+  
+  // 개인적으로 추가
+  console.log("Dashboard_props : " +  JSON.stringify(props));
+  
+  var logid = "";
+  
+  if(props.location.DB_logid === undefined || props.location.DB_logid === null || props.location.DB_logid === ""){
+	logid = userInfo.setDB_logid;
+	console.log("Dashboard_userInfo_r : " +  userInfo.setDB_logid);
+  } else {
+	logid = props.location.DB_logid;
+	console.log("Dashboard_userInfo_f : " +  props.location.DB_logid);
+  }
+  // DB_data - 새로고침 할 때 (최초 들어올때, render 될때)
+  var dashboardData = DashboardService(logid, props.location.search);
+  //const first_year = dashboardData.map(x => x.year);
+  //console.log("dashboardData props : " + JSON.stringify(first_year[0]) );
+  //console.log("year props : " + props.location.search );
+  //props.location.search = "?2021";
+  //props.match.params.year = "/:2021";
+  
+  //localStorage.setItem("DB_logid", DB_logid);
+  
   return (
     <>
-      <PageTitle title="Dashboard" button="Latest Reports" />
+      <PageTitle title="Dashboard" />
       <Grid container spacing={4}>
         <Grid item lg={3} md={4} sm={6} xs={12}>
           <Widget
@@ -399,12 +429,12 @@ export default function Dashboard(props) {
         ))}
         <Grid item xs={12}>
           <Widget
-            title="Support Requests"
+            title="분기 상세정보"
             upperTitle
             noBodyPadding
             bodyClass={classes.tableWidget}
           >
-            <Table data={mock.table} />
+            <Table data={dashboardData} />
           </Widget>
         </Grid>
       </Grid>

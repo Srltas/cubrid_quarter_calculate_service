@@ -8,9 +8,11 @@ import lombok.Setter;
 @Getter
 public class ReactDBTestDto {
     private String name;
+    private String year;
 
     @Builder
-    public ReactDBTestDto(String name) {
+    public ReactDBTestDto(String name, String year) {
         this.name = name;
+        this.year = year;
     }
 }

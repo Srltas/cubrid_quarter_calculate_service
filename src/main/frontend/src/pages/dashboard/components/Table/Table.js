@@ -7,46 +7,98 @@ import {
   TableCell,
 } from "@material-ui/core";
 
-// components
-import { Button } from "../../../../components/Wrappers";
-
-const states = {
-  sent: "success",
-  pending: "warning",
-  declined: "secondary",
-};
-
 export default function TableComponent({ data }) {
-  var keys = Object.keys(data[0]).map(i => i.toUpperCase());
-  keys.shift(); // delete "id" key
 
   return (
     <Table className="mb-0">
       <TableHead>
         <TableRow>
-          {keys.map(key => (
-            <TableCell key={key}>{key}</TableCell>
-          ))}
+          <TableCell>년도</TableCell>
+          <TableCell>분기</TableCell>
+          <TableCell>분기 근로시간</TableCell>
+          <TableCell>법정 근로시간</TableCell>
+          <TableCell>내 근로시간</TableCell>
+          <TableCell>소정근로 연장</TableCell>
+          <TableCell>법정근로 연장</TableCell>
+          <TableCell>야간 근로시간</TableCell>
+          <TableCell>휴일 근로시간</TableCell>
+          <TableCell>휴일 8시간 초과시간</TableCell>
+          <TableCell>사용한 휴가</TableCell>
+          <TableCell>정산 보상휴가</TableCell>
+          <TableCell>정산 수당</TableCell>
+          <TableCell>정산 총계</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map(({ id, name, email, product, price, date, city, status }) => (
-          <TableRow key={id}>
-            <TableCell className="pl-3 fw-normal">{name}</TableCell>
-            <TableCell>{email}</TableCell>
-            <TableCell>{product}</TableCell>
-            <TableCell>{price}</TableCell>
-            <TableCell>{date}</TableCell>
-            <TableCell>{city}</TableCell>
+        {data.map(({ 
+			seq,
+			year,
+			quarter,
+			quarterTotalTime,
+			quarterLegalTime,
+			quarterWorkTime,
+			regulationWorkOverTime,
+			legalWorkOverTime,
+			nightWorkTime,
+			holidayWorkTime,
+			holiday8HOver,
+			leaveTime,
+			compensationLeaveTime,
+			calculateMoney,
+			calculateTotal
+        }) => (
+          <TableRow key={seq}>
+            <TableCell>{year}</TableCell>
+            <TableCell>{quarter}</TableCell>
             <TableCell>
-              <Button
-                color={states[status.toLowerCase()]}
-                size="small"
-                className="px-2"
-                variant="contained"
-              >
-                {status}
-              </Button>
+            	{parseInt(quarterTotalTime/3600)}:00
+            </TableCell>
+            <TableCell>
+            	{parseInt(quarterLegalTime/3600)}:00
+            </TableCell>
+            <TableCell>
+            	{parseInt(quarterWorkTime/3600)}
+            	:
+            	{parseInt(quarterWorkTime%3600/60) <= 10 ? "0".concat(parseInt(quarterWorkTime%3600/60)) : parseInt(quarterWorkTime%3600/60)}
+            </TableCell>
+            <TableCell>
+            	{parseInt(regulationWorkOverTime/3600) <= 10 ? "0".concat(parseInt(regulationWorkOverTime/3600)) : parseInt(regulationWorkOverTime/3600)}
+            	:
+            	{parseInt(regulationWorkOverTime%3600/60) <= 10 ? "0".concat(parseInt(regulationWorkOverTime%3600/60)) : parseInt(regulationWorkOverTime%3600/60)}
+            </TableCell>
+            <TableCell>
+            	{parseInt(legalWorkOverTime/3600) <= 10 ? "0".concat(parseInt(legalWorkOverTime/3600)) : parseInt(legalWorkOverTime/3600)}
+            	:
+            	{parseInt(legalWorkOverTime%3600/60) <= 10 ? "0".concat(parseInt(legalWorkOverTime%3600/60)) : parseInt(legalWorkOverTime%3600/60)}
+            </TableCell>
+            <TableCell>
+            	{parseInt(nightWorkTime/3600) <= 10 ? "0".concat(parseInt(nightWorkTime/3600)) : parseInt(nightWorkTime/3600)}
+            	:
+            	{parseInt(nightWorkTime%3600/60) <= 10 ? "0".concat(parseInt(nightWorkTime%3600/60)) : parseInt(nightWorkTime%3600/60)}
+            </TableCell>
+            <TableCell>
+            	{parseInt(holidayWorkTime/3600) <= 10 ? "0".concat(parseInt(holidayWorkTime/3600)) : parseInt(holidayWorkTime/3600)}
+            	:
+            	{parseInt(holidayWorkTime%3600/60) <= 10 ? "0".concat(parseInt(holidayWorkTime%3600/60)) : parseInt(holidayWorkTime%3600/60)}
+            </TableCell>
+            <TableCell>
+            	{parseInt(holiday8HOver/3600) <= 10 ? "0".concat(parseInt(holiday8HOver/3600)) : parseInt(holiday8HOver/3600)}
+            	:
+            	{parseInt(holiday8HOver%3600/60) <= 10 ? "0".concat(parseInt(holiday8HOver%3600/60)) : parseInt(holiday8HOver%3600/60)}
+            </TableCell>
+            <TableCell>
+            	{parseInt(leaveTime/3600) <= 10 ? "0".concat(parseInt(leaveTime/3600)) : parseInt(leaveTime/3600)}
+            	:
+            	{parseInt(leaveTime%3600/60) <= 10 ? "0".concat(parseInt(leaveTime%3600/60)) : parseInt(leaveTime%3600/60)}
+            </TableCell>
+            <TableCell>
+            	{parseInt(compensationLeaveTime/3600) <= 10 ? "0".concat(parseInt(compensationLeaveTime/3600)) : parseInt(compensationLeaveTime/3600)}:00
+            </TableCell>
+            <TableCell>
+            	{parseInt(calculateMoney/3600) <= 10 ? "0".concat(parseInt(calculateMoney/3600)) : parseInt(calculateMoney/3600)}:00
+            </TableCell>
+            <TableCell>
+            	{parseInt(calculateTotal/3600) <= 10 ? "0".concat(parseInt(calculateTotal/3600)) : parseInt(calculateTotal/3600)}:00
             </TableCell>
           </TableRow>
         ))}

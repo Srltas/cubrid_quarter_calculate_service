@@ -9,6 +9,8 @@ import * as serviceWorker from "./serviceWorker";
 import { LayoutProvider } from "./context/LayoutContext";
 import { UserProvider } from "./context/UserContext";
 
+console.log("===== index.js =====");
+
 ReactDOM.render(
   <LayoutProvider>
     <UserProvider>

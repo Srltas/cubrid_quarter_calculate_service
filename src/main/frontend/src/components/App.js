@@ -14,11 +14,14 @@ import { useUserState } from "../context/UserContext";
 export default function App() {
   // global
   var { isAuthenticated } = useUserState();
+  
+  console.log("===== App.js=====");
 
   return (
     <HashRouter>
       <Switch>
-        <Route exact path="/" render={() => <Redirect to="/app/dashboard" />} />
+      	<Route exact path="/" render={() => <Redirect to="/app/dashboard" />} />
+        <Route exact path="/login_succase" render={() => <Route to="/app/dashboard" />} />
         <Route
           exact
           path="/app"
@@ -34,11 +37,14 @@ export default function App() {
   // #######################################################################
 
   function PrivateRoute({ component, ...rest }) {
+	console.log("App_PrivateRoute : ");
+	
     return (
       <Route
         {...rest}
         render={props =>
           isAuthenticated ? (
+			alert("App.js_App_PrivateRoute_props : " + JSON.stringify(props) ),
             React.createElement(component, props)
           ) : (
             <Redirect
@@ -56,11 +62,29 @@ export default function App() {
   }
 
   function PublicRoute({ component, ...rest }) {
+	console.log("App_PublicRoute : ");
+	
     return (
       <Route
         {...rest}
         render={props =>
           isAuthenticated ? (
+			alert("App.js_PublicRoute_props : " + JSON.stringify(props) ),
+			props.history.action === "PUSH" || props.history.action === "POP" ?
+            <Redirect
+              to={{
+                pathname: "/login_succase",
+                state: {
+                  from: props,
+                },
+                match: {
+				  props: {
+					year: props.history.first_year,
+				  }
+				},
+              }}
+            />
+            :
             <Redirect
               to={{
                 pathname: "/",

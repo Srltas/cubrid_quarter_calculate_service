@@ -36,8 +36,16 @@ function Login(props) {
   var [loginValue, setLoginValue] = useState("");
   var [passwordValue, setPasswordValue] = useState("");
   
-  const DB_logid = LoginService(loginValue);
-  //console.log(DB_logid);
+  
+  console.log("Login_props : ");
+  
+  // DB_data
+  var DB_logid = LoginService(loginValue);
+  const first_name = DB_logid.map(x => x.name);
+  const first_year = DB_logid.map(x => x.year);
+  const years = DB_logid.map(x => x.year);
+  //console.log("first_name props : " + JSON.stringify(first_name[0]) );
+  //console.log("first_year props : " + JSON.stringify(first_year[0]) );
 
   return (
     <Grid container className={classes.container}>
@@ -113,7 +121,10 @@ function Login(props) {
                         props.history,
                         setIsLoading,
                         setError,
-                        DB_logid
+                        first_name[0],
+                        first_year[0],
+                        years,
+                        props.match
                       )
                     }
                     variant="contained"

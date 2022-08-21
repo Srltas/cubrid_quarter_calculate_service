@@ -6,6 +6,10 @@ var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
 
 function userReducer(state, action) {
+	
+  console.log("=====userReducer=====");
+  console.log("userReducer_state : " + JSON.stringify(state));
+  
   switch (action.type) {
     case "LOGIN_SUCCESS":
       return { ...state, isAuthenticated: true };
@@ -22,8 +26,13 @@ function userReducer(state, action) {
 function UserProvider({ children }) {
   var [state, dispatch] = React.useReducer(userReducer, {
     isAuthenticated: !!localStorage.getItem("id_token"),
+    setDB_logid: localStorage.getItem("DB_logid"),
   });
-
+  
+  console.log("=====UserProvider=====");
+  console.log("userReducer_state : " + JSON.stringify(state));
+  console.log("userReducer_action : " + JSON.stringify(dispatch));
+  
   return (
     <UserStateContext.Provider value={state}>
       <UserDispatchContext.Provider value={dispatch}>
@@ -35,6 +44,8 @@ function UserProvider({ children }) {
 
 function useUserState() {
   var context = React.useContext(UserStateContext);
+  
+  console.log("=====useUserState=====");
   if (context === undefined) {
     throw new Error("useUserState must be used within a UserProvider");
   }
@@ -43,6 +54,8 @@ function useUserState() {
 
 function useUserDispatch() {
   var context = React.useContext(UserDispatchContext);
+  
+  console.log("=====useUserDispatch=====");
   if (context === undefined) {
     throw new Error("useUserDispatch must be used within a UserProvider");
   }
@@ -53,35 +66,30 @@ export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
 
 // ###########################################################
 
-function loginUser(dispatch, loginid, password, history, setIsLoading, setError, DB_logid) {
+function loginUser(dispatch, loginid, password, history, setIsLoading, setError, first_name, first_year, years, match) {
   setError(false);
   setIsLoading(true);
   
-  if (DB_logid === loginid) {
-  	console.log("dispatch! : " + dispatch);
+  if (first_name === loginid) {
+	console.log("===========================================");
   	console.log("loginid! : " + loginid);
   	console.log("password! : " + password);
-  	console.log("history! : " + history);
-  	console.log("setIsLoading! : " + setIsLoading);
-  	console.log("setError! : " + setError);
-  	console.log("DB_logid! : " + DB_logid);
-  } else {
-  	console.log("dispatch@ : " + dispatch);
-  	console.log("loginid@ : " + loginid);
-  	console.log("password@ : " + password);
-  	console.log("history@ : " + history);
-  	console.log("setIsLoading@ : " + setIsLoading);
-  	console.log("setError@ : " + setError);
-  	console.log("DB_logid@ : " + DB_logid);
+  	console.log("history! : " + JSON.stringify(history));
+  	console.log("DB_logid! : " + first_name);
+  	console.log("match! : " + JSON.stringify(match));
+  	console.log("===========================================");
   }
 	
-  if (!!loginid && DB_logid === loginid && !!password) {
+  if (!!loginid && first_name === loginid && !!password) {
     setTimeout(() => {
       localStorage.setItem("id_token", "1");
+      localStorage.setItem("DB_logid", first_name);
       dispatch({ type: "LOGIN_SUCCESS" });
       setError(null);
       setIsLoading(false);
-      history.push("/app/dashboard");
+      match.params.first_year ='';
+      history.push({pathname:"/app/dashboard", search: first_year, DB_logid: first_name, years: years});
+      //history.push("/app/dashboard");
     }, 2000);
   } else {
     dispatch({ type: "LOGIN_FAILURE" });
@@ -93,6 +101,7 @@ function loginUser(dispatch, loginid, password, history, setIsLoading, setError,
 
 function signOut(dispatch, history) {
   localStorage.removeItem("id_token");
+  localStorage.removeItem("DB_logid");
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/login");
 }
