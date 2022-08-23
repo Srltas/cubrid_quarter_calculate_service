@@ -23,11 +23,12 @@ import {
 
 // styles
 import useStyles from "./styles";
+import pageTitle_useStyles from "../../components/PageTitle/styles";
 
 // components
 import mock from "./mock";
 import Widget from "../../components/Widget";
-import PageTitle from "../../components/PageTitle";
+//import PageTitle from "../../components/PageTitle";
 import { Typography } from "../../components/Wrappers";
 import Dot from "../../components/Sidebar/components/Dot";
 import Table from "./components/Table/Table";
@@ -51,36 +52,90 @@ const PieChartData = [
 export default function Dashboard(props) {
   var classes = useStyles();
   var theme = useTheme();
+  
+  var pageTitle_classes = pageTitle_useStyles();
 
   // local
   var [mainChartState, setMainChartState] = useState("monthly");
   var userInfo = useUserState();
   
-  // 개인적으로 추가
+  /** 여기부터 개인적으로 추가 */ 
   console.log("Dashboard_props : " +  JSON.stringify(props));
   
+  /** localStorage 값 저장하는 곳 */
   var logid = "";
+  var select_year = "";
+  var years = "";
   
   if(props.location.DB_logid === undefined || props.location.DB_logid === null || props.location.DB_logid === ""){
 	logid = userInfo.setDB_logid;
-	console.log("Dashboard_userInfo_r : " +  userInfo.setDB_logid);
+	console.log("Dashboard_DB_logid_r : " +  userInfo.setDB_logid);
   } else {
 	logid = props.location.DB_logid;
-	console.log("Dashboard_userInfo_f : " +  props.location.DB_logid);
+	console.log("Dashboard_DB_logid_f : " +  props.location.DB_logid);
   }
-  // DB_data - 새로고침 할 때 (최초 들어올때, render 될때)
-  var dashboardData = DashboardService(logid, props.location.search);
-  //const first_year = dashboardData.map(x => x.year);
-  //console.log("dashboardData props : " + JSON.stringify(first_year[0]) );
-  //console.log("year props : " + props.location.search );
-  //props.location.search = "?2021";
-  //props.match.params.year = "/:2021";
   
-  //localStorage.setItem("DB_logid", DB_logid);
+  if(props.location.select_year === undefined || props.location.select_year === null || props.location.select_year === ""){
+	select_year = userInfo.setSelect_year;
+	console.log("Dashboard_Select_year_r : " +  userInfo.setSelect_year);
+  } else {
+	select_year = props.location.select_year;
+	console.log("Dashboard_Select_year_f : " +  props.location.select_year);
+  }
+  
+  if(props.location.years === undefined || props.location.years === null || props.location.years === ""){
+	years = '[' + userInfo.setYears + ']';
+	years = JSON.parse(years);
+	console.log("Dashboard_years_r : " +  JSON.stringify(years));
+  } else {
+	years = props.location.years;
+	console.log("Dashboard_years_f : " +  typeof props.location.years);
+  }
+  
+  /** selectbox 값 저장 */
+  const [selectyear, setSelectYear] = useState(select_year);
+  
+  const onSelectChange = (e) => {
+    const {value} = e.target
+    setSelectYear(value)
+  };
+  
+  const SelectOptions= years;
+  
+  /** 분기 DB 데이터 가져옴 */
+  var dashboardData = DashboardService(logid, selectyear);
+  
+  /** selectbox 선택 후 새로고침(f5) 하면 그 값 다시 불러오기 위해 사용 */
+  localStorage.setItem("select_year", selectyear);
+  
+  /** json 데이터 꺼내오기 연습 */
+	  //const first_year = dashboardData.map(x => x.year);
+	  //console.log("dashboardData props : " + JSON.stringify(first_year[0]) );
+	  //console.log("year props : " + props.location.search );
+	  //props.location.search = "?2021";
+	  //props.match.params.year = "/:2021";
   
   return (
     <>
-      <PageTitle title="Dashboard" />
+      <div className={pageTitle_classes.pageTitleContainer}>
+      	<Typography className={classes.typo} variant="h1" size="sm">
+        	년도 선택 : 
+      	</Typography>
+      	&nbsp;&nbsp;&nbsp;&nbsp;
+	    {years && (
+			<select
+				className={classes.select}
+				value={selectyear}
+				onChange={onSelectChange}
+			>
+			{
+				SelectOptions.map(selectyear => (
+				    <option key={selectyear} value={selectyear}>{selectyear}</option>
+				))
+	         }
+	      	</select>
+		)}
+	  </div>
       <Grid container spacing={4}>
         <Grid item lg={3} md={4} sm={6} xs={12}>
           <Widget

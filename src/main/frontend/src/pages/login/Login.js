@@ -123,8 +123,7 @@ function Login(props) {
                         setError,
                         first_name[0],
                         first_year[0],
-                        years,
-                        props.match
+                        years
                       )
                     }
                     variant="contained"

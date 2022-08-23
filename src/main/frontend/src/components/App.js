@@ -77,11 +77,6 @@ export default function App() {
                 state: {
                   from: props,
                 },
-                match: {
-				  props: {
-					year: props.history.first_year,
-				  }
-				},
               }}
             />
             :

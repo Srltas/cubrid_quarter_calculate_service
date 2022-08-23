@@ -27,6 +27,8 @@ function UserProvider({ children }) {
   var [state, dispatch] = React.useReducer(userReducer, {
     isAuthenticated: !!localStorage.getItem("id_token"),
     setDB_logid: localStorage.getItem("DB_logid"),
+    setSelect_year : localStorage.getItem("select_year"),
+    setYears : localStorage.getItem("years"),
   });
   
   console.log("=====UserProvider=====");
@@ -66,7 +68,7 @@ export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
 
 // ###########################################################
 
-function loginUser(dispatch, loginid, password, history, setIsLoading, setError, first_name, first_year, years, match) {
+function loginUser(dispatch, loginid, password, history, setIsLoading, setError, first_name, select_year, years) {
   setError(false);
   setIsLoading(true);
   
@@ -76,7 +78,6 @@ function loginUser(dispatch, loginid, password, history, setIsLoading, setError,
   	console.log("password! : " + password);
   	console.log("history! : " + JSON.stringify(history));
   	console.log("DB_logid! : " + first_name);
-  	console.log("match! : " + JSON.stringify(match));
   	console.log("===========================================");
   }
 	
@@ -84,11 +85,12 @@ function loginUser(dispatch, loginid, password, history, setIsLoading, setError,
     setTimeout(() => {
       localStorage.setItem("id_token", "1");
       localStorage.setItem("DB_logid", first_name);
+      localStorage.setItem("select_year", select_year);
+      localStorage.setItem("years", years);
       dispatch({ type: "LOGIN_SUCCESS" });
       setError(null);
       setIsLoading(false);
-      match.params.first_year ='';
-      history.push({pathname:"/app/dashboard", search: first_year, DB_logid: first_name, years: years});
+      history.push({pathname:"/app/dashboard", DB_logid: first_name, select_year: select_year, years: years});
       //history.push("/app/dashboard");
     }, 2000);
   } else {
@@ -102,6 +104,8 @@ function loginUser(dispatch, loginid, password, history, setIsLoading, setError,
 function signOut(dispatch, history) {
   localStorage.removeItem("id_token");
   localStorage.removeItem("DB_logid");
+  localStorage.removeItem("select_year");
+  localStorage.removeItem("years");
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/login");
 }

@@ -2,9 +2,6 @@ import {useEffect, useState} from 'react';
 import axios from 'axios'; 
 
 function DashboardService(log_id, year) {
-	
-	var strCut = year.split('?');
-	year = strCut[1];
 
 	const URL_PATH = "/api/main_dashboard";
 	const [dashboards, setDashboards] = useState([]);

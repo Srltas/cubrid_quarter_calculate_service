@@ -112,4 +112,10 @@ export default makeStyles(theme => ({
     fontSize: "18px !important",
     marginLeft: theme.spacing(1),
   },
+  select : {
+	width: "10%",
+	fontSize: "150%",
+	textAlignLast: "-webkit-center",
+	textAlign: "center",
+  },
 }));

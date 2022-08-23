@@ -32,9 +32,7 @@ function Layout(props) {
   // global
   var layoutState = useLayoutState();
   
-  console.log("Layout_props : " + JSON.stringify(props));
-  
-  props.match.params.first_year = props.location.first_year;
+  console.log("Layout_props : ");
 
   return (
     <div className={classes.root}>
@@ -49,7 +47,6 @@ function Layout(props) {
             <div className={classes.fakeToolbar} />
             <Switch>
               <Route path="/app/dashboard" component={Dashboard} />
-              <Route path="/app/dashboard/:year" component={Dashboard} />
               <Route path="/app/typography" component={Typography} />
               <Route path="/app/tables" component={Tables} />
               <Route path="/app/notifications" component={Notifications} />
