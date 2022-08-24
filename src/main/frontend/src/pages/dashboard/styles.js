@@ -113,7 +113,7 @@ export default makeStyles(theme => ({
     marginLeft: theme.spacing(1),
   },
   select : {
-	width: "10%",
+	width: "110px",
 	fontSize: "150%",
 	textAlignLast: "-webkit-center",
 	textAlign: "center",

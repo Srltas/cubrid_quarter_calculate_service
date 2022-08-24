@@ -30,7 +30,7 @@ import {
 } from "../../context/LayoutContext";
 
 const structure = [
-  { id: 0, label: "Dashboard", link: "/app/dashboard", icon: <HomeIcon /> },
+  { id: 0, label: "대시보드", link: "/app/dashboard", icon: <HomeIcon /> },
   {
     id: 1,
     label: "Typography",
@@ -56,29 +56,19 @@ const structure = [
     ],
   },
   { id: 5, type: "divider" },
-  { id: 6, type: "title", label: "HELP" },
-  { id: 7, label: "Library", link: "", icon: <LibraryIcon /> },
-  { id: 8, label: "Support", link: "", icon: <SupportIcon /> },
-  { id: 9, label: "FAQ", link: "", icon: <FAQIcon /> },
+  
+  { id: 6, type: "title", label: "관리자 페이지" },
+  { id: 7, label: "팀 관리", link: "", icon: <LibraryIcon /> },
+  { id: 8, label: "전체보기", link: "", icon: <SupportIcon /> },
+  { id: 9, label: "엑셀 로드/다운로드", link: "", icon: <FAQIcon /> },
   { id: 10, type: "divider" },
+  
   { id: 11, type: "title", label: "PROJECTS" },
   {
     id: 12,
     label: "My recent",
     link: "",
-    icon: <Dot size="large" color="warning" />,
-  },
-  {
-    id: 13,
-    label: "Starred",
-    link: "",
     icon: <Dot size="large" color="primary" />,
-  },
-  {
-    id: 14,
-    label: "Background",
-    link: "",
-    icon: <Dot size="large" color="secondary" />,
   },
 ];
 

@@ -13,10 +13,7 @@ export default function TableComponent({ data }) {
     <Table className="mb-0">
       <TableHead>
         <TableRow>
-          <TableCell>년도</TableCell>
           <TableCell>분기</TableCell>
-          <TableCell>분기 근로시간</TableCell>
-          <TableCell>법정 근로시간</TableCell>
           <TableCell>내 근로시간</TableCell>
           <TableCell>소정근로 연장</TableCell>
           <TableCell>법정근로 연장</TableCell>
@@ -24,38 +21,22 @@ export default function TableComponent({ data }) {
           <TableCell>휴일 근로시간</TableCell>
           <TableCell>휴일 8시간 초과시간</TableCell>
           <TableCell>사용한 휴가</TableCell>
-          <TableCell>정산 보상휴가</TableCell>
-          <TableCell>정산 수당</TableCell>
-          <TableCell>정산 총계</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {data.map(({ 
 			seq,
-			year,
 			quarter,
-			quarterTotalTime,
-			quarterLegalTime,
 			quarterWorkTime,
 			regulationWorkOverTime,
 			legalWorkOverTime,
 			nightWorkTime,
 			holidayWorkTime,
 			holiday8HOver,
-			leaveTime,
-			compensationLeaveTime,
-			calculateMoney,
-			calculateTotal
+			leaveTime
         }) => (
           <TableRow key={seq}>
-            <TableCell>{year}</TableCell>
             <TableCell>{quarter}</TableCell>
-            <TableCell>
-            	{parseInt(quarterTotalTime/3600)}:00
-            </TableCell>
-            <TableCell>
-            	{parseInt(quarterLegalTime/3600)}:00
-            </TableCell>
             <TableCell>
             	{parseInt(quarterWorkTime/3600)}
             	:
@@ -90,15 +71,6 @@ export default function TableComponent({ data }) {
             	{parseInt(leaveTime/3600) <= 10 ? "0".concat(parseInt(leaveTime/3600)) : parseInt(leaveTime/3600)}
             	:
             	{parseInt(leaveTime%3600/60) <= 10 ? "0".concat(parseInt(leaveTime%3600/60)) : parseInt(leaveTime%3600/60)}
-            </TableCell>
-            <TableCell>
-            	{parseInt(compensationLeaveTime/3600) <= 10 ? "0".concat(parseInt(compensationLeaveTime/3600)) : parseInt(compensationLeaveTime/3600)}:00
-            </TableCell>
-            <TableCell>
-            	{parseInt(calculateMoney/3600) <= 10 ? "0".concat(parseInt(calculateMoney/3600)) : parseInt(calculateMoney/3600)}:00
-            </TableCell>
-            <TableCell>
-            	{parseInt(calculateTotal/3600) <= 10 ? "0".concat(parseInt(calculateTotal/3600)) : parseInt(calculateTotal/3600)}:00
             </TableCell>
           </TableRow>
         ))}
