@@ -20,9 +20,6 @@ import logo from "./cubrid_logo.png";
 // context
 import { useUserDispatch, loginUser } from "../../context/UserContext";
 
-// LoginService
-import LoginService from "../../service/LoginService";
-
 function Login(props) {
   var classes = useStyles();
 
@@ -39,11 +36,11 @@ function Login(props) {
   
   console.log("Login_props : ");
   
-  // DB_data
-  var DB_logid = LoginService(loginValue);
-  const first_name = DB_logid.map(x => x.name);
-  const first_year = DB_logid.map(x => x.year);
-  const years = DB_logid.map(x => x.year);
+  /** 초기 로그인 할 때 DB 값가져오려고 한 곳 */
+  //var DB_logid = LoginService(loginValue);
+  //const first_name = DB_logid.map(x => x.name);
+  //const first_year = DB_logid.map(x => x.year);
+  //const years = DB_logid.map(x => x.year);
   //console.log("first_name props : " + JSON.stringify(first_name[0]) );
   //console.log("first_year props : " + JSON.stringify(first_year[0]) );
 
@@ -120,10 +117,7 @@ function Login(props) {
                         passwordValue,
                         props.history,
                         setIsLoading,
-                        setError,
-                        first_name[0],
-                        first_year[0],
-                        years
+                        setError
                       )
                     }
                     variant="contained"

@@ -37,25 +37,26 @@ export default function Dashboard(props) {
   var years = "";
   
   if(props.location.DB_logid === undefined || props.location.DB_logid === null || props.location.DB_logid === ""){
-	logid = userInfo.setDB_logid;
-	console.log("Dashboard_DB_logid_r : " +  userInfo.setDB_logid);
+	logid = userInfo.DB_logid;
+	console.log("Dashboard_DB_logid_r : " +  userInfo.DB_logid);
   } else {
 	logid = props.location.DB_logid;
 	console.log("Dashboard_DB_logid_f : " +  props.location.DB_logid);
   }
   
   if(props.location.select_year === undefined || props.location.select_year === null || props.location.select_year === ""){
-	select_year = userInfo.setSelect_year;
-	console.log("Dashboard_Select_year_r : " +  userInfo.setSelect_year);
+	select_year = userInfo.Select_year;
+	console.log("Dashboard_Select_year_r : " +  userInfo.Select_year);
   } else {
 	select_year = props.location.select_year;
 	console.log("Dashboard_Select_year_f : " +  props.location.select_year);
   }
   
   if(props.location.years === undefined || props.location.years === null || props.location.years === ""){
-	years = '[' + userInfo.setYears + ']';
+	years = '[' + userInfo.Years + ']';
 	years = JSON.parse(years);
 	console.log("Dashboard_years_r : " +  JSON.stringify(years));
+	//years=["2022"];
   } else {
 	years = props.location.years;
 	console.log("Dashboard_years_f : " +  props.location.years);

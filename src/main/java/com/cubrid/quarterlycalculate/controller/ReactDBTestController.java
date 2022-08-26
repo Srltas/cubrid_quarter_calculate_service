@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,32 +35,20 @@ public class ReactDBTestController {
 	private ReactDBTestService reactDBTestService;
 	
 	//로그인 시 user 값 비교
-	@GetMapping("/api/login")
-    public List<ReactDBTestData> findName(@RequestParam (required=false) String name, ReactDBTestDto reactDBTestDto, Model model) {
+	@PostMapping("/api/login")
+	public List<ReactDBTestData> Login(@RequestBody ReactDBTestDto reactDBTestDto) {
 		
-    	System.out.println("name : " + name);
-    	reactDBTestDto.setName(name);
-    	System.out.println("reactDBTestDto : " + reactDBTestDto.getName());
-    	
     	List<ReactDBTestData> reactDBTestData = reactDBTestService.getLoginNameCompare(reactDBTestDto);
 
-    	//model.addAttribute("loginDto", loginDto);
-    	
-    	//if(!reactDBTestData.isEmpty()) {
-    		System.out.println("loginData : " + reactDBTestData.get(0).getName());
-    		System.out.println("loginyear : " + reactDBTestData.get(0).getYear());
+    	System.out.println("loginData : " + reactDBTestData.get(0).getName());
+    	System.out.println("loginyear : " + reactDBTestData.get(0).getYear());
     		
-    		//return reactDBTestData.get(0).getName();
-    		return reactDBTestData;
-    	//} else {
-    		//return "빈값";
-    		//return null;
-    	//}
+    	return reactDBTestData;
     }
 	
 	//로그인 후 main 화면 출력
 	@GetMapping("/api/main_dashboard")
-    public List<QuarterWorkTime> MainDashboard(@RequestParam (required=false) String name, @RequestParam (required=false) String year, TotalDataDto totalDataDto, Model model) {
+    public List<QuarterWorkTime> MainDashboard(@RequestParam (required=false) String name, @RequestParam (required=false) String year, TotalDataDto totalDataDto) {
 		
     	System.out.println("name : " + name);
     	System.out.println("year : " + year);
@@ -69,7 +59,6 @@ public class ReactDBTestController {
     	
     	List<QuarterWorkTime> reactDBTestData = reactDBTestService.getDashboardData(totalDataDto);
 
-    	//model.addAttribute("loginDto", loginDto);
     	
     	for(int i=0; i<reactDBTestData.size(); i++) {
     		
@@ -90,7 +79,6 @@ public class ReactDBTestController {
     		System.out.println("calculate_total[" + i + "] : " + reactDBTestData.get(i).getCalculateTotal());
     	}
 		
-		//return reactDBTestData.get(0).getName();
 		return reactDBTestData;
     }
 }

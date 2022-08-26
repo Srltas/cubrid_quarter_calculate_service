@@ -48,8 +48,8 @@ export default function Header(props) {
   var logid = "";
   
   if(props.history.location.DB_logid === undefined || props.history.location.DB_logid === null || props.history.location.DB_logid === ""){
-	logid = userInfo.setDB_logid;
-	console.log("Header_DB_logid_r : " +  userInfo.setDB_logid);
+	logid = userInfo.DB_logid;
+	console.log("Header_DB_logid_r : " +  userInfo.DB_logid);
   } else {
 	logid = props.history.location.DB_logid;
 	console.log("Header_DB_logid_f : " +  props.history.location.DB_logid);

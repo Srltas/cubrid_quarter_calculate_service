@@ -1,6 +1,5 @@
 import React from "react";
-// LoginService
-//import LoginService from "../service/LoginService";
+import axios from 'axios'; 
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
@@ -26,9 +25,9 @@ function userReducer(state, action) {
 function UserProvider({ children }) {
   var [state, dispatch] = React.useReducer(userReducer, {
     isAuthenticated: !!localStorage.getItem("id_token"),
-    setDB_logid: localStorage.getItem("DB_logid"),
-    setSelect_year : localStorage.getItem("select_year"),
-    setYears : localStorage.getItem("years"),
+    DB_logid: localStorage.getItem("DB_logid"),
+    Select_year : localStorage.getItem("select_year"),
+    Years : localStorage.getItem("years"),
   });
   
   console.log("=====UserProvider=====");
@@ -68,9 +67,27 @@ export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
 
 // ###########################################################
 
-function loginUser(dispatch, loginid, password, history, setIsLoading, setError, first_name, select_year, years) {
+async function loginUser(dispatch, loginid, password, history, setIsLoading, setError) {
   setError(false);
   setIsLoading(true);
+  
+  /**로그인시 DB 값 가져오기 */
+  const URL_PATH = "/api/login";
+  var loginDBData = await axios.post(URL_PATH, {name : loginid});
+  //console.log("dbLoginData@@ : " + JSON.stringify(loginDBData.data));
+  
+  const first_name = loginDBData.data[0].name;
+  const select_year = loginDBData.data[0].year;  
+  var years = "";
+  for(let i in loginDBData.data){
+	if (i === "0"){
+		years = years + loginDBData.data[i].year;
+	} else {
+		years = years + "," + loginDBData.data[i].year;
+	}
+  }
+  years = '[' + years + ']';
+  years = JSON.parse(years);
   
   if (first_name === loginid) {
 	console.log("===========================================");

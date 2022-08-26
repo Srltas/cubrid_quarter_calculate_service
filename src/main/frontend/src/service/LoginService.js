@@ -8,10 +8,8 @@ function LoginService(log_id) {
 
 	useEffect(() => {
 		if(log_id !== null && log_id.length >= 3){
-			axios.get(URL_PATH, {
-				params:{
-					name : log_id
-				}
+			axios.post(URL_PATH, {
+				name : log_id
 			})
 	        .then(response => {
 				setLogins(response.data)
@@ -21,7 +19,7 @@ function LoginService(log_id) {
     }, [log_id]);
     
     //console.log("logins!!!! : " + JSON.stringify(logins));
-    //console.log("!!!! " + Object.keys(logins));
+    //console.log("log_id!!!! " + log_id);
     //var first_key = Object.keys(logins)[0];
 	//var first_value = logins[0];
 	//console.log("first_key : " + first_key);
