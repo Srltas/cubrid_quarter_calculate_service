@@ -6,10 +6,12 @@ import {
   FormatSize as TypographyIcon,
   FilterNone as UIElementsIcon,
   BorderAll as TableIcon,
-  QuestionAnswer as SupportIcon,
-  LibraryBooks as LibraryIcon,
+  People as PeopleIcon,
+  ListAlt as ListAltIcon,
   HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
+  CloudDownload as CloudDownloadIcon,
+  CloudUpload as CloudUploadIcon,
 } from "@material-ui/icons";
 import { useTheme } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
@@ -28,6 +30,7 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from "../../context/LayoutContext";
+import { useUserState } from "../../context/UserContext";
 
 const structure = [
   { id: 0, label: "대시보드", link: "/app/dashboard", icon: <HomeIcon /> },
@@ -58,14 +61,15 @@ const structure = [
   { id: 5, type: "divider" },
   
   { id: 6, type: "title", label: "관리자 페이지" },
-  { id: 7, label: "팀 관리", link: "", icon: <LibraryIcon /> },
-  { id: 8, label: "전체보기", link: "", icon: <SupportIcon /> },
-  { id: 9, label: "엑셀 로드/다운로드", link: "", icon: <FAQIcon /> },
-  { id: 10, type: "divider" },
+  { id: 7, label: "팀 관리", link: "", icon: <PeopleIcon /> },
+  { id: 8, label: "전체보기", link: "/app/adminDashboard", icon: <ListAltIcon /> },
+  { id: 9, label: "콩체크 엑셀 로드", link: "", icon: <CloudUploadIcon /> },
+  { id: 10, label: "콩체크 엑셀 다운로드", link: "", icon: <CloudDownloadIcon /> },
+  { id: 11, type: "divider" },
   
-  { id: 11, type: "title", label: "PROJECTS" },
+  { id: 12, type: "title", label: "PROJECTS" },
   {
-    id: 12,
+    id: 13,
     label: "My recent",
     link: "",
     icon: <Dot size="large" color="primary" />,
@@ -90,6 +94,45 @@ function Sidebar({ location }) {
       window.removeEventListener("resize", handleWindowWidthChange);
     };
   });
+
+  var userInfo = useUserState();
+  
+  console.log("Sidebar_location : " +  JSON.stringify(location));
+  
+  /** localStorage 값 저장하는 곳 */
+  var logid = "";
+  var select_year = "";
+  var years = "";
+  
+  if(location.DB_logid === undefined || location.DB_logid === null || location.DB_logid === ""){
+	location.DB_logid = userInfo.DB_logid;
+	console.log("Sidebar_DB_logid_r : " +  userInfo.DB_logid);
+  } else {
+	location.DB_logid = location.DB_logid;
+	console.log("Sidebar_DB_logid_f : " +  location.DB_logid);
+  }
+  
+  if(location.select_year === undefined || location.select_year === null || location.select_year === ""){
+	location.select_year = userInfo.Select_year;
+	console.log("Sidebar_Select_year_r : " +  userInfo.Select_year);
+  } else {
+	location.select_year = location.select_year;
+	console.log("Sidebar_Select_year_f : " +  location.select_year);
+  }
+  
+
+  if(location.years === undefined || location.years === null || location.years === ""){
+	location.years = '[' + userInfo.Years + ']';
+	location.years = JSON.parse(location.years);
+	console.log("Sidebar_years_r : " +  JSON.stringify(location.years));
+	//years=["2022"];
+  } else {
+	location.years = location.years;
+	localStorage.removeItem("years");
+	localStorage.setItem("years", location.years);
+	console.log("Sidebar_years_f : " +  location.years);
+  }
+
 
   return (
     <Drawer

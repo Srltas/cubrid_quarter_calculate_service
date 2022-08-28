@@ -41,6 +41,8 @@ export default function Dashboard(props) {
 	console.log("Dashboard_DB_logid_r : " +  userInfo.DB_logid);
   } else {
 	logid = props.location.DB_logid;
+	localStorage.removeItem("DB_logid");
+	localStorage.setItem("DB_logid", logid);
 	console.log("Dashboard_DB_logid_f : " +  props.location.DB_logid);
   }
   
@@ -59,6 +61,8 @@ export default function Dashboard(props) {
 	//years=["2022"];
   } else {
 	years = props.location.years;
+	localStorage.removeItem("years");
+	localStorage.setItem("years", years);
 	console.log("Dashboard_years_f : " +  props.location.years);
   }
   
@@ -72,7 +76,7 @@ export default function Dashboard(props) {
   
   const SelectOptions= years;
   
-  /** 분기 DB 데이터 가져옴 */
+  /** 년도 DB 데이터 가져옴 */
   var dashboardData = DashboardService(logid, selectyear);
   
   /** selectbox 선택 후 새로고침(f5) 하면 그 값 다시 불러오기 위해 사용 */

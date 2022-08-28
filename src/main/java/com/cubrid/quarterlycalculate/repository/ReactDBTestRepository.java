@@ -89,5 +89,45 @@ public class ReactDBTestRepository {
 	            .calculateMoney(rs.getInt("calculate_money"))
 	            .calculateTotal(rs.getInt("calculate_total"))
 	            .build();
+
+	    
+	public List<QuarterWorkTime> selectAdminDashboard(TotalDataDto totalDataDto) {
+	    String sql = "SELECT "
+	    			+ "* "
+	    			+ "FROM quarter_work_time_tb";
+	    List<String> conditions = new ArrayList<>();
+	
+	    if (totalDataDto.getName() != null && !totalDataDto.getName().equals("")) {
+	        conditions.add("name=\'" + totalDataDto.getName() + "\' ");
+	    }
+	
+	    if (conditions == null || conditions.isEmpty()) {
+	        sql +=  "";
+	    } else {
+	        sql += " WHERE " + String.join("AND ", conditions);
+	        sql += " ORDER BY [year] desc, quarter desc";
+	    }
+	
+	    return jdbcTemplate.query(sql, mapperselectAdminDashboardData);
+	}
+	
+	    static RowMapper<QuarterWorkTime> mapperselectAdminDashboardData = (rs, rowNum) -> QuarterWorkTime.builder()
+	            .seq(rs.getLong("seq"))
+	            .name(rs.getString("name"))
+	            .year(rs.getString("year"))
+	            .quarter(rs.getString("quarter"))
+	            .quarterTotalTime(rs.getInt("quarter_total_time"))
+	            .quarterLegalTime(rs.getInt("quarter_legal_time"))
+	            .quarterWorkTime(rs.getInt("quarter_work_time"))
+	            .regulationWorkOverTime(rs.getInt("regulation_work_over_time"))
+	            .legalWorkOverTime(rs.getInt("legal_work_over_time"))
+	            .nightWorkTime(rs.getInt("night_work_time"))
+	            .holidayWorkTime(rs.getInt("holiday_work_time"))
+	            .holiday8HOver(rs.getInt("holiday_8H_over"))
+	            .leaveTime(rs.getInt("leave_time"))
+	            .compensationLeaveTime(rs.getInt("compensation_leave_time"))
+	            .calculateMoney(rs.getInt("calculate_money"))
+	            .calculateTotal(rs.getInt("calculate_total"))
+	            .build();
 	
 }

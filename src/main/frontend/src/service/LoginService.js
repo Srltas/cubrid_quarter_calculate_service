@@ -7,15 +7,13 @@ function LoginService(log_id) {
 	const [logins, setLogins] = useState([]);
 
 	useEffect(() => {
-		if(log_id !== null && log_id.length >= 3){
-			axios.post(URL_PATH, {
-				name : log_id
-			})
-	        .then(response => {
-				setLogins(response.data)
-			})
-	        .catch(error => console.log(error))	
-		}
+		axios.post(URL_PATH, {
+			name : log_id
+		})
+        .then(response => {
+			setLogins(response.data)
+		})
+        .catch(error => console.log(error))	
     }, [log_id]);
     
     //console.log("logins!!!! : " + JSON.stringify(logins));

@@ -27,5 +27,10 @@ public class ReactDBTestService {
 	public List<QuarterWorkTime> getDashboardData(TotalDataDto totalDataDto) {
 		return loginRepository.selectDashboardData(totalDataDto);
 	}
+	
+	//관리자 - 직원 totalData 가져오기 
+	public List<QuarterWorkTime> getAdminDashboard(TotalDataDto totalDataDto) {
+		return loginRepository.selectAdminDashboard(totalDataDto);
+	}
 
 }

@@ -52,6 +52,8 @@ export default function Header(props) {
 	console.log("Header_DB_logid_r : " +  userInfo.DB_logid);
   } else {
 	logid = props.history.location.DB_logid;
+	localStorage.removeItem("DB_logid");
+	localStorage.setItem("DB_logid", logid);
 	console.log("Header_DB_logid_f : " +  props.history.location.DB_logid);
   }
   

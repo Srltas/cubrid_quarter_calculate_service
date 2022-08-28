@@ -81,4 +81,13 @@ public class ReactDBTestController {
 		
 		return reactDBTestData;
     }
+	
+	//관리자 - 직원 totalData 가져오기 
+	@GetMapping("/api/adminDashboard")
+	public List<QuarterWorkTime> AdminDashboard(TotalDataDto totalDataDto) {
+		
+    	List<QuarterWorkTime> reactDBTestData = reactDBTestService.getAdminDashboard(totalDataDto);
+    		
+    	return reactDBTestData;
+    }
 }
