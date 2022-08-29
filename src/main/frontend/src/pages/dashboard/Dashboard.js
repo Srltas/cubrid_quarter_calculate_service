@@ -41,8 +41,7 @@ export default function Dashboard(props) {
 	console.log("Dashboard_DB_logid_r : " +  userInfo.DB_logid);
   } else {
 	logid = props.location.DB_logid;
-	localStorage.removeItem("DB_logid");
-	localStorage.setItem("DB_logid", logid);
+	userInfo.DB_logid = logid;
 	console.log("Dashboard_DB_logid_f : " +  props.location.DB_logid);
   }
   
@@ -51,6 +50,7 @@ export default function Dashboard(props) {
 	console.log("Dashboard_Select_year_r : " +  userInfo.Select_year);
   } else {
 	select_year = props.location.select_year;
+	userInfo.Select_year = select_year;
 	console.log("Dashboard_Select_year_f : " +  props.location.select_year);
   }
   
@@ -61,8 +61,7 @@ export default function Dashboard(props) {
 	//years=["2022"];
   } else {
 	years = props.location.years;
-	localStorage.removeItem("years");
-	localStorage.setItem("years", years);
+	userInfo.Years = years;
 	console.log("Dashboard_years_f : " +  props.location.years);
   }
   

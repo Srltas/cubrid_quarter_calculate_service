@@ -203,7 +203,6 @@ export default function AdminDashboard(props) {
             columns={columns}
             options={{
               filterType: "checkbox",
-              selectableRowsHeader: false,
             }}
           />
         </Grid>

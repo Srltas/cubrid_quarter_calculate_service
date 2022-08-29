@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios'; 
 
 function AdminDashboardService(test) {
@@ -18,7 +18,7 @@ function AdminDashboardService(test) {
 			setEmployees(response.data)
 		})
         .catch(error => console.log(error))
-    }, []);
+    }, [test]);
     
     //console.log("employees!!!! : " + JSON.stringify(employees));
     

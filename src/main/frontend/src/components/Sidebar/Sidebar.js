@@ -8,7 +8,6 @@ import {
   BorderAll as TableIcon,
   People as PeopleIcon,
   ListAlt as ListAltIcon,
-  HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
   CloudDownload as CloudDownloadIcon,
   CloudUpload as CloudUploadIcon,
@@ -76,7 +75,7 @@ const structure = [
   },
 ];
 
-function Sidebar({ location }) {
+function Sidebar(props) {
   var classes = useStyles();
   var theme = useTheme();
 
@@ -97,42 +96,42 @@ function Sidebar({ location }) {
 
   var userInfo = useUserState();
   
-  console.log("Sidebar_location : " +  JSON.stringify(location));
+  console.log("Sidebar_location : " +  JSON.stringify(props.history.location));
+  console.log("Sidebar_userInfo : " +  JSON.stringify(userInfo));
   
   /** localStorage 값 저장하는 곳 */
-  var logid = "";
-  var select_year = "";
   var years = "";
   
-  if(location.DB_logid === undefined || location.DB_logid === null || location.DB_logid === ""){
-	location.DB_logid = userInfo.DB_logid;
-	console.log("Sidebar_DB_logid_r : " +  userInfo.DB_logid);
+  if(props.history.location.DB_logid === undefined || props.history.location.DB_logid === null || props.history.location.DB_logid === ""){
+	props.history.location.DB_logid = userInfo.DB_logid;
+	console.log("Sidebar_logid_r : " +  userInfo.DB_logid);
   } else {
-	location.DB_logid = location.DB_logid;
-	console.log("Sidebar_DB_logid_f : " +  location.DB_logid);
+	props.history.location.DB_logid = props.location.DB_logid;
+	//localStorage.removeItem("DB_logid");
+	//localStorage.setItem("DB_logid", logid);
+	console.log("Sidebar_logid_f : " +  props.history.location.DB_logid);
   }
   
-  if(location.select_year === undefined || location.select_year === null || location.select_year === ""){
-	location.select_year = userInfo.Select_year;
+  if(props.history.location.select_year === undefined || props.history.location.select_year === null || props.history.location.select_year === ""){
+	props.history.location.select_year = userInfo.Select_year;
 	console.log("Sidebar_Select_year_r : " +  userInfo.Select_year);
   } else {
-	location.select_year = location.select_year;
-	console.log("Sidebar_Select_year_f : " +  location.select_year);
+	props.history.location.select_year = props.location.select_year;
+	console.log("Sidebar_Select_year_f : " +  props.history.location.select_year);
   }
   
-
-  if(location.years === undefined || location.years === null || location.years === ""){
-	location.years = '[' + userInfo.Years + ']';
-	location.years = JSON.parse(location.years);
-	console.log("Sidebar_years_r : " +  JSON.stringify(location.years));
+  if(props.history.location.years === undefined || props.history.location.years === null || props.history.location.years === ""){
+	years = '[' + userInfo.Years + ']';
+	years = JSON.parse(years);
+	props.history.location.years = years;
+	console.log("Sidebar_years_r : " +  JSON.stringify(years));
 	//years=["2022"];
   } else {
-	location.years = location.years;
-	localStorage.removeItem("years");
-	localStorage.setItem("years", location.years);
-	console.log("Sidebar_years_f : " +  location.years);
+	props.history.location.years = props.location.years;
+	//localStorage.removeItem("years");
+	//localStorage.setItem("years", years);
+	console.log("Sidebar_years_f : " +  props.history.location.years);
   }
-
 
   return (
     <Drawer
@@ -163,7 +162,7 @@ function Sidebar({ location }) {
         {structure.map(link => (
           <SidebarLink
             key={link.id}
-            location={location}
+            location={props.location}
             isSidebarOpened={isSidebarOpened}
             {...link}
           />

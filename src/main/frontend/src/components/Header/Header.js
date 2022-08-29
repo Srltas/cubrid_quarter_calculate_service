@@ -40,7 +40,7 @@ export default function Header(props) {
   var userInfo = useUserState();
   
   /** 여기부터 개인적으로 추가 */ 
-  //console.log("Header_props : " +  JSON.stringify(props));
+  console.log("Header_props : " +  JSON.stringify(userInfo));
   //console.log("Header_props_history : " +  JSON.stringify(props.history));
   //console.log("Header_props.history.location.DB_logid : " +  props.history.location.DB_logid);
   
@@ -52,8 +52,7 @@ export default function Header(props) {
 	console.log("Header_DB_logid_r : " +  userInfo.DB_logid);
   } else {
 	logid = props.history.location.DB_logid;
-	localStorage.removeItem("DB_logid");
-	localStorage.setItem("DB_logid", logid);
+	userInfo.DB_logid = logid;
 	console.log("Header_DB_logid_f : " +  props.history.location.DB_logid);
   }
   
@@ -138,7 +137,7 @@ export default function Header(props) {
             <Typography
               className={classes.profileMenuLink}
               color="primary"
-              onClick={() => signOut(userDispatch, props.history)}
+              onClick={() => signOut(userDispatch, props.history, userInfo)}
             >
               로그아웃
             </Typography>

@@ -118,11 +118,20 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
   }
 }
 
-function signOut(dispatch, history) {
+function signOut(dispatch, history, userInfo) {
+  console.log("=====signOut=====");
   localStorage.removeItem("id_token");
   localStorage.removeItem("DB_logid");
   localStorage.removeItem("select_year");
   localStorage.removeItem("years");
+  localStorage.clear();
+  //delete userInfo.DB_logid;
+  //delete userInfo.Select_year;
+  //delete userInfo.Years;
+  userInfo.DB_logid = "";
+  userInfo.Select_year = "";
+  userInfo.Years = "";
+  //console.log("signOut_userInfo : " + JSON.stringify(userInfo));
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/login");
 }
