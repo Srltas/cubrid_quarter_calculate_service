@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.cubrid.quarterlycalculate.model.ReactDBTestData;
+import com.cubrid.quarterlycalculate.model.ExcelDownloadData;
 import com.cubrid.quarterlycalculate.model.QuarterWorkTime;
 import com.cubrid.quarterlycalculate.request.ReactDBTestDto;
 import com.cubrid.quarterlycalculate.request.TotalDataDto;
@@ -24,7 +25,7 @@ public class ReactDBTestRepository {
 	
 	public List<ReactDBTestData> selectNameCompare(ReactDBTestDto reactDBTestDto) {
 	    String sql = "SELECT "
-	    				+ "u.name, q.year "
+	    				+ "u.name, q.year, q.quarter "
 	    				+ "FROM "
 	    				+ "users_tb u inner join quarter_work_time_tb q ON u.name=q.name";
 	    List<String> conditions = new ArrayList<>();
@@ -46,6 +47,7 @@ public class ReactDBTestRepository {
 	    static RowMapper<ReactDBTestData> mapperSelectNameCompare = (rs, rowNum) -> ReactDBTestData.builder()
 	            .name(rs.getString("name"))
 	            .year(rs.getString("year"))
+	            .quarter(rs.getString("quarter"))
 	            .build();
 	    
     
@@ -102,7 +104,7 @@ public class ReactDBTestRepository {
 	    }
 	
 	    if (conditions == null || conditions.isEmpty()) {
-	        sql +=  "";
+	    	sql += " ORDER BY [year] desc, quarter desc";
 	    } else {
 	        sql += " WHERE " + String.join("AND ", conditions);
 	        sql += " ORDER BY [year] desc, quarter desc";
@@ -129,5 +131,38 @@ public class ReactDBTestRepository {
 	            .calculateMoney(rs.getInt("calculate_money"))
 	            .calculateTotal(rs.getInt("calculate_total"))
 	            .build();
+
+	    
+	public List<ExcelDownloadData> selectExcelDownload(TotalDataDto totalDataDto) {
+	    String sql = "SELECT "
+	    			+ " name, [year], quarter, compensation_leave_time "
+	    			+ " FROM quarter_work_time_tb";
+	    List<String> conditions = new ArrayList<>();
 	
+	    if (totalDataDto.getYear() != null && !totalDataDto.getYear().equals("")) {
+	        conditions.add("[year]=\'" + totalDataDto.getYear() + "\' ");
+	    }
+	    
+	    if (totalDataDto.getQuarter() != null && !totalDataDto.getQuarter().equals("")) {
+	        conditions.add("quarter=\'" + totalDataDto.getQuarter() + "\' ");
+	    }
+	
+	    if (conditions == null || conditions.isEmpty()) {
+	        sql +=  "";
+	    } else {
+	        sql += " WHERE " + String.join("AND ", conditions);
+	        sql += " AND compensation_leave_time / 3600 > 0";
+	        sql += " ORDER BY [year] desc, quarter desc";
+	    }
+	
+	    return jdbcTemplate.query(sql, mapperselectExcelDownloadData);
+	}
+	
+	    static RowMapper<ExcelDownloadData> mapperselectExcelDownloadData = (rs, rowNum) -> ExcelDownloadData.builder()
+	            .name(rs.getString("name"))
+	            .year(rs.getString("year"))
+	            .quarter(rs.getString("quarter"))
+	            .compensationLeaveTime(rs.getInt("compensation_leave_time"))
+	            .build();
+	    
 }

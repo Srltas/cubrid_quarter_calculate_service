@@ -22,7 +22,8 @@ import Maps from "../../pages/maps";
 import Tables from "../../pages/tables";
 import Icons from "../../pages/icons";
 import Charts from "../../pages/charts";
-import AdminDashboard from "../../pages/adminDashboard";
+import AdminDashboard from "../../pages/admindashboard";
+import ExcelDownload from "../../pages/exceldownload";
 
 // context
 import { useLayoutState } from "../../context/LayoutContext";
@@ -56,7 +57,8 @@ function Layout(props) {
                 path="/app/ui"
                 render={() => <Redirect to="/app/ui/icons" />}
               />
-              <Route path="/app/adminDashboard" component={AdminDashboard} />
+              <Route path="/app/admindashboard" component={AdminDashboard} />
+              <Route path="/app/exceldownload" component={ExcelDownload} />
               <Route path="/app/ui/maps" component={Maps} />
               <Route path="/app/ui/icons" component={Icons} />
               <Route path="/app/ui/charts" component={Charts} />

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.cubrid.quarterlycalculate.model.ExcelDownloadData;
 import com.cubrid.quarterlycalculate.model.QuarterWorkTime;
 import com.cubrid.quarterlycalculate.model.ReactDBTestData;
 import com.cubrid.quarterlycalculate.repository.ReactDBTestRepository;
@@ -31,6 +32,11 @@ public class ReactDBTestService {
 	//관리자 - 직원 totalData 가져오기 
 	public List<QuarterWorkTime> getAdminDashboard(TotalDataDto totalDataDto) {
 		return loginRepository.selectAdminDashboard(totalDataDto);
+	}
+	
+	//관리자 - 엑셀 다운로드 Data 가져오기
+	public List<ExcelDownloadData> getExcelDownload(TotalDataDto totalDataDto) {
+		return loginRepository.selectExcelDownload(totalDataDto);
 	}
 
 }

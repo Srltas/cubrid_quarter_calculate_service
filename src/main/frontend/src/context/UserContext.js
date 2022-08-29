@@ -28,6 +28,7 @@ function UserProvider({ children }) {
     DB_logid: localStorage.getItem("DB_logid"),
     Select_year : localStorage.getItem("select_year"),
     Years : localStorage.getItem("years"),
+    Last_quarter : localStorage.getItem("last_quarter"),
   });
   
   console.log("=====UserProvider=====");
@@ -77,7 +78,8 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
   //console.log("dbLoginData@@ : " + JSON.stringify(loginDBData.data));
   
   const first_name = loginDBData.data[0].name;
-  const select_year = loginDBData.data[0].year;  
+  const select_year = loginDBData.data[0].year;
+  const last_quarter = loginDBData.data[0].quarter;
   var years = "";
   for(let i in loginDBData.data){
 	if (i === "0"){
@@ -104,10 +106,11 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
       localStorage.setItem("DB_logid", first_name);
       localStorage.setItem("select_year", select_year);
       localStorage.setItem("years", years);
+      localStorage.setItem("last_quarter", last_quarter);
       dispatch({ type: "LOGIN_SUCCESS" });
       setError(null);
       setIsLoading(false);
-      history.push({pathname:"/app/dashboard", DB_logid: first_name, select_year: select_year, years: years});
+      history.push({pathname:"/app/dashboard", DB_logid: first_name, select_year: select_year, years: years, last_quarter: last_quarter});
       //history.push("/app/dashboard");
     }, 2000);
   } else {
@@ -124,6 +127,7 @@ function signOut(dispatch, history, userInfo) {
   localStorage.removeItem("DB_logid");
   localStorage.removeItem("select_year");
   localStorage.removeItem("years");
+  localStorage.removeItem("last_quarter");
   localStorage.clear();
   //delete userInfo.DB_logid;
   //delete userInfo.Select_year;

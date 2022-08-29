@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cubrid.quarterlycalculate.model.ExcelDownloadData;
 import com.cubrid.quarterlycalculate.model.QuarterWorkTime;
 import com.cubrid.quarterlycalculate.model.ReactDBTestData;
 import com.cubrid.quarterlycalculate.request.ReactDBTestDto;
@@ -83,11 +84,29 @@ public class ReactDBTestController {
     }
 	
 	//관리자 - 직원 totalData 가져오기 
-	@GetMapping("/api/adminDashboard")
+	@GetMapping("/api/admindashboard")
 	public List<QuarterWorkTime> AdminDashboard(TotalDataDto totalDataDto) {
 		
     	List<QuarterWorkTime> reactDBTestData = reactDBTestService.getAdminDashboard(totalDataDto);
     		
     	return reactDBTestData;
     }
+	
+	
+	//관리자 - 엑셀 다운로드 Data 가져오기 
+	@GetMapping("/api/exceldownload")
+	public List<ExcelDownloadData> ExcelDownload(@RequestParam (required=false) String year, @RequestParam (required=false) String quarter,TotalDataDto totalDataDto) {
+		
+    	System.out.println("year : " + year);
+    	System.out.println("quarter : " + quarter);
+    	totalDataDto.setYear(year);
+    	totalDataDto.setQuarter(quarter);
+    	System.out.println("MainDashboard1 : " + totalDataDto.getName());
+    	System.out.println("MainDashboard2 : " + totalDataDto.getQuarter());
+		
+    	List<ExcelDownloadData> reactDBTestData = reactDBTestService.getExcelDownload(totalDataDto);
+    		
+    	return reactDBTestData;
+    }
+	
 }

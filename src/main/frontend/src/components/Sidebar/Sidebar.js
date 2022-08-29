@@ -61,9 +61,9 @@ const structure = [
   
   { id: 6, type: "title", label: "관리자 페이지" },
   { id: 7, label: "팀 관리", link: "", icon: <PeopleIcon /> },
-  { id: 8, label: "전체보기", link: "/app/adminDashboard", icon: <ListAltIcon /> },
+  { id: 8, label: "전체보기", link: "/app/admindashboard", icon: <ListAltIcon /> },
   { id: 9, label: "콩체크 엑셀 로드", link: "", icon: <CloudUploadIcon /> },
-  { id: 10, label: "콩체크 엑셀 다운로드", link: "", icon: <CloudDownloadIcon /> },
+  { id: 10, label: "콩체크 엑셀 다운로드", link: "/app/exceldownload", icon: <CloudDownloadIcon /> },
   { id: 11, type: "divider" },
   
   { id: 12, type: "title", label: "PROJECTS" },
@@ -96,9 +96,7 @@ function Sidebar(props) {
 
   var userInfo = useUserState();
   
-  console.log("Sidebar_location : " +  JSON.stringify(props.history.location));
-  console.log("Sidebar_userInfo : " +  JSON.stringify(userInfo));
-  
+  //console.log("Sidebar_location : " +  JSON.stringify(props.history.location));
   /** localStorage 값 저장하는 곳 */
   var years = "";
   
@@ -107,8 +105,6 @@ function Sidebar(props) {
 	console.log("Sidebar_logid_r : " +  userInfo.DB_logid);
   } else {
 	props.history.location.DB_logid = props.location.DB_logid;
-	//localStorage.removeItem("DB_logid");
-	//localStorage.setItem("DB_logid", logid);
 	console.log("Sidebar_logid_f : " +  props.history.location.DB_logid);
   }
   
@@ -125,12 +121,17 @@ function Sidebar(props) {
 	years = JSON.parse(years);
 	props.history.location.years = years;
 	console.log("Sidebar_years_r : " +  JSON.stringify(years));
-	//years=["2022"];
   } else {
 	props.history.location.years = props.location.years;
-	//localStorage.removeItem("years");
-	//localStorage.setItem("years", years);
 	console.log("Sidebar_years_f : " +  props.history.location.years);
+  }
+  
+  if(props.history.location.last_quarter === undefined || props.history.location.last_quarter === null || props.history.location.last_quarter === ""){
+	props.history.location.last_quarter = userInfo.Last_quarter;
+	console.log("last_quarter_logid_r : " +  userInfo.Last_quarter);
+  } else {
+	props.history.location.last_quarter = props.location.last_quarter;
+	console.log("last_quarter_logid_f : " +  props.history.location.last_quarter);
   }
 
   return (

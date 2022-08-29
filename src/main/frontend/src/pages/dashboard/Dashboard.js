@@ -35,6 +35,7 @@ export default function Dashboard(props) {
   var logid = "";
   var select_year = "";
   var years = "";
+  var last_quarter ="";
   
   if(props.location.DB_logid === undefined || props.location.DB_logid === null || props.location.DB_logid === ""){
 	logid = userInfo.DB_logid;
@@ -63,6 +64,15 @@ export default function Dashboard(props) {
 	years = props.location.years;
 	userInfo.Years = years;
 	console.log("Dashboard_years_f : " +  props.location.years);
+  }
+  
+  if(props.location.last_quarter === undefined || props.location.last_quarter === null || props.location.last_quarter === ""){
+	last_quarter = userInfo.Last_quarter;
+	console.log("Dashboard_last_quarter_r : " +  userInfo.Last_quarter);
+  } else {
+	last_quarter = props.location.last_quarter;
+	userInfo.Last_quarter = last_quarter;
+	console.log("Dashboard_last_quarter_f : " +  props.location.last_quarter);
   }
   
   /** selectbox 값 저장 */

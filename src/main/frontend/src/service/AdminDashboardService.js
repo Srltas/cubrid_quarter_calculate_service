@@ -5,7 +5,7 @@ function AdminDashboardService(test) {
 	
 	console.log("AdminDashboardService!!!! " + test);
 	
-	const URL_PATH = "/api/adminDashboard";
+	const URL_PATH = "/api/admindashboard";
 	const [employees, setEmployees] = useState([]);
 	
 	useEffect(() => {
