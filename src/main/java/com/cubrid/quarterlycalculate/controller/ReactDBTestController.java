@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cubrid.quarterlycalculate.model.ExcelDownloadData;
 import com.cubrid.quarterlycalculate.model.QuarterWorkTime;
 import com.cubrid.quarterlycalculate.model.ReactDBTestData;
+import com.cubrid.quarterlycalculate.model.TeamManagementData;
 import com.cubrid.quarterlycalculate.request.ReactDBTestDto;
 import com.cubrid.quarterlycalculate.request.TotalDataDto;
 import com.cubrid.quarterlycalculate.service.ReactDBTestService;
@@ -105,6 +106,15 @@ public class ReactDBTestController {
     	System.out.println("MainDashboard2 : " + totalDataDto.getQuarter());
 		
     	List<ExcelDownloadData> reactDBTestData = reactDBTestService.getExcelDownload(totalDataDto);
+    		
+    	return reactDBTestData;
+    }
+	
+	//관리자 - 직원 정보 가져오기 
+	@GetMapping("/api/teammanagement")
+	public List<TeamManagementData> TeamManagement(TotalDataDto totalDataDto) {
+		
+    	List<TeamManagementData> reactDBTestData = reactDBTestService.getTeamManagement(totalDataDto);
     		
     	return reactDBTestData;
     }

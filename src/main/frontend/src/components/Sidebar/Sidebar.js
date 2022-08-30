@@ -21,7 +21,6 @@ import useStyles from "./styles";
 
 // components
 import SidebarLink from "./components/SidebarLink/SidebarLink";
-import Dot from "./components/Dot";
 
 // context
 import {
@@ -60,19 +59,10 @@ const structure = [
   { id: 5, type: "divider" },
   
   { id: 6, type: "title", label: "관리자 페이지" },
-  { id: 7, label: "팀 관리", link: "", icon: <PeopleIcon /> },
+  { id: 7, label: "팀 관리", link: "/app/teammanagement", icon: <PeopleIcon /> },
   { id: 8, label: "전체보기", link: "/app/admindashboard", icon: <ListAltIcon /> },
   { id: 9, label: "콩체크 엑셀 로드", link: "", icon: <CloudUploadIcon /> },
   { id: 10, label: "콩체크 엑셀 다운로드", link: "/app/exceldownload", icon: <CloudDownloadIcon /> },
-  { id: 11, type: "divider" },
-  
-  { id: 12, type: "title", label: "PROJECTS" },
-  {
-    id: 13,
-    label: "My recent",
-    link: "",
-    icon: <Dot size="large" color="primary" />,
-  },
 ];
 
 function Sidebar(props) {

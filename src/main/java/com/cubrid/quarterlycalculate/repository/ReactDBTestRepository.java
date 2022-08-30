@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.cubrid.quarterlycalculate.model.ReactDBTestData;
+import com.cubrid.quarterlycalculate.model.TeamManagementData;
 import com.cubrid.quarterlycalculate.model.ExcelDownloadData;
 import com.cubrid.quarterlycalculate.model.QuarterWorkTime;
 import com.cubrid.quarterlycalculate.request.ReactDBTestDto;
@@ -164,5 +165,31 @@ public class ReactDBTestRepository {
 	            .quarter(rs.getString("quarter"))
 	            .compensationLeaveTime(rs.getInt("compensation_leave_time"))
 	            .build();
+	
+	
+	public List<TeamManagementData> selectTeamManagement(TotalDataDto totalDataDto) {
+	    String sql = "SELECT "
+	    			+ " * "
+	    			+ " FROM users_tb";
+	    List<String> conditions = new ArrayList<>();
 	    
+	    if (totalDataDto.getQuarter() != null && !totalDataDto.getQuarter().equals("")) {
+	        conditions.add("quarter=\'" + totalDataDto.getQuarter() + "\' ");
+	    }
+	
+	    if (conditions == null || conditions.isEmpty()) {
+	    	sql += " ";
+	    } else {
+	        sql += " WHERE " + String.join("AND ", conditions);
+	        sql += " AND last_day_of_work is null";
+	    }
+	
+	    return jdbcTemplate.query(sql, mapperselectTeamManagementData);
+	}
+	
+	    static RowMapper<TeamManagementData> mapperselectTeamManagementData = (rs, rowNum) -> TeamManagementData.builder()
+	            .name(rs.getString("name"))
+	            .first_day_of_work(rs.getDate("first_day_of_work"))
+	            .last_day_of_work(rs.getDate("last_day_of_work"))
+	            .build();
 }
