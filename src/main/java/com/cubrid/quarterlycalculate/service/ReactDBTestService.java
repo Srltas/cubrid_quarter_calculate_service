@@ -44,5 +44,10 @@ public class ReactDBTestService {
 	public List<TeamManagementData> getTeamManagement(TotalDataDto totalDataDto) {
 		return loginRepository.selectTeamManagement(totalDataDto);
 	}
+	
+	//관리자 - 직원 정보 merge(insert 또는 update)
+	public List<TeamManagementData> setTeamManagementMerge(TeamManagementData teamManagementData) {
+		return loginRepository.mergeTeamManagement(teamManagementData);
+	}
 
 }

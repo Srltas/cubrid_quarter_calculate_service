@@ -1,5 +1,8 @@
 package com.cubrid.quarterlycalculate.repository;
 
+import static com.cubrid.quarterlycalculate.util.DateTimeUtils.timestampOf;
+
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.cubrid.quarterlycalculate.model.ReactDBTestData;
 import com.cubrid.quarterlycalculate.model.TeamManagementData;
 import com.cubrid.quarterlycalculate.model.ExcelDownloadData;
+import com.cubrid.quarterlycalculate.model.HolidayWorkTime;
 import com.cubrid.quarterlycalculate.model.QuarterWorkTime;
 import com.cubrid.quarterlycalculate.request.ReactDBTestDto;
 import com.cubrid.quarterlycalculate.request.TotalDataDto;
@@ -192,4 +196,27 @@ public class ReactDBTestRepository {
 	            .first_day_of_work(rs.getDate("first_day_of_work"))
 	            .last_day_of_work(rs.getDate("last_day_of_work"))
 	            .build();
+	
+    public List<TeamManagementData> mergeTeamManagement(TeamManagementData teamManagementData) {
+        jdbcTemplate.update(conn -> {
+            PreparedStatement ps = 
+            		conn.prepareStatement("MERGE INTO users_tb "
+            							+ " USING dual ON (name = ?) "
+            							+ " WHEN MATCHED THEN "
+            								+ " UPDATE SET name = ?, first_day_of_work = ?, last_day_of_work = ? "
+        								+ " WHEN NOT MATCHED THEN "
+        									+ " INSERT (name, first_day_of_work, last_day_of_work) "
+        									+ " VALUES(?, ?, ?); ");
+            ps.setString(1, teamManagementData.getName());
+            ps.setString(2, teamManagementData.getName());
+            ps.setString(3, teamManagementData.getFront_first_day_of_work());
+            ps.setString(4, teamManagementData.getFront_last_day_of_work());
+            ps.setString(5, teamManagementData.getName());
+            ps.setString(6, teamManagementData.getFront_first_day_of_work());
+            ps.setString(7, teamManagementData.getFront_last_day_of_work());
+
+            return ps;
+        });
+		return null;
+    }
 }

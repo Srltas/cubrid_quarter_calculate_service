@@ -1,5 +1,8 @@
 package com.cubrid.quarterlycalculate.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -42,8 +45,8 @@ public class ReactDBTestController {
 		
     	List<ReactDBTestData> reactDBTestData = reactDBTestService.getLoginNameCompare(reactDBTestDto);
 
-    	System.out.println("loginData : " + reactDBTestData.get(0).getName());
-    	System.out.println("loginyear : " + reactDBTestData.get(0).getYear());
+    	//System.out.println("loginData : " + reactDBTestData.get(0).getName());
+    	//System.out.println("loginyear : " + reactDBTestData.get(0).getYear());
     		
     	return reactDBTestData;
     }
@@ -61,7 +64,7 @@ public class ReactDBTestController {
     	
     	List<QuarterWorkTime> reactDBTestData = reactDBTestService.getDashboardData(totalDataDto);
 
-    	
+    	/*
     	for(int i=0; i<reactDBTestData.size(); i++) {
     		
     		System.out.println("name[" + i + "] : " + reactDBTestData.get(i).getName());
@@ -80,6 +83,7 @@ public class ReactDBTestController {
     		System.out.println("calculate_money[" + i + "] : " + reactDBTestData.get(i).getCalculateMoney());
     		System.out.println("calculate_total[" + i + "] : " + reactDBTestData.get(i).getCalculateTotal());
     	}
+    	*/
 		
 		return reactDBTestData;
     }
@@ -98,23 +102,47 @@ public class ReactDBTestController {
 	@GetMapping("/api/exceldownload")
 	public List<ExcelDownloadData> ExcelDownload(@RequestParam (required=false) String year, @RequestParam (required=false) String quarter,TotalDataDto totalDataDto) {
 		
-    	System.out.println("year : " + year);
-    	System.out.println("quarter : " + quarter);
     	totalDataDto.setYear(year);
     	totalDataDto.setQuarter(quarter);
-    	System.out.println("MainDashboard1 : " + totalDataDto.getName());
-    	System.out.println("MainDashboard2 : " + totalDataDto.getQuarter());
+    	//System.out.println("MainDashboard1 : " + totalDataDto.getName());
+    	//System.out.println("MainDashboard2 : " + totalDataDto.getQuarter());
 		
     	List<ExcelDownloadData> reactDBTestData = reactDBTestService.getExcelDownload(totalDataDto);
     		
     	return reactDBTestData;
     }
 	
-	//관리자 - 직원 정보 가져오기 
+	//관리자 - 직원 정보 가져오기, totalDataDto 필요 없을지도?
 	@GetMapping("/api/teammanagement")
 	public List<TeamManagementData> TeamManagement(TotalDataDto totalDataDto) {
 		
     	List<TeamManagementData> reactDBTestData = reactDBTestService.getTeamManagement(totalDataDto);
+    		
+    	return reactDBTestData;
+    }
+	
+	//관리자 - 직원 정보 merge(insert 또는 update), 그런데 요기는 값을 반환 받을게 없지 안나???
+	@GetMapping("/api/teammanagement/merge")
+	public List<TeamManagementData> TeamManagementMerge(@RequestParam (required=false) String name, @RequestParam (required=false) String front_first_day_of_work, @RequestParam (required=false) String front_last_day_of_work, TeamManagementData teamManagementData) {
+    	
+    	if(front_last_day_of_work.substring(0, 4).equals("9999")) {
+    		front_last_day_of_work = null;
+    	}
+    	
+    	System.out.println("name : " + name);
+    	System.out.println("front_first_day_of_work : " + front_first_day_of_work);
+    	System.out.println("front_last_day_of_work : " + front_last_day_of_work);
+
+		teamManagementData.setName(name);
+		teamManagementData.setFront_first_day_of_work(front_first_day_of_work);
+		teamManagementData.setFront_last_day_of_work(front_last_day_of_work);
+		
+		System.out.println("name2 : " + teamManagementData.getName());
+    	System.out.println("front_first_day_of_work2 : " + teamManagementData.getFront_first_day_of_work());
+    	System.out.println("front_last_day_of_work2 : " + teamManagementData.getFront_last_day_of_work());
+	    	
+		
+		List<TeamManagementData> reactDBTestData = reactDBTestService.setTeamManagementMerge(teamManagementData);
     		
     	return reactDBTestData;
     }

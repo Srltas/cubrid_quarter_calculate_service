@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import axios from 'axios'; 
 import {
   Grid,
   Typography,
@@ -6,10 +7,14 @@ import {
   TextField,
 } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
-//import { DatePicker } from "@material-ui/pickers";
+import DatePicker, { registerLocale } from "react-datepicker";
+import ko from 'date-fns/locale/ko';
+import moment from 'moment';
+import createHistory from 'history/createBrowserHistory'
 
 // styles
 import useStyles from "../login/styles";
+import "react-datepicker/dist/react-datepicker.css";
 
 // components
 import PageTitle from "../../components/PageTitle";
@@ -52,26 +57,30 @@ export default function TeamManagement(props) {
   
   /**테이블 데이터 가공 */
   datatableData.forEach(data =>{
-	data.last_day_of_work = "-";
+	if(data.last_day_of_work === undefined || data.last_day_of_work === null){
+		data.last_day_of_work = "9999-12-31";	
+	}
   });
   
   /**컬럼 초기 값 */
   var [rowValue, setRowValue] = useState("");
   var [rowNameValue, setRowNameValue] = useState("");
-  var [rowFdayworkValue, setRowFdayworkValue] = useState("");
-  var [rowLdayworkValue, setRowLdayworValue] = useState("");
+  var [rowFdayworkValue, setRowFdayworkValue] = useState(new Date());
+  var [rowLdayworkValue, setRowLdayworValue] = useState(new Date());
   
   /**onRowClick 값 split 수행 */
   var valuesplit = JSON.stringify(rowValue).split(',');
+  var l_day_work = "9999-12-31";
+  	  l_day_work = new Date(l_day_work);
   if (valuesplit.length >= 3) {
     var names = valuesplit[0];
 	    names = names.replace("[","");
 	    names = names.replace(/"/gi,"");
   	var f_day_work = valuesplit[1];
-	  	f_day_work = f_day_work.replace(/"/gi,"");
-  	var l_day_work = valuesplit[2];
-	  	l_day_work = l_day_work.replace(/"/gi,"");
-	  	l_day_work = l_day_work.replace("]","");
+  		f_day_work = new Date(f_day_work);
+  	l_day_work = valuesplit[2];
+	l_day_work = l_day_work.replace("]","");
+	l_day_work = new Date(l_day_work);
 	valuesplit="";
   }
   
@@ -80,7 +89,7 @@ export default function TeamManagement(props) {
 	setRowNameValue(names);
 	setRowFdayworkValue(f_day_work);
 	setRowLdayworValue(l_day_work);
-  }, [names,f_day_work,l_day_work]);
+  }, [names,datatableData]);
   
   /**수정&추가 버튼 비활성화 */
   var rowNameCount = 0;
@@ -107,10 +116,30 @@ export default function TeamManagement(props) {
     setRowLdayworValue("");
   };
   
-  console.log("rowValue: " + rowValue);
-  console.log("rowNameValue: " + typeof rowNameValue);
-  console.log("rowFdayworkValue: " + rowFdayworkValue);
-  console.log("rowLdayworkValue: " + rowLdayworkValue);
+  /**달력 값 가지고놀기 */
+  registerLocale("ko", ko);
+  
+  var rowFdayworkString = moment(rowFdayworkValue).format("YYYY-MM-DD");
+  var rowLdayworkString = moment(rowLdayworkValue).format("YYYY-MM-DD");
+  console.log("rowFdayworkValue2: " + rowFdayworkString);
+  console.log("rowLdayworkValue2: " + rowLdayworkString);
+  
+  /**TeamManagementMergeService */
+  const URL_PATH = "/api/teammanagement/merge";
+  const mergeSubmit = () =>{
+	axios.get(URL_PATH, {
+		params:{
+		name: rowNameValue,
+		front_first_day_of_work: rowFdayworkString,
+		front_last_day_of_work: rowLdayworkString,
+		}
+	}).then(()=>{
+		alert('수정 or 추가 완료!');
+		//window.location.replace("/app/teammanagement");
+		const history = createHistory();
+		history.go(0)
+	})
+  };
   
   return (
     <>
@@ -148,28 +177,30 @@ export default function TeamManagement(props) {
 		    margin="normal"
 		    fullWidth
 		  />
+		  <br/><br/>
 		  <Typography componet="h2" variant="h5" gutterBottom>
       		입사일
     	  </Typography>
-		  <TextField
-		    id="first_day_of_work"
-		    variant="outlined"
-		    value={rowFdayworkValue}
-		    onChange={e => setRowFdayworkValue(e.target.value)}
-		    margin="normal"
-		    fullWidth
-		  />
+    	  <DatePicker
+		    locale="ko"
+		    dateFormat="yyyy-MM-dd"
+	        selected={rowFdayworkValue}
+	        onChange={(date) => setRowFdayworkValue(date)}
+	        placeholderText="입사일 클릭"
+	        dateFormatCalendar= {"yyyy년 MM월"}
+	      />
+	      <br/><br/>
 		  <Typography componet="h2" variant="h5" gutterBottom>
       		퇴사일
     	  </Typography>
-		  <TextField
-		    id="last_day_of_work"
-		    variant="outlined"
-		    value={rowLdayworkValue}
-		    onChange={e => setRowLdayworValue(e.target.value)}
-		    margin="normal"
-		    fullWidth
-		  />
+		  <DatePicker
+		    locale="ko"
+		    dateFormat="yyyy-MM-dd"
+	        selected={rowLdayworkValue}
+	        onChange={(date) => setRowLdayworValue(date)}
+	        placeholderText="퇴사일 클릭"
+	        dateFormatCalendar= {"yyyy년 MM월"}
+	      />
 		  
 		  
 		  <div className={classes.formButtons}>
@@ -177,7 +208,7 @@ export default function TeamManagement(props) {
                 disabled={
                   rowNameCount === 0 || rowFdayworkCount === 0 || rowLdayworkCount === 0
                 }
-                //onClick={() =>}
+                onClick={mergeSubmit}
                 variant="contained"
                 color="primary"
                 size="large"
@@ -199,3 +230,5 @@ export default function TeamManagement(props) {
     </>
   );
 }
+
+// ###########################################################

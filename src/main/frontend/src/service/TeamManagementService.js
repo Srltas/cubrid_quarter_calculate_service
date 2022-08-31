@@ -17,8 +17,6 @@ function TeamManagementService() {
     //console.log("employees!!!! : " + JSON.stringify(employees));
     
     return employees;
-    
-  
 }
 
 export default TeamManagementService;
