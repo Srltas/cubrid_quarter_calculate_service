@@ -29,7 +29,6 @@ export default function App() {
         />
         <PrivateRoute path="/app" component={Layout} />
         <PublicRoute path="/login" component={Login} />
-        <Route exact path="/app/teammanagement" render={() => <Redirect to="/app/teammanagement" />} />
         <Route component={Error} />
       </Switch>
     </HashRouter>

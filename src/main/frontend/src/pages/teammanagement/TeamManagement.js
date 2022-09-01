@@ -124,7 +124,7 @@ export default function TeamManagement(props) {
   console.log("rowFdayworkValue2: " + rowFdayworkString);
   console.log("rowLdayworkValue2: " + rowLdayworkString);
   
-  /**TeamManagementMergeService */
+  /**직원 추가 or 수정 Merge 기능*/
   const URL_PATH = "/api/teammanagement/merge";
   const mergeSubmit = () =>{
 	axios.get(URL_PATH, {
@@ -135,7 +135,7 @@ export default function TeamManagement(props) {
 		}
 	}).then(()=>{
 		alert('수정 or 추가 완료!');
-		//window.location.replace("/app/teammanagement");
+		/**강제 새로고침 (DB 최신 데이터 다시 가져와야함)*/
 		const history = createHistory();
 		history.go(0)
 	})
@@ -161,7 +161,7 @@ export default function TeamManagement(props) {
         </Grid>
         <Grid item xs={5}>
           <Typography componet="h1" variant="h3" gutterBottom>
-      		팀원 수정 & 추가
+      		팀원 수정 or 추가
     	  </Typography>
     	  <hr color="black"/>
     	  <br/>
@@ -213,7 +213,7 @@ export default function TeamManagement(props) {
                 color="primary"
                 size="large"
               >
-                수정 & 추가
+                수정 or 추가
             </Button>
             <Button
               variant="contained"

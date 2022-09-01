@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, IconButton, List } from "@material-ui/core";
+import { Drawer, IconButton, List, Link } from "@material-ui/core";
 import {
   Home as HomeIcon,
   NotificationsNone as NotificationsIcon,
@@ -61,7 +61,7 @@ const structure = [
   { id: 6, type: "title", label: "관리자 페이지" },
   { id: 7, label: "팀 관리", link: "/app/teammanagement", icon: <PeopleIcon /> },
   { id: 8, label: "전체보기", link: "/app/admindashboard", icon: <ListAltIcon /> },
-  { id: 9, label: "콩체크 엑셀 로드", link: "", icon: <CloudUploadIcon /> },
+  { id: 9, label: "콩체크 엑셀 로드", link: "http://localhost:8080/upload", icon: <CloudUploadIcon /> },
   { id: 10, label: "콩체크 엑셀 다운로드", link: "/app/exceldownload", icon: <CloudDownloadIcon /> },
 ];
 

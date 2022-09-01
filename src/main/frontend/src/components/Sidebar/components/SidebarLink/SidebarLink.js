@@ -29,6 +29,14 @@ export default function SidebarLink({
   type,
 }) {
   var classes = useStyles();
+  
+  console.log("SidebarLink_children : " + JSON.stringify(children));
+  console.log("SidebarLink_link : " + JSON.stringify(link));
+  console.log("SidebarLink_label : " + JSON.stringify(label));
+  
+  const  hrefs = () => {
+	document.location.href = link;
+  }
 
   // local
   var [isOpen, setIsOpen] = useState(false);
@@ -48,6 +56,40 @@ export default function SidebarLink({
     );
 
   if (type === "divider") return <Divider className={classes.divider} />;
+  
+  if ( label === "콩체크 엑셀 로드")
+    return (
+      <ListItem
+        button
+        component={link && Link}
+        onClick={hrefs}
+        className={classes.link}
+        classes={{
+          root: classnames(classes.linkRoot, {
+            [classes.linkActive]: isLinkActive && !nested,
+            [classes.linkNested]: nested,
+          }),
+        }}
+        disableRipple
+      >
+        <ListItemIcon
+          className={classnames(classes.linkIcon, {
+            [classes.linkIconActive]: isLinkActive,
+          })}
+        >
+          {nested ? <Dot color={isLinkActive && "primary"} /> : icon}
+        </ListItemIcon>
+        <ListItemText
+          classes={{
+            primary: classnames(classes.linkText, {
+              [classes.linkTextActive]: isLinkActive,
+              [classes.linkTextHidden]: !isSidebarOpened,
+            }),
+          }}
+          primary={label}
+        />
+      </ListItem>
+    );
 
   if (!children)
     return (
