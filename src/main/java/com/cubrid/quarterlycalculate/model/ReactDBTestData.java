@@ -8,8 +8,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class ReactDBTestData {
-
+	
+	private final String id;
+	private final String passwd;
+	private final String department;
 	private final String name;
+	private final String role;
+	private final String employmentstatus;
 	private final String year;
 	private final String quarter;
 }

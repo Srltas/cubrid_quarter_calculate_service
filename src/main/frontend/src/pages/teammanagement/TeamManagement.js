@@ -24,6 +24,22 @@ import TeamManagementService from "../../service/TeamManagementService";
 
 const columns = [
 	{
+  		name: "id",
+  		label: "ID",
+  		options: {
+		    filter: false,
+		    sort: false,
+	    }
+ 	},
+ 	{
+  		name: "department",
+  		label: "부서",
+  		options: {
+		    filter: true,
+		    sort: true,
+	    }
+ 	},
+	{
   		name: "name",
   		label: "이름",
   		options: {
@@ -51,9 +67,19 @@ const columns = [
 
 export default function TeamManagement(props) {
   var classes = useStyles();
+  
+  //console.log("TeamManagement_props : " + props.location.userRole);
+  
+  var userDepartment = "";
+  
+  if(props.location.userRole === "admin"){
+	userDepartment = "ALL";
+  } else{
+	userDepartment = props.location.userDepartment;
+  }
 
-  var datatableData = TeamManagementService();
-  //console.log("TeamManagement@@ : " + JSON.stringify(datatableData));
+  var datatableData = TeamManagementService(userDepartment);
+  //console.log("TeamManagement : " + JSON.stringify(datatableData));
   
   /**테이블 데이터 가공 */
   datatableData.forEach(data =>{
@@ -64,6 +90,8 @@ export default function TeamManagement(props) {
   
   /**컬럼 초기 값 */
   var [rowValue, setRowValue] = useState("");
+  var [rowIDValue, setRowIDValue] = useState("");
+  var [rowDepartmentValue, setRowDepartmentValue] = useState("");
   var [rowNameValue, setRowNameValue] = useState("");
   var [rowFdayworkValue, setRowFdayworkValue] = useState(new Date());
   var [rowLdayworkValue, setRowLdayworValue] = useState(new Date());
@@ -73,12 +101,16 @@ export default function TeamManagement(props) {
   var l_day_work = "9999-12-31";
   	  l_day_work = new Date(l_day_work);
   if (valuesplit.length >= 3) {
-    var names = valuesplit[0];
-	    names = names.replace("[","");
+	var id = valuesplit[0];
+		id = id.replace("[","");
+		id = id.replace(/"/gi,"");
+    var department = valuesplit[1];
+	    department = department.replace(/"/gi,"");
+	var names = valuesplit[2];
 	    names = names.replace(/"/gi,"");
-  	var f_day_work = valuesplit[1];
+  	var f_day_work = valuesplit[3];
   		f_day_work = new Date(f_day_work);
-  	l_day_work = valuesplit[2];
+  	l_day_work = valuesplit[4];
 	l_day_work = l_day_work.replace("]","");
 	l_day_work = new Date(l_day_work);
 	valuesplit="";
@@ -86,18 +118,22 @@ export default function TeamManagement(props) {
   
   /**컬럼 입력시 동적으로 값 변하게 하기 위한 훅 */
   useEffect(() => {
+	setRowIDValue(id);
+	setRowDepartmentValue(department);
 	setRowNameValue(names);
 	setRowFdayworkValue(f_day_work);
 	setRowLdayworValue(l_day_work);
-  }, [names,datatableData]);
+  }, [id,department,names,datatableData]);
   
   /**수정&추가 버튼 비활성화 */
   var rowNameCount = 0;
   var rowFdayworkCount = 0;
   var rowLdayworkCount = 0;
+  var rowIDCount = 0;
+  var rowDepartmentCount = 0;
   
   /** usetate 값은 비동기적이며 처음 랜더링 하기 전에 동작해 항상 값이 undefined 으로 length등의 함수 사용 불가능 */
-  if(rowNameValue !== undefined && rowFdayworkValue !== undefined && rowLdayworkValue !== undefined){
+  if(rowNameValue !== undefined && rowFdayworkValue !== undefined && rowLdayworkValue !== undefined && rowIDValue !== undefined && rowDepartmentValue !== undefined){
 	  rowNameCount = rowNameValue;
 	  rowNameCount = rowNameCount.length;
 	  
@@ -106,11 +142,19 @@ export default function TeamManagement(props) {
 	  
 	  rowLdayworkCount = rowLdayworkValue;
 	  rowLdayworkCount = rowLdayworkCount.length
+	  
+	  rowIDCount = rowIDValue;
+	  rowIDCount = rowIDCount.length
+	  
+	  rowDepartmentCount = rowDepartmentValue;
+	  rowDepartmentCount = rowDepartmentCount.length
   }
   
   /** 입력 값 초기화 onClick */
   const onReset = () => {
 	setRowValue("");
+	setRowIDValue("");
+	setRowDepartmentValue("");
     setRowNameValue("");
     setRowFdayworkValue("");
     setRowLdayworValue("");
@@ -129,6 +173,8 @@ export default function TeamManagement(props) {
   const mergeSubmit = () =>{
 	axios.get(URL_PATH, {
 		params:{
+		id: rowIDValue,
+		department: rowDepartmentValue,
 		name: rowNameValue,
 		front_first_day_of_work: rowFdayworkString,
 		front_last_day_of_work: rowLdayworkString,
@@ -165,6 +211,32 @@ export default function TeamManagement(props) {
     	  </Typography>
     	  <hr color="black"/>
     	  <br/>
+    	  <Typography componet="h2" variant="h5" gutterBottom>
+      		ID
+    	  </Typography>
+		  <TextField
+		  	type="text"
+		    id="ID"
+		    variant="outlined"
+		    value={rowIDValue}
+		    onChange={e => setRowIDValue(e.target.value)}
+		    margin="normal"
+		    fullWidth
+		  />
+		  <br/><br/>
+    	  <Typography componet="h2" variant="h5" gutterBottom>
+      		부서
+    	  </Typography>
+		  <TextField
+		  	type="text"
+		    id="department"
+		    variant="outlined"
+		    value={rowDepartmentValue}
+		    onChange={e => setRowDepartmentValue(e.target.value)}
+		    margin="normal"
+		    fullWidth
+		  />
+		  <br/><br/>
           <Typography componet="h2" variant="h5" gutterBottom>
       		이름
     	  </Typography>
@@ -206,7 +278,7 @@ export default function TeamManagement(props) {
 		  <div className={classes.formButtons}>
             <Button
                 disabled={
-                  rowNameCount === 0 || rowFdayworkCount === 0 || rowLdayworkCount === 0
+                  rowNameCount === 0 || rowFdayworkCount === 0 || rowLdayworkCount === 0 || rowIDCount === 0 || rowDepartmentCount === 0
                 }
                 onClick={mergeSubmit}
                 variant="contained"

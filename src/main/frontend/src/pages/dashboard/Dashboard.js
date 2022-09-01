@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Grid,
 } from "@material-ui/core";
-//import { useTheme } from "@material-ui/styles";
 
 // styles
 import useStyles from "./styles";
@@ -29,50 +28,80 @@ export default function Dashboard(props) {
   var userInfo = useUserState();
   
   /** 여기부터 개인적으로 추가 */ 
-  console.log("Dashboard_props : " +  JSON.stringify(props));
+  //console.log("Dashboard_props : " +  JSON.stringify(props));
   
   /** localStorage 값 저장하는 곳 */
-  var logid = "";
+  var userId = "";
+  var userDepartment = "";
+  var userName = "";
+  var userRole = "";
   var select_year = "";
-  var years = "";
   var last_quarter ="";
+  var years = "";
   
-  if(props.location.DB_logid === undefined || props.location.DB_logid === null || props.location.DB_logid === ""){
-	logid = userInfo.DB_logid;
-	console.log("Dashboard_DB_logid_r : " +  userInfo.DB_logid);
+  if(props.location.userId === undefined || props.location.userId === null || props.location.userId === ""){
+	userId = userInfo.userId;
+	console.log("Dashboard_userId_r : " +  userInfo.userId);
   } else {
-	logid = props.location.DB_logid;
-	userInfo.DB_logid = logid;
-	console.log("Dashboard_DB_logid_f : " +  props.location.DB_logid);
+	userId = props.location.userId;
+	userInfo.userId = userId;
+	console.log("Dashboard_userId_f : " +  props.location.userId);
+  }
+  
+  if(props.location.userDepartment === undefined || props.location.userDepartment === null || props.location.userDepartment === ""){
+	userDepartment = userInfo.userDepartment;
+	console.log("Dashboard_userDepartment_r : " +  userInfo.userDepartment);
+  } else {
+	userDepartment = props.location.userDepartment;
+	userInfo.userDepartment = userDepartment;
+	console.log("Dashboard_userDepartment_f : " +  props.location.userDepartment);
+  }
+  
+  if(props.location.userName === undefined || props.location.userName === null || props.location.userName === ""){
+	userName = userInfo.userName;
+	console.log("Dashboard_userName_r : " +  userInfo.userName);
+  } else {
+	userName = props.location.userName;
+	userInfo.userName = userName;
+	console.log("Dashboard_userName_f : " +  props.location.userName);
+  }
+  
+  if(props.location.userRole === undefined || props.location.userRole === null || props.location.userRole === ""){
+	userRole = userInfo.userRole;
+	console.log("Dashboard_userRole_r : " +  userInfo.userRole);
+  } else {
+	userRole = props.location.userRole;
+	userInfo.userRole = userRole;
+	console.log("Dashboard_userRole_f : " +  props.location.userRole);
   }
   
   if(props.location.select_year === undefined || props.location.select_year === null || props.location.select_year === ""){
-	select_year = userInfo.Select_year;
-	console.log("Dashboard_Select_year_r : " +  userInfo.Select_year);
+	select_year = userInfo.select_year;
+	console.log("Dashboard_select_year_r : " +  userInfo.select_year);
   } else {
 	select_year = props.location.select_year;
-	userInfo.Select_year = select_year;
-	console.log("Dashboard_Select_year_f : " +  props.location.select_year);
+	userInfo.select_year = select_year;
+	console.log("Dashboard_select_year_f : " +  props.location.select_year);
+  }
+  
+  if(props.location.last_quarter === undefined || props.location.last_quarter === null || props.location.last_quarter === ""){
+	last_quarter = userInfo.last_quarter;
+	console.log("Dashboard_last_quarter_r : " +  userInfo.last_quarter);
+  } else {
+	last_quarter = props.location.last_quarter;
+	userInfo.last_quarter = last_quarter;
+	console.log("Dashboard_last_quarter_f : " +  props.location.last_quarter);
   }
   
   if(props.location.years === undefined || props.location.years === null || props.location.years === ""){
-	years = '[' + userInfo.Years + ']';
+	years = '[' + userInfo.years + ']';
 	years = JSON.parse(years);
 	console.log("Dashboard_years_r : " +  JSON.stringify(years));
 	//years=["2022"];
   } else {
 	years = props.location.years;
-	userInfo.Years = years;
+	userInfo.years = years;
 	console.log("Dashboard_years_f : " +  props.location.years);
-  }
-  
-  if(props.location.last_quarter === undefined || props.location.last_quarter === null || props.location.last_quarter === ""){
-	last_quarter = userInfo.Last_quarter;
-	console.log("Dashboard_last_quarter_r : " +  userInfo.Last_quarter);
-  } else {
-	last_quarter = props.location.last_quarter;
-	userInfo.Last_quarter = last_quarter;
-	console.log("Dashboard_last_quarter_f : " +  props.location.last_quarter);
   }
   
   /** selectbox 값 저장 */
@@ -86,7 +115,7 @@ export default function Dashboard(props) {
   const SelectOptions= years;
   
   /** 년도 DB 데이터 가져옴 */
-  var dashboardData = DashboardService(logid, selectyear);
+  var dashboardData = DashboardService(userName, selectyear);
   
   /** selectbox 선택 후 새로고침(f5) 하면 그 값 다시 불러오기 위해 사용 */
   localStorage.setItem("select_year", selectyear);
@@ -157,7 +186,7 @@ export default function Dashboard(props) {
               &nbsp;&nbsp;&nbsp;&nbsp;
               <Typography size="xl" weight="medium">
                 {isNaN(firstQuarter) ?
-					parseInt(firstQuarter.compensationLeaveTime/3600) <= 10 ? 
+					parseInt(firstQuarter.compensationLeaveTime/3600) < 10 ? 
 	                	"0".concat(parseInt(firstQuarter.compensationLeaveTime/3600)) 
 	                	: parseInt(firstQuarter.compensationLeaveTime/3600)
 	                : "00"
@@ -171,7 +200,7 @@ export default function Dashboard(props) {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <Typography size="xl" weight="medium">
                 {isNaN(firstQuarter) ?
-					parseInt(firstQuarter.calculateMoney/3600) <= 10 ? 
+					parseInt(firstQuarter.calculateMoney/3600) < 10 ? 
 	                	"0".concat(parseInt(firstQuarter.calculateMoney/3600)) 
 	                	: parseInt(firstQuarter.calculateMoney/3600)
 	                : "00"
@@ -224,7 +253,7 @@ export default function Dashboard(props) {
               &nbsp;&nbsp;&nbsp;&nbsp;
               <Typography size="xl" weight="medium">
                 {isNaN(secondQuarter) ?
-					parseInt(secondQuarter.compensationLeaveTime/3600) <= 10 ? 
+					parseInt(secondQuarter.compensationLeaveTime/3600) < 10 ? 
 	                	"0".concat(parseInt(secondQuarter.compensationLeaveTime/3600)) 
 	                	: parseInt(secondQuarter.compensationLeaveTime/3600)
 	                : "00"
@@ -238,7 +267,7 @@ export default function Dashboard(props) {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <Typography size="xl" weight="medium">
                 {isNaN(secondQuarter) ?
-					parseInt(secondQuarter.calculateMoney/3600) <= 10 ? 
+					parseInt(secondQuarter.calculateMoney/3600) < 10 ? 
 	                	"0".concat(parseInt(secondQuarter.calculateMoney/3600)) 
 	                	: parseInt(secondQuarter.calculateMoney/3600)
 	                : "00"
@@ -291,7 +320,7 @@ export default function Dashboard(props) {
               &nbsp;&nbsp;&nbsp;&nbsp;
               <Typography size="xl" weight="medium">
                 {isNaN(thirdQuarter) ?
-					parseInt(thirdQuarter.compensationLeaveTime/3600) <= 10 ? 
+					parseInt(thirdQuarter.compensationLeaveTime/3600) < 10 ? 
 	                	"0".concat(parseInt(thirdQuarter.compensationLeaveTime/3600)) 
 	                	: parseInt(thirdQuarter.compensationLeaveTime/3600)
 	                : "00"
@@ -305,7 +334,7 @@ export default function Dashboard(props) {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <Typography size="xl" weight="medium">
                 {isNaN(thirdQuarter) ?
-					parseInt(thirdQuarter.calculateMoney/3600) <= 10 ? 
+					parseInt(thirdQuarter.calculateMoney/3600) < 10 ? 
 	                	"0".concat(parseInt(thirdQuarter.calculateMoney/3600)) 
 	                	: parseInt(thirdQuarter.calculateMoney/3600)
 	                : "00"
@@ -358,7 +387,7 @@ export default function Dashboard(props) {
               &nbsp;&nbsp;&nbsp;&nbsp;
               <Typography size="xl" weight="medium">
                 {isNaN(fourthQuarter) ?
-					parseInt(fourthQuarter.compensationLeaveTime/3600) <= 10 ? 
+					parseInt(fourthQuarter.compensationLeaveTime/3600) < 10 ? 
                 		"0".concat(parseInt(fourthQuarter.compensationLeaveTime/3600)) 
                 		: parseInt(fourthQuarter.compensationLeaveTime/3600)
                 	: "00"
@@ -372,7 +401,7 @@ export default function Dashboard(props) {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <Typography size="xl" weight="medium">
                 {isNaN(fourthQuarter) ?
-					parseInt(fourthQuarter.calculateMoney/3600) <= 10 ? 
+					parseInt(fourthQuarter.calculateMoney/3600) < 10 ? 
                 		"0".concat(parseInt(fourthQuarter.calculateMoney/3600)) 
                 		: parseInt(fourthQuarter.calculateMoney/3600)
                 	: "00"

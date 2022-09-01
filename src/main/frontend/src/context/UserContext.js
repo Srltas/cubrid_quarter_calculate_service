@@ -25,10 +25,13 @@ function userReducer(state, action) {
 function UserProvider({ children }) {
   var [state, dispatch] = React.useReducer(userReducer, {
     isAuthenticated: !!localStorage.getItem("id_token"),
-    DB_logid: localStorage.getItem("DB_logid"),
-    Select_year : localStorage.getItem("select_year"),
-    Years : localStorage.getItem("years"),
-    Last_quarter : localStorage.getItem("last_quarter"),
+    userId: localStorage.getItem("userId"),
+    userDepartment: localStorage.getItem("userDepartment"),
+    userName: localStorage.getItem("userName"),
+    userRole: localStorage.getItem("userRole"),
+    select_year : localStorage.getItem("select_year"),
+    last_quarter : localStorage.getItem("last_quarter"),
+    years : localStorage.getItem("years"),
   });
   
   console.log("=====UserProvider=====");
@@ -74,10 +77,16 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
   
   /**로그인시 DB 값 가져오기 */
   const URL_PATH = "/api/login";
-  var loginDBData = await axios.post(URL_PATH, {name : loginid});
+  var loginDBData = await axios.post(URL_PATH, {id : loginid, passwd: password});
   //console.log("dbLoginData@@ : " + JSON.stringify(loginDBData.data));
   
-  const first_name = loginDBData.data[0].name;
+  /**DB 값 가져와서 셋팅 */
+  const userId = loginDBData.data[0].id;
+  const userPasswd = loginDBData.data[0].passwd;
+  const userDepartment = loginDBData.data[0].department;
+  const userName = loginDBData.data[0].name;
+  const userRole = loginDBData.data[0].role;
+  const userEmploymentstatus = loginDBData.data[0].employmentstatus;
   const select_year = loginDBData.data[0].year;
   const last_quarter = loginDBData.data[0].quarter;
   var years = "";
@@ -91,27 +100,45 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
   years = '[' + years + ']';
   years = JSON.parse(years);
   
-  if (first_name === loginid) {
+  if (userId === loginid) {
 	console.log("===========================================");
-  	console.log("loginid! : " + loginid);
-  	console.log("password! : " + password);
-  	console.log("history! : " + JSON.stringify(history));
-  	console.log("DB_logid! : " + first_name);
+  	console.log("userId! : " + userId);
+  	console.log("password! : " + password === userPasswd);
+  	console.log("userDepartment! : " + userDepartment);
+  	console.log("userName! : " + userName);
+  	console.log("userRole! : " + userRole);
+  	console.log("userEmploymentstatus! : " + userEmploymentstatus);
   	console.log("===========================================");
   }
-	
-  if (!!loginid && first_name === loginid && !!password) {
+  
+  /**로그인 성공&실패 비교 */
+  /**현재는 무조건, id/pw가 있고 && id가 db 값이랑 같으면 로그인 */
+  if (!!loginid && userId === loginid && !!password) {
     setTimeout(() => {
       localStorage.setItem("id_token", "1");
-      localStorage.setItem("DB_logid", first_name);
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("userDepartment", userDepartment);
+      localStorage.setItem("userName", userName);
+      localStorage.setItem("userRole", userRole);
       localStorage.setItem("select_year", select_year);
-      localStorage.setItem("years", years);
       localStorage.setItem("last_quarter", last_quarter);
+      localStorage.setItem("years", years);
+      
       dispatch({ type: "LOGIN_SUCCESS" });
       setError(null);
       setIsLoading(false);
-      history.push({pathname:"/app/dashboard", DB_logid: first_name, select_year: select_year, years: years, last_quarter: last_quarter});
-      //history.push("/app/dashboard");
+      
+      history.push({
+		pathname:"/app/dashboard",
+		userId: userId,
+		userDepartment: userDepartment,
+		userName: userName,
+		userRole: userRole,
+		select_year: select_year,  
+		last_quarter: last_quarter,
+		years: years
+	  });
+	  
     }, 2000);
   } else {
     dispatch({ type: "LOGIN_FAILURE" });
@@ -122,19 +149,26 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
 }
 
 function signOut(dispatch, history, userInfo) {
-  console.log("=====signOut=====");
+  /**로그아웃 후 localStorage 초기화-1 */
   localStorage.removeItem("id_token");
-  localStorage.removeItem("DB_logid");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("userDepartment");
+  localStorage.removeItem("userName");
+  localStorage.removeItem("userRole");
   localStorage.removeItem("select_year");
-  localStorage.removeItem("years");
   localStorage.removeItem("last_quarter");
+  localStorage.removeItem("years");
   localStorage.clear();
-  //delete userInfo.DB_logid;
-  //delete userInfo.Select_year;
-  //delete userInfo.Years;
-  userInfo.DB_logid = "";
-  userInfo.Select_year = "";
-  userInfo.Years = "";
+  
+  /**로그아웃 후 localStorage 초기화-2 */
+  userInfo.userId = "";
+  userInfo.userDepartment = "";
+  userInfo.userName = "";
+  userInfo.userRole = "";
+  userInfo.select_year = "";
+  userInfo.last_quarter = "";
+  userInfo.years = "";
+  
   //console.log("signOut_userInfo : " + JSON.stringify(userInfo));
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/login");

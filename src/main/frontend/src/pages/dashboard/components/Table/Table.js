@@ -40,37 +40,37 @@ export default function TableComponent({ data }) {
             <TableCell>
             	{parseInt(quarterWorkTime/3600)}
             	:
-            	{parseInt(quarterWorkTime%3600/60) <= 10 ? "0".concat(parseInt(quarterWorkTime%3600/60)) : parseInt(quarterWorkTime%3600/60)}
+            	{parseInt(quarterWorkTime%3600/60) < 10 ? "0".concat(parseInt(quarterWorkTime%3600/60)) : parseInt(quarterWorkTime%3600/60)}
             </TableCell>
             <TableCell>
-            	{parseInt(regulationWorkOverTime/3600) <= 10 ? "0".concat(parseInt(regulationWorkOverTime/3600)) : parseInt(regulationWorkOverTime/3600)}
+            	{parseInt(regulationWorkOverTime/3600) < 10 ? "0".concat(parseInt(regulationWorkOverTime/3600)) : parseInt(regulationWorkOverTime/3600)}
             	:
-            	{parseInt(regulationWorkOverTime%3600/60) <= 10 ? "0".concat(parseInt(regulationWorkOverTime%3600/60)) : parseInt(regulationWorkOverTime%3600/60)}
+            	{parseInt(regulationWorkOverTime%3600/60) < 10 ? "0".concat(parseInt(regulationWorkOverTime%3600/60)) : parseInt(regulationWorkOverTime%3600/60)}
             </TableCell>
             <TableCell>
-            	{parseInt(legalWorkOverTime/3600) <= 10 ? "0".concat(parseInt(legalWorkOverTime/3600)) : parseInt(legalWorkOverTime/3600)}
+            	{parseInt(legalWorkOverTime/3600) < 10 ? "0".concat(parseInt(legalWorkOverTime/3600)) : parseInt(legalWorkOverTime/3600)}
             	:
-            	{parseInt(legalWorkOverTime%3600/60) <= 10 ? "0".concat(parseInt(legalWorkOverTime%3600/60)) : parseInt(legalWorkOverTime%3600/60)}
+            	{parseInt(legalWorkOverTime%3600/60) < 10 ? "0".concat(parseInt(legalWorkOverTime%3600/60)) : parseInt(legalWorkOverTime%3600/60)}
             </TableCell>
             <TableCell>
-            	{parseInt(nightWorkTime/3600) <= 10 ? "0".concat(parseInt(nightWorkTime/3600)) : parseInt(nightWorkTime/3600)}
+            	{parseInt(nightWorkTime/3600) < 10 ? "0".concat(parseInt(nightWorkTime/3600)) : parseInt(nightWorkTime/3600)}
             	:
-            	{parseInt(nightWorkTime%3600/60) <= 10 ? "0".concat(parseInt(nightWorkTime%3600/60)) : parseInt(nightWorkTime%3600/60)}
+            	{parseInt(nightWorkTime%3600/60) < 10 ? "0".concat(parseInt(nightWorkTime%3600/60)) : parseInt(nightWorkTime%3600/60)}
             </TableCell>
             <TableCell>
-            	{parseInt(holidayWorkTime/3600) <= 10 ? "0".concat(parseInt(holidayWorkTime/3600)) : parseInt(holidayWorkTime/3600)}
+            	{parseInt(holidayWorkTime/3600) < 10 ? "0".concat(parseInt(holidayWorkTime/3600)) : parseInt(holidayWorkTime/3600)}
             	:
-            	{parseInt(holidayWorkTime%3600/60) <= 10 ? "0".concat(parseInt(holidayWorkTime%3600/60)) : parseInt(holidayWorkTime%3600/60)}
+            	{parseInt(holidayWorkTime%3600/60) < 10 ? "0".concat(parseInt(holidayWorkTime%3600/60)) : parseInt(holidayWorkTime%3600/60)}
             </TableCell>
             <TableCell>
-            	{parseInt(holiday8HOver/3600) <= 10 ? "0".concat(parseInt(holiday8HOver/3600)) : parseInt(holiday8HOver/3600)}
+            	{parseInt(holiday8HOver/3600) < 10 ? "0".concat(parseInt(holiday8HOver/3600)) : parseInt(holiday8HOver/3600)}
             	:
-            	{parseInt(holiday8HOver%3600/60) <= 10 ? "0".concat(parseInt(holiday8HOver%3600/60)) : parseInt(holiday8HOver%3600/60)}
+            	{parseInt(holiday8HOver%3600/60) < 10 ? "0".concat(parseInt(holiday8HOver%3600/60)) : parseInt(holiday8HOver%3600/60)}
             </TableCell>
             <TableCell>
-            	{parseInt(leaveTime/3600) <= 10 ? "0".concat(parseInt(leaveTime/3600)) : parseInt(leaveTime/3600)}
+            	{parseInt(leaveTime/3600) < 10 ? "0".concat(parseInt(leaveTime/3600)) : parseInt(leaveTime/3600)}
             	:
-            	{parseInt(leaveTime%3600/60) <= 10 ? "0".concat(parseInt(leaveTime%3600/60)) : parseInt(leaveTime%3600/60)}
+            	{parseInt(leaveTime%3600/60) < 10 ? "0".concat(parseInt(leaveTime%3600/60)) : parseInt(leaveTime%3600/60)}
             </TableCell>
           </TableRow>
         ))}

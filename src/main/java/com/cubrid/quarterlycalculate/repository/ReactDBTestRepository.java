@@ -30,13 +30,17 @@ public class ReactDBTestRepository {
 	
 	public List<ReactDBTestData> selectNameCompare(ReactDBTestDto reactDBTestDto) {
 	    String sql = "SELECT "
-	    				+ "u.name, q.year, q.quarter "
+	    				+ " u.id, u.passwd, u.department, u.name, u.[role], u.employmentstatus, q.[year], q.quarter "
 	    				+ "FROM "
 	    				+ "users_tb u inner join quarter_work_time_tb q ON u.name=q.name";
 	    List<String> conditions = new ArrayList<>();
 	
-	    if (reactDBTestDto.getName() != null && !reactDBTestDto.getName().equals("")) {
-	        conditions.add("u.name=\'" + reactDBTestDto.getName() + "\' ");
+	    if (reactDBTestDto.getId() != null && !reactDBTestDto.getId().equals("")) {
+	        conditions.add("u.id=\'" + reactDBTestDto.getId() + "\' ");
+	    }
+	    
+	    if (reactDBTestDto.getPasswd() != null && !reactDBTestDto.getPasswd().equals("")) {
+	        conditions.add("u.passwd=\'" + reactDBTestDto.getPasswd() + "\' ");
 	    }
 	
 	    if (conditions == null || conditions.isEmpty()) {
@@ -50,7 +54,12 @@ public class ReactDBTestRepository {
 	}
 	
 	    static RowMapper<ReactDBTestData> mapperSelectNameCompare = (rs, rowNum) -> ReactDBTestData.builder()
-	            .name(rs.getString("name"))
+	    		.id(rs.getString("id"))
+	    		.passwd(rs.getString("passwd"))
+	    		.department(rs.getString("department"))
+	    		.name(rs.getString("name"))
+	    		.role(rs.getString("role"))
+	    		.employmentstatus(rs.getString("employmentstatus"))
 	            .year(rs.getString("year"))
 	            .quarter(rs.getString("quarter"))
 	            .build();
@@ -100,19 +109,20 @@ public class ReactDBTestRepository {
 	    
 	public List<QuarterWorkTime> selectAdminDashboard(TotalDataDto totalDataDto) {
 	    String sql = "SELECT "
-	    			+ "* "
-	    			+ "FROM quarter_work_time_tb";
+	    			+ " q.* "
+	    			+ "FROM quarter_work_time_tb q";
 	    List<String> conditions = new ArrayList<>();
-	
-	    if (totalDataDto.getName() != null && !totalDataDto.getName().equals("")) {
-	        conditions.add("name=\'" + totalDataDto.getName() + "\' ");
+	    	
+	    if (totalDataDto.getDepartment() != null && !totalDataDto.getDepartment().equals("") && !totalDataDto.getDepartment().equals("ALL")) {
+	    	sql += " INNER JOIN users_tb u ON q.name = u.name ";
+	        conditions.add(" u.department=\'" + totalDataDto.getDepartment() + "\' ");
 	    }
 	
 	    if (conditions == null || conditions.isEmpty()) {
-	    	sql += " ORDER BY [year] desc, quarter desc";
+	    	sql += " ORDER BY q.[year] desc, q.quarter desc";
 	    } else {
 	        sql += " WHERE " + String.join("AND ", conditions);
-	        sql += " ORDER BY [year] desc, quarter desc";
+	        sql += " ORDER BY q.[year] desc, q.quarter desc";
 	    }
 	
 	    return jdbcTemplate.query(sql, mapperselectAdminDashboardData);
@@ -177,21 +187,23 @@ public class ReactDBTestRepository {
 	    			+ " FROM users_tb";
 	    List<String> conditions = new ArrayList<>();
 	    
-	    if (totalDataDto.getQuarter() != null && !totalDataDto.getQuarter().equals("")) {
-	        conditions.add("quarter=\'" + totalDataDto.getQuarter() + "\' ");
+	    if (totalDataDto.getDepartment() != null && !totalDataDto.getDepartment().equals("") && !totalDataDto.getDepartment().equals("ALL")) {
+	        conditions.add("department=\'" + totalDataDto.getDepartment() + "\' ");
 	    }
 	
 	    if (conditions == null || conditions.isEmpty()) {
-	    	sql += " ";
+	    	sql += " WHERE employmentstatus = 'Y'";
 	    } else {
 	        sql += " WHERE " + String.join("AND ", conditions);
-	        sql += " AND last_day_of_work is null";
+	        sql += " AND employmentstatus = 'Y'";
 	    }
 	
 	    return jdbcTemplate.query(sql, mapperselectTeamManagementData);
 	}
 	
 	    static RowMapper<TeamManagementData> mapperselectTeamManagementData = (rs, rowNum) -> TeamManagementData.builder()
+	    		.id(rs.getString("id"))
+	    		.department(rs.getString("department"))
 	            .name(rs.getString("name"))
 	            .first_day_of_work(rs.getDate("first_day_of_work"))
 	            .last_day_of_work(rs.getDate("last_day_of_work"))
@@ -203,17 +215,26 @@ public class ReactDBTestRepository {
             		conn.prepareStatement("MERGE INTO users_tb "
             							+ " USING dual ON (name = ?) "
             							+ " WHEN MATCHED THEN "
-            								+ " UPDATE SET name = ?, first_day_of_work = ?, last_day_of_work = ? "
+            								+ " UPDATE SET department = ?, name = ?, first_day_of_work = ?, last_day_of_work = ?, employmentstatus = ? "
         								+ " WHEN NOT MATCHED THEN "
-        									+ " INSERT (name, first_day_of_work, last_day_of_work) "
-        									+ " VALUES(?, ?, ?); ");
+        									+ " INSERT (id, passwd, department, name, [role], first_day_of_work, last_day_of_work, employmentstatus) "
+        									+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?); ");
             ps.setString(1, teamManagementData.getName());
-            ps.setString(2, teamManagementData.getName());
-            ps.setString(3, teamManagementData.getFront_first_day_of_work());
-            ps.setString(4, teamManagementData.getFront_last_day_of_work());
-            ps.setString(5, teamManagementData.getName());
-            ps.setString(6, teamManagementData.getFront_first_day_of_work());
-            ps.setString(7, teamManagementData.getFront_last_day_of_work());
+            
+            ps.setString(2, teamManagementData.getDepartment());
+            ps.setString(3, teamManagementData.getName());
+            ps.setString(4, teamManagementData.getFront_first_day_of_work());
+            ps.setString(5, teamManagementData.getFront_last_day_of_work());
+            ps.setString(6, teamManagementData.getEmploymentstatus());
+            
+            ps.setString(7, teamManagementData.getId());
+            ps.setString(8, teamManagementData.getPasswd());
+            ps.setString(9, teamManagementData.getDepartment());
+            ps.setString(10, teamManagementData.getName());
+            ps.setString(11, teamManagementData.getRole());
+            ps.setString(12, teamManagementData.getFront_first_day_of_work());
+            ps.setString(13, teamManagementData.getFront_last_day_of_work());
+            ps.setString(14, teamManagementData.getEmploymentstatus());
 
             return ps;
         });

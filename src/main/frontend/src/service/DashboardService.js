@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios'; 
 
-function DashboardService(log_id, year) {
+function DashboardService(userName, selectyear) {
 
 	const URL_PATH = "/api/main_dashboard";
 	const [dashboards, setDashboards] = useState([]);
@@ -9,15 +9,15 @@ function DashboardService(log_id, year) {
 	useEffect(() => {
 		axios.get(URL_PATH, {
 			params:{
-				name : log_id,
-				year : year
+				name : userName,
+				year : selectyear
 			}
 		})
         .then(response => {
 			setDashboards(response.data)
 		})
         .catch(error => console.log(error))	
-    }, [log_id, year]);
+    }, [userName, selectyear]);
     
     //console.log("dashboards!!!! : " + JSON.stringify(dashboards));
     

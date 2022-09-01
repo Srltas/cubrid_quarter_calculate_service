@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios'; 
 
-function AdminDashboardService(test) {
+function AdminDashboardService(userDepartment) {
 	
-	console.log("AdminDashboardService!!!! " + test);
+	//console.log("AdminDashboardService!!!! " + userDepartment);
 	
 	const URL_PATH = "/api/admindashboard";
 	const [employees, setEmployees] = useState([]);
@@ -11,14 +11,14 @@ function AdminDashboardService(test) {
 	useEffect(() => {
 		axios.get(URL_PATH, {
 			params:{
-				test : test,
+				department : userDepartment,
 			}
 		})
         .then(response => {
 			setEmployees(response.data)
 		})
         .catch(error => console.log(error))
-    }, [test]);
+    }, [userDepartment]);
     
     //console.log("employees!!!! : " + JSON.stringify(employees));
     

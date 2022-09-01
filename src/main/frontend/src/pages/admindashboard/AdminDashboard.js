@@ -121,8 +121,17 @@ const columns = [
 ];
 
 export default function AdminDashboard(props) {
-	
-  var datatableData = AdminDashboardService("1");
+
+  console.log("AdminDashboard_props : " + props.location.userRole);
+  var userDepartment = "";
+  
+  if(props.location.userRole === "admin"){
+	userDepartment = "ALL";
+  } else{
+	userDepartment = props.location.userDepartment;
+  }
+  
+  var datatableData = AdminDashboardService(userDepartment);
   //console.log("datatableData@@ : " + JSON.stringify(datatableData));
   
   var hour = 0;
@@ -130,65 +139,77 @@ export default function AdminDashboard(props) {
   
   datatableData.forEach(data =>{
 	/**분기 근로시간 */
-	data.quarterTotalTime		=	parseInt(data.quarterTotalTime/3600) <= 10 ?
+	data.quarterTotalTime		=	parseInt(data.quarterTotalTime/3600) < 10 ?
 									"0".concat(parseInt(data.quarterTotalTime/3600)) + ":00" 
 									: parseInt(data.quarterTotalTime/3600) + ":00";
 	/**법정 근로시간 */					
-	data.quarterLegalTime		=	parseInt(data.quarterLegalTime/3600) <= 10 ?
+	data.quarterLegalTime		=	parseInt(data.quarterLegalTime/3600) < 10 ?
 									"0".concat(parseInt(data.quarterLegalTime/3600)) + ":00" 
 									: parseInt(data.quarterLegalTime/3600) + ":00";
 	/**내 근로시간 */				
 	hour =	parseInt(data.quarterWorkTime/3600);
-	min =	parseInt(data.quarterWorkTime%3600/60) <= 10 ?
+	min =	parseInt(data.quarterWorkTime%3600/60) < 10 ?
 		 	"0".concat(parseInt(data.quarterWorkTime%3600/60))
 		 	: parseInt(data.quarterWorkTime%3600/60);
 	data.quarterWorkTime		=	hour + ":" + min;
 	/**소정 근로연장 */
-	hour =	parseInt(data.regulationWorkOverTime/3600);
-	min =	parseInt(data.regulationWorkOverTime%3600/60) <= 10 ?
+	hour =	parseInt(data.regulationWorkOverTime/3600) < 10 ?
+		 	"0".concat(parseInt(data.regulationWorkOverTime/3600))
+		 	: parseInt(data.regulationWorkOverTime/3600);
+	min =	parseInt(data.regulationWorkOverTime%3600/60) < 10 ?
 		 	"0".concat(parseInt(data.regulationWorkOverTime%3600/60))
 		 	: parseInt(data.regulationWorkOverTime%3600/60);
 	data.regulationWorkOverTime	=	hour + ":" + min;
 	/**법정 근로연장 */
-	hour =	parseInt(data.legalWorkOverTime/3600);
-	min =	parseInt(data.legalWorkOverTime%3600/60) <= 10 ?
+	hour =	parseInt(data.legalWorkOverTime/3600) < 10 ?
+		 	"0".concat(parseInt(data.legalWorkOverTime/3600))
+		 	: parseInt(data.legalWorkOverTime/3600);
+	min =	parseInt(data.legalWorkOverTime%3600/60) < 10 ?
 		 	"0".concat(parseInt(data.legalWorkOverTime%3600/60))
 		 	: parseInt(data.legalWorkOverTime%3600/60);
 	data.legalWorkOverTime		=	hour + ":" + min;
 	/**야간 근로시간 */
-	hour =	parseInt(data.nightWorkTime/3600);
-	min =	parseInt(data.nightWorkTime%3600/60) <= 10 ?
+	hour =	parseInt(data.nightWorkTime/3600) < 10 ?
+		 	"0".concat(parseInt(data.nightWorkTime/3600))
+		 	: parseInt(data.nightWorkTime/3600);
+	min =	parseInt(data.nightWorkTime%3600/60) < 10 ?
 		 	"0".concat(parseInt(data.nightWorkTime%3600/60))
 		 	: parseInt(data.nightWorkTime%3600/60);
 	data.nightWorkTime			=	hour + ":" + min;
 	/**휴일 근로시간 */
-	hour =	parseInt(data.holidayWorkTime/3600);
-	min =	parseInt(data.holidayWorkTime%3600/60) <= 10 ?
+	hour =	parseInt(data.holidayWorkTime/3600) < 10 ?
+		 	"0".concat(parseInt(data.holidayWorkTime/3600))
+		 	: parseInt(data.holidayWorkTime/3600);
+	min =	parseInt(data.holidayWorkTime%3600/60) < 10 ?
 		 	"0".concat(parseInt(data.holidayWorkTime%3600/60))
 		 	: parseInt(data.holidayWorkTime%3600/60);
 	data.holidayWorkTime		=	hour + ":" + min;
 	/**휴일 8시간 초과시간 */
-	hour =	parseInt(data.holiday8HOver/3600);
-	min =	parseInt(data.holiday8HOver%3600/60) <= 10 ?
+	hour =	parseInt(data.holiday8HOver/3600) < 10 ?
+		 	"0".concat(parseInt(data.holiday8HOver/3600))
+		 	: parseInt(data.holiday8HOver/3600);
+	min =	parseInt(data.holiday8HOver%3600/60) < 10 ?
 		 	"0".concat(parseInt(data.holiday8HOver%3600/60))
 		 	: parseInt(data.holiday8HOver%3600/60);
 	data.holiday8HOver			=	hour + ":" + min;
 	/**사용한 휴가 */
-	hour =	parseInt(data.leaveTime/3600);
-	min =	parseInt(data.leaveTime%3600/60) <= 10 ?
+	hour =	parseInt(data.leaveTime/3600) < 10 ?
+		 	"0".concat(parseInt(data.leaveTime/3600))
+		 	: parseInt(data.leaveTime/3600);
+	min =	parseInt(data.leaveTime%3600/60) < 10 ?
 		 	"0".concat(parseInt(data.leaveTime%3600/60))
 		 	: parseInt(data.leaveTime%3600/60);
 	data.leaveTime				=	hour + ":" + min;
 	/**보상휴가 발생시간 */
-	data.compensationLeaveTime	=	parseInt(data.compensationLeaveTime/3600) <= 10 ?
+	data.compensationLeaveTime	=	parseInt(data.compensationLeaveTime/3600) < 10 ?
 									"0".concat(parseInt(data.compensationLeaveTime/3600)) + ":00" 
 									: parseInt(data.compensationLeaveTime/3600) + ":00"
 	/**수당 발생시간 */
-	data.calculateMoney			=	parseInt(data.calculateMoney/3600) <= 10 ?
+	data.calculateMoney			=	parseInt(data.calculateMoney/3600) < 10 ?
 									"0".concat(parseInt(data.calculateMoney/3600)) + ":00" 
 									: parseInt(data.calculateMoney/3600) + ":00"
 	/**정산 총계 */
-	data.calculateTotal			=	parseInt(data.calculateTotal/3600) <= 10 ?
+	data.calculateTotal			=	parseInt(data.calculateTotal/3600) < 10 ?
 									"0".concat(parseInt(data.calculateTotal/3600)) + ":00" 
 									: parseInt(data.calculateTotal/3600) + ":00"
   });

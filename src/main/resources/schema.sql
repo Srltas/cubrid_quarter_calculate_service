@@ -6,9 +6,14 @@ DROP TABLE IF EXISTS users_tb CASCADE;
 CREATE TABLE users_tb
 (
     seq                  bigint      NOT NULL AUTO_INCREMENT,        -- PK
-    name                 varchar(50) NOT NULL UNIQUE,                -- 이름
+	id                   varchar(50) NOT NULL,						 -- id
+  	passwd				 varchar(80) NOT NULL,						 -- 패스워드
+  	department			 varchar(10) NOT NULL,						 -- 부서명
+  	name                 varchar(50) NOT NULL UNIQUE,                -- 이름
+	[role]				 varchar(10) NOT NULL,						 -- 권한
     first_day_of_work    date        NOT NULL,                       -- 입사날짜
     last_day_of_work     date        DEFAULT NULL,                   -- 퇴사날짜
+	employmentstatus	 char(1)	 NOT NULL DEFAULT 'Y',           -- 재직상태
     PRIMARY KEY (seq)
 );
 

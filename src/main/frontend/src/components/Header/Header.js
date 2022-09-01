@@ -45,15 +45,45 @@ export default function Header(props) {
   //console.log("Header_props.history.location.DB_logid : " +  props.history.location.DB_logid);
   
   /** localStorage 값 저장하는 곳 */
-  var logid = "";
+  var userId = "";
+  var userDepartment = "";
+  var userName = "";
+  var userRole = "";
   
-  if(props.history.location.DB_logid === undefined || props.history.location.DB_logid === null || props.history.location.DB_logid === ""){
-	logid = userInfo.DB_logid;
-	console.log("Header_DB_logid_r : " +  userInfo.DB_logid);
+  if(props.history.location.userId === undefined || props.history.location.userId === null || props.history.location.userId === ""){
+	userId = userInfo.userId;
+	console.log("Header_userId_r : " +  userInfo.userId);
   } else {
-	logid = props.history.location.DB_logid;
-	userInfo.DB_logid = logid;
-	console.log("Header_DB_logid_f : " +  props.history.location.DB_logid);
+	userId = props.history.location.userId;
+	userInfo.userId = userId;
+	console.log("Header_userId_f : " +  props.history.location.userId);
+  }
+  
+  if(props.history.location.userDepartment === undefined || props.history.location.userDepartment === null || props.history.location.userDepartment === ""){
+	userDepartment = userInfo.userDepartment;
+	console.log("Header_userDepartment_r : " +  userInfo.userDepartment);
+  } else {
+	userDepartment = props.history.location.userDepartment;
+	userInfo.userDepartment = userDepartment;
+	console.log("Header_userDepartment_f : " +  props.history.location.userDepartment);
+  }
+  
+  if(props.history.location.userName === undefined || props.history.location.userName === null || props.history.location.userName === ""){
+	userName = userInfo.userName;
+	console.log("Header_userName_r : " +  userInfo.userName);
+  } else {
+	userName = props.history.location.userName;
+	userInfo.userName = userName;
+	console.log("Header_userName_f : " +  props.history.location.userName);
+  }
+  
+  if(props.history.location.userRole === undefined || props.history.location.userRole === null || props.history.location.userRole === ""){
+	userRole = userInfo.userRole;
+	console.log("Header_userRole_r : " +  userInfo.userRole);
+  } else {
+	userRole = props.history.location.userRole;
+	userInfo.userRole = userRole;
+	console.log("Header_userRole_f : " +  props.history.location.userRole);
   }
   
 
@@ -114,14 +144,14 @@ export default function Header(props) {
         >
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              {logid}
+              {userName}
             </Typography>
             <Typography
               className={classes.profileMenuLink}
               component="a"
               color="primary"
             >
-              기술지원팀
+              {userDepartment}
             </Typography>
           </div>
           <MenuItem

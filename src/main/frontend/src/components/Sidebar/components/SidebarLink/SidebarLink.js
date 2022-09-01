@@ -30,9 +30,8 @@ export default function SidebarLink({
 }) {
   var classes = useStyles();
   
-  console.log("SidebarLink_children : " + JSON.stringify(children));
-  console.log("SidebarLink_link : " + JSON.stringify(link));
-  console.log("SidebarLink_label : " + JSON.stringify(label));
+  //console.log("SidebarLink_link : " + JSON.stringify(link));
+  //console.log("SidebarLink_label : " + JSON.stringify(label));
   
   const  hrefs = () => {
 	document.location.href = link;
@@ -57,6 +56,7 @@ export default function SidebarLink({
 
   if (type === "divider") return <Divider className={classes.divider} />;
   
+  /** 엑셀 로드 시 String Boot 페이지로 이동  */
   if ( label === "콩체크 엑셀 로드")
     return (
       <ListItem

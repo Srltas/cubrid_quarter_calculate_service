@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, IconButton, List, Link } from "@material-ui/core";
+import { Drawer, IconButton, List } from "@material-ui/core";
 import {
   Home as HomeIcon,
   NotificationsNone as NotificationsIcon,
@@ -85,43 +85,67 @@ function Sidebar(props) {
   });
 
   var userInfo = useUserState();
-  
   //console.log("Sidebar_location : " +  JSON.stringify(props.history.location));
+  
   /** localStorage 값 저장하는 곳 */
   var years = "";
   
-  if(props.history.location.DB_logid === undefined || props.history.location.DB_logid === null || props.history.location.DB_logid === ""){
-	props.history.location.DB_logid = userInfo.DB_logid;
-	console.log("Sidebar_logid_r : " +  userInfo.DB_logid);
+  if(props.history.location.userId === undefined || props.history.location.userId === null || props.history.location.userId === ""){
+	props.history.location.userId = userInfo.userId;
+	console.log("Sidebar_userId_r : " +  userInfo.userId);
   } else {
-	props.history.location.DB_logid = props.location.DB_logid;
-	console.log("Sidebar_logid_f : " +  props.history.location.DB_logid);
+	props.history.location.userId = props.location.userId;
+	console.log("Sidebar_userId_f : " +  props.history.location.userId);
+  }
+  
+  if(props.history.location.userDepartment === undefined || props.history.location.userDepartment === null || props.history.location.userDepartment === ""){
+	props.history.location.userDepartment = userInfo.userDepartment;
+	console.log("Sidebar_userDepartment_r : " +  userInfo.userDepartment);
+  } else {
+	props.history.location.userDepartment = props.location.userDepartment;
+	console.log("Sidebar_userDepartment_f : " +  props.history.location.userDepartment);
+  }
+  
+  if(props.history.location.userName === undefined || props.history.location.userName === null || props.history.location.userName === ""){
+	props.history.location.userName = userInfo.userName;
+	console.log("Sidebar_userName_r : " +  userInfo.userName);
+  } else {
+	props.history.location.userName = props.location.userName;
+	console.log("Sidebar_userName_f : " +  props.history.location.userName);
+  }
+  
+  if(props.history.location.userRole === undefined || props.history.location.userRole === null || props.history.location.userRole === ""){
+	props.history.location.userRole = userInfo.userRole;
+	console.log("Sidebar_userRole_r : " +  userInfo.userRole);
+  } else {
+	props.history.location.userRole = props.location.userRole;
+	console.log("Sidebar_userRole_f : " +  props.history.location.userRole);
   }
   
   if(props.history.location.select_year === undefined || props.history.location.select_year === null || props.history.location.select_year === ""){
-	props.history.location.select_year = userInfo.Select_year;
-	console.log("Sidebar_Select_year_r : " +  userInfo.Select_year);
+	props.history.location.select_year = userInfo.select_year;
+	console.log("Sidebar_Select_year_r : " +  userInfo.select_year);
   } else {
 	props.history.location.select_year = props.location.select_year;
 	console.log("Sidebar_Select_year_f : " +  props.history.location.select_year);
   }
   
+  if(props.history.location.last_quarter === undefined || props.history.location.last_quarter === null || props.history.location.last_quarter === ""){
+	props.history.location.last_quarter = userInfo.last_quarter;
+	console.log("last_quarter_logid_r : " +  userInfo.last_quarter);
+  } else {
+	props.history.location.last_quarter = props.location.last_quarter;
+	console.log("last_quarter_logid_f : " +  props.history.location.last_quarter);
+  }
+  
   if(props.history.location.years === undefined || props.history.location.years === null || props.history.location.years === ""){
-	years = '[' + userInfo.Years + ']';
+	years = '[' + userInfo.years + ']';
 	years = JSON.parse(years);
 	props.history.location.years = years;
 	console.log("Sidebar_years_r : " +  JSON.stringify(years));
   } else {
 	props.history.location.years = props.location.years;
 	console.log("Sidebar_years_f : " +  props.history.location.years);
-  }
-  
-  if(props.history.location.last_quarter === undefined || props.history.location.last_quarter === null || props.history.location.last_quarter === ""){
-	props.history.location.last_quarter = userInfo.Last_quarter;
-	console.log("last_quarter_logid_r : " +  userInfo.Last_quarter);
-  } else {
-	props.history.location.last_quarter = props.location.last_quarter;
-	console.log("last_quarter_logid_f : " +  props.history.location.last_quarter);
   }
 
   return (

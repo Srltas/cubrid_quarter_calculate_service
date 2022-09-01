@@ -7,7 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TotalDataDto {
-
+	
+	private String department;
+	
     private String name;
 
     private String year;
@@ -15,7 +17,8 @@ public class TotalDataDto {
     private String quarter;
 
     @Builder
-    public TotalDataDto(String name, String year, String quarter) {
+    public TotalDataDto(String department, String name, String year, String quarter) {
+    	this.department = department;
         this.name = name;
         this.year = year;
         this.quarter = quarter;

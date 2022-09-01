@@ -44,9 +44,6 @@ public class ReactDBTestController {
 	public List<ReactDBTestData> Login(@RequestBody ReactDBTestDto reactDBTestDto) {
 		
     	List<ReactDBTestData> reactDBTestData = reactDBTestService.getLoginNameCompare(reactDBTestDto);
-
-    	//System.out.println("loginData : " + reactDBTestData.get(0).getName());
-    	//System.out.println("loginyear : " + reactDBTestData.get(0).getYear());
     		
     	return reactDBTestData;
     }
@@ -90,8 +87,10 @@ public class ReactDBTestController {
 	
 	//관리자 - 직원 totalData 가져오기 
 	@GetMapping("/api/admindashboard")
-	public List<QuarterWorkTime> AdminDashboard(TotalDataDto totalDataDto) {
+	public List<QuarterWorkTime> AdminDashboard(@RequestParam (required=false) String department, TotalDataDto totalDataDto) {
 		
+		System.out.println("department : " + department);
+		totalDataDto.setDepartment(department);
     	List<QuarterWorkTime> reactDBTestData = reactDBTestService.getAdminDashboard(totalDataDto);
     		
     	return reactDBTestData;
@@ -123,16 +122,24 @@ public class ReactDBTestController {
 	
 	//관리자 - 직원 정보 merge(insert 또는 update), 그런데 요기는 값을 반환 받을게 없지 안나???
 	@GetMapping("/api/teammanagement/merge")
-	public List<TeamManagementData> TeamManagementMerge(@RequestParam (required=false) String name, @RequestParam (required=false) String front_first_day_of_work, @RequestParam (required=false) String front_last_day_of_work, TeamManagementData teamManagementData) {
+	public List<TeamManagementData> TeamManagementMerge(@RequestParam (required=false) String id, @RequestParam (required=false) String department, @RequestParam (required=false) String name, @RequestParam (required=false) String front_first_day_of_work, @RequestParam (required=false) String front_last_day_of_work, TeamManagementData teamManagementData) {
     	
+		teamManagementData.setPasswd("0000");
+		teamManagementData.setRole("user");
+		
     	if(front_last_day_of_work.substring(0, 4).equals("9999")) {
     		front_last_day_of_work = null;
+    		teamManagementData.setEmploymentstatus("Y");
+    	} else {
+    		teamManagementData.setEmploymentstatus("N");
     	}
     	
     	System.out.println("name : " + name);
     	System.out.println("front_first_day_of_work : " + front_first_day_of_work);
     	System.out.println("front_last_day_of_work : " + front_last_day_of_work);
-
+    	
+    	teamManagementData.setId(id);
+    	teamManagementData.setDepartment(department);
 		teamManagementData.setName(name);
 		teamManagementData.setFront_first_day_of_work(front_first_day_of_work);
 		teamManagementData.setFront_last_day_of_work(front_last_day_of_work);
