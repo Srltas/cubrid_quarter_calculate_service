@@ -37,9 +37,7 @@ export default function App() {
   // #######################################################################
 
   function PrivateRoute({ component, ...rest }) {
-	console.log("App_PrivateRoute : ");
-	
-    return (
+	return (
       <Route
         {...rest}
         render={props =>
@@ -62,9 +60,7 @@ export default function App() {
   }
 
   function PublicRoute({ component, ...rest }) {
-	console.log("App_PublicRoute : ");
-	
-    return (
+	return (
       <Route
         {...rest}
         render={props =>

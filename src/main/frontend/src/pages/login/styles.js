@@ -145,4 +145,8 @@ export default makeStyles(theme => ({
       bottom: theme.spacing(2),
     },
   },
+  select : {
+	width: "177px",
+	fontSize: "135%",
+  },
 }));

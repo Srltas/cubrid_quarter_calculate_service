@@ -147,6 +147,22 @@ function Sidebar(props) {
 	props.history.location.years = props.location.years;
 	console.log("Sidebar_years_f : " +  props.history.location.years);
   }
+  
+  /** 권한에 따라 사이드바 보이는 값 조정 */
+  const newStructure = [];
+  structure.forEach(data => {
+	if(props.history.location.userRole === "user"){
+		if(data.id === 0 ){
+			newStructure.push(data);
+		}
+	} else if (props.history.location.userRole === "teamleader"){
+		if(data.id === 0 || data.id === 5 || data.id === 6 || data.id === 7 || data.id === 8 ){
+			newStructure.push(data);
+		}
+	} else {
+		newStructure.push(data);
+	}
+  });
 
   return (
     <Drawer
@@ -174,7 +190,7 @@ function Sidebar(props) {
         </IconButton>
       </div>
       <List className={classes.sidebarList}>
-        {structure.map(link => (
+        {newStructure.map(link => (
           <SidebarLink
             key={link.id}
             location={props.location}

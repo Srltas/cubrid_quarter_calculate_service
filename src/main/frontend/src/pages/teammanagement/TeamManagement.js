@@ -72,6 +72,7 @@ export default function TeamManagement(props) {
   
   var userDepartment = "";
   
+  /**팀장 or admin 권한 차이 */
   if(props.location.userRole === "admin"){
 	userDepartment = "ALL";
   } else{
@@ -81,13 +82,6 @@ export default function TeamManagement(props) {
   var datatableData = TeamManagementService(userDepartment);
   //console.log("TeamManagement : " + JSON.stringify(datatableData));
   
-  /**테이블 데이터 가공 */
-  datatableData.forEach(data =>{
-	if(data.last_day_of_work === undefined || data.last_day_of_work === null){
-		data.last_day_of_work = "9999-12-31";	
-	}
-  });
-  
   /**컬럼 초기 값 */
   var [rowValue, setRowValue] = useState("");
   var [rowIDValue, setRowIDValue] = useState("");
@@ -95,6 +89,25 @@ export default function TeamManagement(props) {
   var [rowNameValue, setRowNameValue] = useState("");
   var [rowFdayworkValue, setRowFdayworkValue] = useState(new Date());
   var [rowLdayworkValue, setRowLdayworValue] = useState(new Date());
+  var SelectOptions= [];
+  
+  /**DB 데이터 가공 */
+  datatableData.forEach(data =>{
+	if(data.last_day_of_work === undefined || data.last_day_of_work === null){
+		data.last_day_of_work = "9999-12-31";	
+	}
+	
+	SelectOptions.push(data.department);
+  });
+  
+  /** selectbox 값 저장 */
+  var set = new Set(SelectOptions);
+  var newSelectOptions = [...set];
+  
+  const onSelectChange = (e) => {
+    const {value} = e.target
+    setRowDepartmentValue(value)
+  };
   
   /**onRowClick 값 split 수행 */
   var valuesplit = JSON.stringify(rowValue).split(',');
@@ -104,8 +117,8 @@ export default function TeamManagement(props) {
 	var id = valuesplit[0];
 		id = id.replace("[","");
 		id = id.replace(/"/gi,"");
-    var department = valuesplit[1];
-	    department = department.replace(/"/gi,"");
+	var department = valuesplit[1];
+		department = department.replace(/"/gi,"");
 	var names = valuesplit[2];
 	    names = names.replace(/"/gi,"");
   	var f_day_work = valuesplit[3];
@@ -160,13 +173,11 @@ export default function TeamManagement(props) {
     setRowLdayworValue("");
   };
   
-  /**달력 값 가지고놀기 */
+  /**달력 값 로직 */
   registerLocale("ko", ko);
   
   var rowFdayworkString = moment(rowFdayworkValue).format("YYYY-MM-DD");
   var rowLdayworkString = moment(rowLdayworkValue).format("YYYY-MM-DD");
-  console.log("rowFdayworkValue2: " + rowFdayworkString);
-  console.log("rowLdayworkValue2: " + rowLdayworkString);
   
   /**직원 추가 or 수정 Merge 기능*/
   const URL_PATH = "/api/teammanagement/merge";
@@ -227,15 +238,17 @@ export default function TeamManagement(props) {
     	  <Typography componet="h2" variant="h5" gutterBottom>
       		부서
     	  </Typography>
-		  <TextField
-		  	type="text"
-		    id="department"
-		    variant="outlined"
-		    value={rowDepartmentValue}
-		    onChange={e => setRowDepartmentValue(e.target.value)}
-		    margin="normal"
-		    fullWidth
-		  />
+		  <select
+				className={classes.select}
+				value={rowDepartmentValue}
+				onChange={onSelectChange}
+			>
+			{
+				newSelectOptions.map(departmentValue => (
+				    <option key={departmentValue} value={departmentValue}>{departmentValue}</option>
+				))
+	         }
+	      	</select>
 		  <br/><br/>
           <Typography componet="h2" variant="h5" gutterBottom>
       		이름

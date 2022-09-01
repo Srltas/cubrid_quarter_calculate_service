@@ -124,7 +124,7 @@ function Login(props) {
                     color="primary"
                     size="large"
                   >
-                    Login
+                    로그인
                   </Button>
                 )}
                 <Button
@@ -132,7 +132,7 @@ function Login(props) {
                   size="large"
                   className={classes.forgetButton}
                 >
-                  Forget Password
+                  패스워드 찾기
                 </Button>
               </div>
             </React.Fragment>

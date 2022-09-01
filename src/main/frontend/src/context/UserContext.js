@@ -78,7 +78,20 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
   /**로그인시 DB 값 가져오기 */
   const URL_PATH = "/api/login";
   var loginDBData = await axios.post(URL_PATH, {id : loginid, passwd: password});
-  //console.log("dbLoginData@@ : " + JSON.stringify(loginDBData.data));
+  //console.log("loginDBData1 : " + JSON.stringify(loginDBData));
+  
+  //console.log("password! : " + loginDBData.data[0].passwd === password);
+  
+  /**DB 값이 있는지 체크 */
+  if(loginDBData.data[0] === undefined){
+	alert('아이디 또는 패스워드가 틀렸습니다.');
+    dispatch({ type: "LOGIN_FAILURE" });
+    setError(true);
+    setIsLoading(false);
+    history.push("/login");
+  } else {
+  
+  //console.log("loginDBData2 : " + JSON.stringify(loginDBData.data));
   
   /**DB 값 가져와서 셋팅 */
   const userId = loginDBData.data[0].id;
@@ -103,7 +116,7 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
   if (userId === loginid) {
 	console.log("===========================================");
   	console.log("userId! : " + userId);
-  	console.log("password! : " + password === userPasswd);
+  	console.log("password! : " + userPasswd === "0000");
   	console.log("userDepartment! : " + userDepartment);
   	console.log("userName! : " + userName);
   	console.log("userRole! : " + userRole);
@@ -141,11 +154,13 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
 	  
     }, 2000);
   } else {
+	alert('아이디 또는 패스워드가 틀렸습니다.');
     dispatch({ type: "LOGIN_FAILURE" });
     setError(true);
     setIsLoading(false);
     history.push("/login");
   }
+}
 }
 
 function signOut(dispatch, history, userInfo) {

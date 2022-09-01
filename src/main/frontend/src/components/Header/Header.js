@@ -4,7 +4,6 @@ import {
   Toolbar,
   IconButton,
   Menu,
-  MenuItem,
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
@@ -148,20 +147,11 @@ export default function Header(props) {
             </Typography>
             <Typography
               className={classes.profileMenuLink}
-              component="a"
               color="primary"
             >
               {userDepartment}
             </Typography>
           </div>
-          <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem,
-            )}
-          >
-            <AccountIcon className={classes.profileMenuIcon} /> Profile
-          </MenuItem>
           
           <div className={classes.profileMenuUser}>
             <Typography

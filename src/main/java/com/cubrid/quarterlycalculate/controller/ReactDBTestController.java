@@ -44,8 +44,12 @@ public class ReactDBTestController {
 	public List<ReactDBTestData> Login(@RequestBody ReactDBTestDto reactDBTestDto) {
 		
     	List<ReactDBTestData> reactDBTestData = reactDBTestService.getLoginNameCompare(reactDBTestDto);
-    		
-    	return reactDBTestData;
+    	
+    	if(reactDBTestData.size() == 0) {
+    		return null;
+    	} else {
+    		return reactDBTestData;
+    	}
     }
 	
 	//로그인 후 main 화면 출력
