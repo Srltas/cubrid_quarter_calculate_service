@@ -2,17 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
+	<style type="text/css">
+		ol {
+		    display: block;
+		    list-style-type: decimal;
+		    margin-top: 1em;
+		    margin-bottom: 1em;
+		    margin-left: 0;
+		    margin-right: 0;
+		    padding-left: 40px;
+		}
+	</style>
 </head>
 <body>
 <div class="container">
     <div class="py-5 text-center">
-        <h2>Excel 등록</h2>
+        <h2>콩체크 엑셀 업로드</h2>
     </div>
+    <hr>
+    <p style="color:red; font-weight: bold;" >※ 주의사항 ※</p>
+    <ol>
+    	<li>콩체크에서 엑셀 다운로드 시, 선택기간은 "분기 + 1일" 범위로 다운로드 필요 <br><br>
+    	    이유 : 기술지원팀 근무제의 하루 시작일이 06:00로 인해 주말(휴일) 근무 시간을 따로 계산해야 함<br><br>
+    	    예시)<br>
+    	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1분기 : 1월 1일 ~ 4월 1일<br>
+    	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2분기 : 4월 1일 ~ 7월 1일<br>
+    	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3분기 : 7월 1일 ~ 10월 1일<br>
+    	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4분기 : 10월 1일 ~ 다음 년도 1월 1일
+    	</li>
+    </ol>
+    <hr>
     <form th:action method="post" enctype="multipart/form-data">
         <ul>
-            <li>파일<input type="file" name="file" ></li>
+            <li> <p style="font-weight: bold; font-size: 25px" >엑셀 파일 선택 : <input type="file" name="file" ></p> </li>
         </ul>
-        <input type="submit"/>
+        <br>
+        &nbsp;&nbsp;&nbsp;
+        <input type="submit" style="width:100px;font-size:15px;"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" value="뒤로가기" onclick="history.back();" style="width:100px;font-size:15px;"/>
     </form>
 </div> <!-- /container -->
 </body>
