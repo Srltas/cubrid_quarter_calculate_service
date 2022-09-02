@@ -151,24 +151,26 @@ public class ReactDBTestRepository {
 	//관리자 - 엑셀 다운로드 Data 가져오기    
 	public List<ExcelDownloadData> selectExcelDownload(TotalDataDto totalDataDto) {
 	    String sql = "SELECT "
-	    			+ " name, [year], quarter, compensation_leave_time "
-	    			+ " FROM quarter_work_time_tb";
+	    			+ " q.name, q.[year], q.quarter, q.compensation_leave_time "
+	    			+ " FROM quarter_work_time_tb q ";
 	    List<String> conditions = new ArrayList<>();
 	
 	    if (totalDataDto.getYear() != null && !totalDataDto.getYear().equals("")) {
-	        conditions.add("[year]=\'" + totalDataDto.getYear() + "\' ");
+	        conditions.add("q.[year]=\'" + totalDataDto.getYear() + "\' ");
 	    }
 	    
 	    if (totalDataDto.getQuarter() != null && !totalDataDto.getQuarter().equals("")) {
-	        conditions.add("quarter=\'" + totalDataDto.getQuarter() + "\' ");
+	        conditions.add("q.quarter=\'" + totalDataDto.getQuarter() + "\' ");
 	    }
 	
 	    if (conditions == null || conditions.isEmpty()) {
 	        sql +=  "";
 	    } else {
+	    	sql += " INNER JOIN users_tb u ON q.name = u.name ";
 	        sql += " WHERE " + String.join("AND ", conditions);
-	        sql += " AND compensation_leave_time / 3600 > 0";
-	        sql += " ORDER BY [year] desc, quarter desc";
+	        sql += " AND q.compensation_leave_time / 3600 > 0";
+	        sql += " AND u.employmentstatus = 'Y'";
+	        sql += " ORDER BY q.name";
 	    }
 	
 	    return jdbcTemplate.query(sql, mapperselectExcelDownloadData);

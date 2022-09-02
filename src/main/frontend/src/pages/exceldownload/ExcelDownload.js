@@ -103,6 +103,12 @@ export default function ExcelDownload(props) {
             columns={columns}
             options={{
               filterType: "checkbox",
+              downloadOptions: {
+		        filename: "큐브리드_" + props.history.location.years[0] + "년_" + props.history.location.last_quarter + "분기정산_업로드파일.csv",
+		      },
+		      onDownload: (buildHead, buildBody, columns, data) => {
+				return "\uFEFF" + buildHead(columns) + buildBody(data); 
+			  },
             }}
           />
         </Grid>
