@@ -158,4 +158,17 @@ public class ReactDBTestController {
     	return reactDBTestData;
     }
 	
+	//패스워드 변경 또는 초기 pw 일 경우 
+	@PostMapping("/api/forgetpassword")
+	public List<ReactDBTestData> ForgetPassword(@RequestBody ReactDBTestDto reactDBTestDto) {
+		
+		System.out.println("id : " + reactDBTestDto.getId());
+    	System.out.println("pw : " + reactDBTestDto.getPasswd());
+		
+    	List<ReactDBTestData> reactDBTestData = reactDBTestService.setForgetPassword(reactDBTestDto);
+    	
+    	return reactDBTestData;
+    	//return null;
+    }
+	
 }

@@ -49,5 +49,9 @@ public class ReactDBTestService {
 	public List<TeamManagementData> setTeamManagementMerge(TeamManagementData teamManagementData) {
 		return loginRepository.mergeTeamManagement(teamManagementData);
 	}
-
+	
+	//패스워드 변경 또는 초기 pw 일 경우 
+	public List<ReactDBTestData> setForgetPassword(ReactDBTestDto reactDBTestDto) {
+		return loginRepository.updateForgetPassword(reactDBTestDto);
+	}
 }

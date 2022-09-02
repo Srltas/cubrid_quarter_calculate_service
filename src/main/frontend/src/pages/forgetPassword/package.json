@@ -1,0 +1,6 @@
+{
+  "name": "ForgetPassword",
+  "version": "0.0.0",
+  "main": "ForgetPassword.js",
+  "private": true
+}

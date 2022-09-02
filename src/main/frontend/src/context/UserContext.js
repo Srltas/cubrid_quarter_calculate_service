@@ -89,6 +89,18 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
     setError(true);
     setIsLoading(false);
     history.push("/login");
+  } else if (loginDBData.data[0].passwd === "0000") {
+	alert('초기 패스워드 입니다.\n패스워드 변경 부탁드립니다.');
+    dispatch({ type: "LOGIN_FAILURE" });
+    setError(true);
+    setIsLoading(false);
+    localStorage.setItem("userId", loginDBData.data[0].id);
+    localStorage.setItem("userName", loginDBData.data[0].name);
+    history.push({
+		pathname:"/forgetPassword",
+		userId: loginDBData.data[0].id,
+		userName: loginDBData.data[0].name,
+	  });
   } else {
   
   //console.log("loginDBData2 : " + JSON.stringify(loginDBData.data));
@@ -176,13 +188,13 @@ function signOut(dispatch, history, userInfo) {
   localStorage.clear();
   
   /**로그아웃 후 localStorage 초기화-2 */
-  userInfo.userId = "";
-  userInfo.userDepartment = "";
-  userInfo.userName = "";
-  userInfo.userRole = "";
-  userInfo.select_year = "";
-  userInfo.last_quarter = "";
-  userInfo.years = "";
+  userInfo.userId = null;
+  userInfo.userDepartment = null;
+  userInfo.userName = null;
+  userInfo.userRole = null;
+  userInfo.select_year = null;
+  userInfo.last_quarter = null;
+  userInfo.years = null;
   
   //console.log("signOut_userInfo : " + JSON.stringify(userInfo));
   dispatch({ type: "SIGN_OUT_SUCCESS" });

@@ -59,7 +59,7 @@ function Login(props) {
             textColor="primary"
             centered
           >
-            <Tab label="Login" classes={{ root: classes.tab }} />
+            <Tab label="로그인" classes={{ root: classes.tab }} />
           </Tabs>
           {activeTabId === 0 && (
             <React.Fragment>
@@ -68,7 +68,7 @@ function Login(props) {
               </Typography>
               <Fade in={error}>
                 <Typography color="secondary" className={classes.errorMessage}>
-                  Something is wrong with your login or password :(
+                  1 :(
                 </Typography>
               </Fade>
               
@@ -131,8 +131,9 @@ function Login(props) {
                   color="primary"
                   size="large"
                   className={classes.forgetButton}
+                  //onClick={() => props.history.push("/forgetPassword")}
                 >
-                  패스워드 찾기
+                  패스워드 찾기(개발 중)
                 </Button>
               </div>
             </React.Fragment>

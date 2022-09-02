@@ -28,6 +28,7 @@ public class ReactDBTestRepository {
 	
 	private final JdbcTemplate jdbcTemplate;
 	
+	//Login시 name 비교
 	public List<ReactDBTestData> selectNameCompare(ReactDBTestDto reactDBTestDto) {
 	    String sql = "SELECT "
 	    				+ " u.id, u.passwd, u.department, u.name, u.[role], u.employmentstatus, q.[year], q.quarter "
@@ -64,7 +65,7 @@ public class ReactDBTestRepository {
 	            .quarter(rs.getString("quarter"))
 	            .build();
 	    
-    
+	//Login후 totalData 가져오기 
 	public List<QuarterWorkTime> selectDashboardData(TotalDataDto totalDataDto) {
 	    String sql = "SELECT * FROM quarter_work_time_tb";
 	    List<String> conditions = new ArrayList<>();
@@ -106,7 +107,7 @@ public class ReactDBTestRepository {
 	            .calculateTotal(rs.getInt("calculate_total"))
 	            .build();
 
-	    
+	//관리자 - 직원 totalData 가져오기     
 	public List<QuarterWorkTime> selectAdminDashboard(TotalDataDto totalDataDto) {
 	    String sql = "SELECT "
 	    			+ " q.* "
@@ -147,7 +148,7 @@ public class ReactDBTestRepository {
 	            .calculateTotal(rs.getInt("calculate_total"))
 	            .build();
 
-	    
+	//관리자 - 엑셀 다운로드 Data 가져오기    
 	public List<ExcelDownloadData> selectExcelDownload(TotalDataDto totalDataDto) {
 	    String sql = "SELECT "
 	    			+ " name, [year], quarter, compensation_leave_time "
@@ -180,7 +181,7 @@ public class ReactDBTestRepository {
 	            .compensationLeaveTime(rs.getInt("compensation_leave_time"))
 	            .build();
 	
-	
+	//관리자 - 직원 정보 가져오기 
 	public List<TeamManagementData> selectTeamManagement(TotalDataDto totalDataDto) {
 	    String sql = "SELECT "
 	    			+ " * "
@@ -209,6 +210,7 @@ public class ReactDBTestRepository {
 	            .last_day_of_work(rs.getDate("last_day_of_work"))
 	            .build();
 	
+	//관리자 - 직원 정보 merge(insert 또는 update)
     public List<TeamManagementData> mergeTeamManagement(TeamManagementData teamManagementData) {
         jdbcTemplate.update(conn -> {
             PreparedStatement ps = 
@@ -235,6 +237,19 @@ public class ReactDBTestRepository {
             ps.setString(12, teamManagementData.getFront_first_day_of_work());
             ps.setString(13, teamManagementData.getFront_last_day_of_work());
             ps.setString(14, teamManagementData.getEmploymentstatus());
+
+            return ps;
+        });
+		return null;
+    }
+    
+    //패스워드 변경 또는 초기 pw 일 경우
+    public List<ReactDBTestData> updateForgetPassword(ReactDBTestDto reactDBTestDto) {
+        jdbcTemplate.update(conn -> {
+            PreparedStatement ps = 
+            		conn.prepareStatement("UPDATE users_tb SET passwd = ? WHERE id = ?");
+            ps.setString(1, reactDBTestDto.getPasswd());
+            ps.setString(2, reactDBTestDto.getId());
 
             return ps;
         });

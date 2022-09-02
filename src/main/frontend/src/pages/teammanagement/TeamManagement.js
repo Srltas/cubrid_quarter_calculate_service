@@ -182,20 +182,30 @@ export default function TeamManagement(props) {
   /**직원 추가 or 수정 Merge 기능*/
   const URL_PATH = "/api/teammanagement/merge";
   const mergeSubmit = () =>{
-	axios.get(URL_PATH, {
-		params:{
-		id: rowIDValue,
-		department: rowDepartmentValue,
-		name: rowNameValue,
-		front_first_day_of_work: rowFdayworkString,
-		front_last_day_of_work: rowLdayworkString,
-		}
-	}).then(()=>{
-		alert('수정 or 추가 완료!');
-		/**강제 새로고침 (DB 최신 데이터 다시 가져와야함)*/
-		const history = createHistory();
-		history.go(0)
-	})
+	if(window.confirm(
+		"ID : " + rowIDValue + ",\n"
+		+ "부서 : " + rowDepartmentValue + ",\n"
+		+ "이름 : " + rowNameValue + ",\n"
+		+ "입사일 : " + rowFdayworkString + ",\n"
+		+ "퇴사일 : " + rowLdayworkString
+	)){
+		axios.get(URL_PATH, {
+			params:{
+			id: rowIDValue,
+			department: rowDepartmentValue,
+			name: rowNameValue,
+			front_first_day_of_work: rowFdayworkString,
+			front_last_day_of_work: rowLdayworkString,
+			}
+		}).then(()=>{
+			alert("수정 or 추가 완료!");
+			/**강제 새로고침 (DB 최신 데이터 다시 가져와야함)*/
+			const history = createHistory();
+			history.go(0)
+		})
+	} else {
+		alert("취소합니다.");
+	}
   };
   
   return (

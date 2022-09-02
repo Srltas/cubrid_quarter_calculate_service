@@ -7,6 +7,7 @@ import Layout from "./Layout";
 // pages
 import Error from "../pages/error";
 import Login from "../pages/login";
+import ForgetPassword from "../pages/forgetPassword";
 
 // context
 import { useUserState } from "../context/UserContext";
@@ -29,6 +30,7 @@ export default function App() {
         />
         <PrivateRoute path="/app" component={Layout} />
         <PublicRoute path="/login" component={Login} />
+        <PublicRoute path="/forgetPassword" component={ForgetPassword} />
         <Route component={Error} />
       </Switch>
     </HashRouter>
