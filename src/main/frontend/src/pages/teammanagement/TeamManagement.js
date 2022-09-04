@@ -65,6 +65,10 @@ const columns = [
  	},
 ];
 
+const checkbox = {
+	zoom: "2.0",
+};
+
 export default function TeamManagement(props) {
   var classes = useStyles();
   
@@ -89,6 +93,7 @@ export default function TeamManagement(props) {
   var [rowNameValue, setRowNameValue] = useState("");
   var [rowFdayworkValue, setRowFdayworkValue] = useState(new Date());
   var [rowLdayworkValue, setRowLdayworValue] = useState(new Date());
+  var [passwordInitialization, setpasswordInitialization] = useState(false);
   var SelectOptions= [];
   
   /**DB 데이터 가공 */
@@ -171,6 +176,7 @@ export default function TeamManagement(props) {
     setRowNameValue("");
     setRowFdayworkValue("");
     setRowLdayworValue("");
+    setpasswordInitialization("");
   };
   
   /**달력 값 로직 */
@@ -187,7 +193,8 @@ export default function TeamManagement(props) {
 		+ "부서 : " + rowDepartmentValue + ",\n"
 		+ "이름 : " + rowNameValue + ",\n"
 		+ "입사일 : " + rowFdayworkString + ",\n"
-		+ "퇴사일 : " + rowLdayworkString
+		+ "퇴사일 : " + rowLdayworkString + ",\n"
+		+ "패스워드 초기화 : " + passwordInitialization
 	)){
 		axios.get(URL_PATH, {
 			params:{
@@ -196,6 +203,7 @@ export default function TeamManagement(props) {
 			name: rowNameValue,
 			front_first_day_of_work: rowFdayworkString,
 			front_last_day_of_work: rowLdayworkString,
+			passwdcheck: passwordInitialization,
 			}
 		}).then(()=>{
 			alert("수정 or 추가 완료!");
@@ -207,6 +215,15 @@ export default function TeamManagement(props) {
 		alert("취소합니다.");
 	}
   };
+  
+  /**패스워드 초기화 이벤트*/
+  const switchChecked = (e) => {
+	if (e.target.checked) {
+		setpasswordInitialization(true);
+	} else {
+		setpasswordInitialization(false);
+	}
+  }
   
   return (
     <>
@@ -228,7 +245,7 @@ export default function TeamManagement(props) {
         </Grid>
         <Grid item xs={5}>
           <Typography componet="h1" variant="h3" gutterBottom>
-      		팀원 수정 or 추가
+      		직원 정보 수정 or 추가
     	  </Typography>
     	  <hr color="black"/>
     	  <br/>
@@ -296,7 +313,23 @@ export default function TeamManagement(props) {
 	        placeholderText="퇴사일 클릭"
 	        dateFormatCalendar= {"yyyy년 MM월"}
 	      />
-		  
+	      <br/><br/>
+		  <Typography componet="h2" variant="h5" gutterBottom>
+      		패스워드 초기화
+    	  </Typography>
+    	  <Typography
+              className={classes.profileMenuLink}
+              color="primary"
+          >
+            ※신규 입사자는 자동으로 패스워드 초기화 됨※
+          </Typography>
+    	  <input
+    	  	 style={checkbox}
+	         type='checkbox'
+	         id="passwordInitialization"
+	         onClick={switchChecked}
+	         checked={passwordInitialization} 
+	      />
 		  
 		  <div className={classes.formButtons}>
             <Button

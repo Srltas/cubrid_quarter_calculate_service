@@ -126,11 +126,17 @@ public class ReactDBTestController {
 	
 	//관리자 - 직원 정보 merge(insert 또는 update), 그런데 요기는 값을 반환 받을게 없지 안나???
 	@GetMapping("/api/teammanagement/merge")
-	public List<TeamManagementData> TeamManagementMerge(@RequestParam (required=false) String id, @RequestParam (required=false) String department, @RequestParam (required=false) String name, @RequestParam (required=false) String front_first_day_of_work, @RequestParam (required=false) String front_last_day_of_work, TeamManagementData teamManagementData) {
+	public List<TeamManagementData> TeamManagementMerge(@RequestParam (required=false) String id, @RequestParam (required=false) String department, @RequestParam (required=false) String name, @RequestParam (required=false) String front_first_day_of_work
+														, @RequestParam (required=false) String front_last_day_of_work, @RequestParam (required=false) boolean passwdcheck, TeamManagementData teamManagementData) {
     	
+		/**패스워드 초기화 체크 - 수정에만 포함 */
+		teamManagementData.setPasswdcheck(passwdcheck);
+		/**패스워드 초기화 값 - 신규 유저는 무조건 초기화 */
 		teamManagementData.setPasswd("0000");
+		/**신규 입사자 권한 */
 		teamManagementData.setRole("user");
 		
+		/**퇴사일 입력 시 유저 삭제 */
     	if(front_last_day_of_work.substring(0, 4).equals("9999")) {
     		front_last_day_of_work = null;
     		teamManagementData.setEmploymentstatus("Y");

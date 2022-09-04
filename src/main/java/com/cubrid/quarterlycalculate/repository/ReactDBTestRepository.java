@@ -214,34 +214,69 @@ public class ReactDBTestRepository {
 	
 	//관리자 - 직원 정보 merge(insert 또는 update)
     public List<TeamManagementData> mergeTeamManagement(TeamManagementData teamManagementData) {
-        jdbcTemplate.update(conn -> {
-            PreparedStatement ps = 
-            		conn.prepareStatement("MERGE INTO users_tb "
-            							+ " USING dual ON (name = ?) "
-            							+ " WHEN MATCHED THEN "
-            								+ " UPDATE SET department = ?, name = ?, first_day_of_work = ?, last_day_of_work = ?, employmentstatus = ? "
-        								+ " WHEN NOT MATCHED THEN "
-        									+ " INSERT (id, passwd, department, name, [role], first_day_of_work, last_day_of_work, employmentstatus) "
-        									+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?); ");
-            ps.setString(1, teamManagementData.getName());
-            
-            ps.setString(2, teamManagementData.getDepartment());
-            ps.setString(3, teamManagementData.getName());
-            ps.setString(4, teamManagementData.getFront_first_day_of_work());
-            ps.setString(5, teamManagementData.getFront_last_day_of_work());
-            ps.setString(6, teamManagementData.getEmploymentstatus());
-            
-            ps.setString(7, teamManagementData.getId());
-            ps.setString(8, teamManagementData.getPasswd());
-            ps.setString(9, teamManagementData.getDepartment());
-            ps.setString(10, teamManagementData.getName());
-            ps.setString(11, teamManagementData.getRole());
-            ps.setString(12, teamManagementData.getFront_first_day_of_work());
-            ps.setString(13, teamManagementData.getFront_last_day_of_work());
-            ps.setString(14, teamManagementData.getEmploymentstatus());
+    	    	
+    	if ( teamManagementData.isPasswdcheck() == true) {
+    		jdbcTemplate.update(conn -> {
+                PreparedStatement ps = 
+                		conn.prepareStatement("MERGE INTO users_tb "
+                							+ " USING dual ON (name = ?) "
+                							+ " WHEN MATCHED THEN "
+                								+ " UPDATE SET passwd = ? , department = ?, name = ?, first_day_of_work = ?, last_day_of_work = ?, employmentstatus = ? "
+            								+ " WHEN NOT MATCHED THEN "
+            									+ " INSERT (id, passwd, department, name, [role], first_day_of_work, last_day_of_work, employmentstatus) "
+            									+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?); ");
+                
+                ps.setString(1, teamManagementData.getName());
+                
+                ps.setString(2, teamManagementData.getPasswd());
+                ps.setString(3, teamManagementData.getDepartment());
+                ps.setString(4, teamManagementData.getName());
+                ps.setString(5, teamManagementData.getFront_first_day_of_work());
+                ps.setString(6, teamManagementData.getFront_last_day_of_work());
+                ps.setString(7, teamManagementData.getEmploymentstatus());
+                
+                ps.setString(8, teamManagementData.getId());
+                ps.setString(9, teamManagementData.getPasswd());
+                ps.setString(10, teamManagementData.getDepartment());
+                ps.setString(11, teamManagementData.getName());
+                ps.setString(12, teamManagementData.getRole());
+                ps.setString(13, teamManagementData.getFront_first_day_of_work());
+                ps.setString(14, teamManagementData.getFront_last_day_of_work());
+                ps.setString(15, teamManagementData.getEmploymentstatus());
 
-            return ps;
-        });
+                return ps;
+            });
+	    } else {
+	    	jdbcTemplate.update(conn -> {
+	            PreparedStatement ps = 
+	            		conn.prepareStatement("MERGE INTO users_tb "
+	            							+ " USING dual ON (name = ?) "
+	            							+ " WHEN MATCHED THEN "
+	            								+ " UPDATE SET department = ?, name = ?, first_day_of_work = ?, last_day_of_work = ?, employmentstatus = ? "
+	        								+ " WHEN NOT MATCHED THEN "
+	        									+ " INSERT (id, passwd, department, name, [role], first_day_of_work, last_day_of_work, employmentstatus) "
+	        									+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?); ");
+	            
+	            ps.setString(1, teamManagementData.getName());
+	            
+	            ps.setString(2, teamManagementData.getDepartment());
+	            ps.setString(3, teamManagementData.getName());
+	            ps.setString(4, teamManagementData.getFront_first_day_of_work());
+	            ps.setString(5, teamManagementData.getFront_last_day_of_work());
+	            ps.setString(6, teamManagementData.getEmploymentstatus());
+	            
+	            ps.setString(7, teamManagementData.getId());
+	            ps.setString(8, teamManagementData.getPasswd());
+	            ps.setString(9, teamManagementData.getDepartment());
+	            ps.setString(10, teamManagementData.getName());
+	            ps.setString(11, teamManagementData.getRole());
+	            ps.setString(12, teamManagementData.getFront_first_day_of_work());
+	            ps.setString(13, teamManagementData.getFront_last_day_of_work());
+	            ps.setString(14, teamManagementData.getEmploymentstatus());
+
+	            return ps;
+	        });
+	    }
 		return null;
     }
     

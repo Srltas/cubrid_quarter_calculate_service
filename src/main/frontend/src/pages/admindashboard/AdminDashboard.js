@@ -224,6 +224,12 @@ export default function AdminDashboard(props) {
             columns={columns}
             options={{
               filterType: "checkbox",
+              downloadOptions: {
+		        filename: "직원_리스트.csv",
+		      },
+		      onDownload: (buildHead, buildBody, columns, data) => {
+				return "\uFEFF" + buildHead(columns) + buildBody(data); 
+			  },
             }}
           />
         </Grid>

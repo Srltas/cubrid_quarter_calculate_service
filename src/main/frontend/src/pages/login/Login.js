@@ -123,18 +123,11 @@ function Login(props) {
                     variant="contained"
                     color="primary"
                     size="large"
+                    fullWidth
                   >
                     로그인
                   </Button>
                 )}
-                <Button
-                  color="primary"
-                  size="large"
-                  className={classes.forgetButton}
-                  //onClick={() => props.history.push("/forgetPassword")}
-                >
-                  패스워드 찾기(개발 중)
-                </Button>
               </div>
             </React.Fragment>
           )}

@@ -33,11 +33,11 @@ public class TeamManagementData {
     private String front_last_day_of_work;
     
     private String employmentstatus;
+    
+    private boolean passwdcheck;
 
     @Builder
-    public TeamManagementData(
-    		String id, String passwd, String department, String name, String role, Date first_day_of_work, Date last_day_of_work, String front_first_day_of_work, String front_last_day_of_work , String employmentstatus
-    ) {
+    public TeamManagementData( String id, String passwd, String department, String name, String role, Date first_day_of_work, Date last_day_of_work, String front_first_day_of_work, String front_last_day_of_work , String employmentstatus, boolean passwdcheck ) {
     	this.id = id;
     	this.passwd = passwd;
     	this.department = department;
@@ -48,5 +48,6 @@ public class TeamManagementData {
         this.front_first_day_of_work = front_first_day_of_work;
         this.front_last_day_of_work = front_last_day_of_work;
         this.employmentstatus = employmentstatus;
+        this.passwdcheck = passwdcheck;
     }
 }
