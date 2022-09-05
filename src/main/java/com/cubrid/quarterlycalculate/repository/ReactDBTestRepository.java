@@ -33,7 +33,7 @@ public class ReactDBTestRepository {
 	    String sql = "SELECT "
 	    				+ " u.id, u.passwd, u.department, u.name, u.[role], u.employmentstatus, q.[year], q.quarter "
 	    				+ "FROM "
-	    				+ "users_tb u inner join quarter_work_time_tb q ON u.name=q.name";
+	    				+ "users_tb u LEFT OUTER JOIN quarter_work_time_tb q ON u.name=q.name";
 	    List<String> conditions = new ArrayList<>();
 	
 	    if (reactDBTestDto.getId() != null && !reactDBTestDto.getId().equals("")) {
@@ -48,7 +48,7 @@ public class ReactDBTestRepository {
 	        sql +=  "";
 	    } else {
 	        sql += " WHERE " + String.join("AND ", conditions);
-	        sql += " GROUP BY q.year ORDER BY q.year desc ";
+	        sql += " ORDER BY q.year desc, q.quarter desc ";
 	    }
 	
 	    return jdbcTemplate.query(sql, mapperSelectNameCompare);

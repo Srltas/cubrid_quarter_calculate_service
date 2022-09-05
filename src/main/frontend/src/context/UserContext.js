@@ -89,7 +89,7 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
     setError(true);
     setIsLoading(false);
     history.push("/login");
-  } else if (loginDBData.data[0].passwd === "0000") {
+  } else if (password === "0000") {
 	alert('초기 패스워드 입니다.\n패스워드 변경 부탁드립니다.');
     dispatch({ type: "LOGIN_FAILURE" });
     setError(true);
@@ -114,16 +114,16 @@ async function loginUser(dispatch, loginid, password, history, setIsLoading, set
   const userEmploymentstatus = loginDBData.data[0].employmentstatus;
   const select_year = loginDBData.data[0].year;
   const last_quarter = loginDBData.data[0].quarter;
-  var years = "";
-  for(let i in loginDBData.data){
-	if (i === "0"){
-		years = years + loginDBData.data[i].year;
-	} else {
-		years = years + "," + loginDBData.data[i].year;
-	}
-  }
-  years = '[' + years + ']';
-  years = JSON.parse(years);
+  var years = [];
+  
+  loginDBData.data.forEach(data =>{
+  	years.push(data.year);
+  });
+  
+  console.log("login_years : " + years);
+  var set = new Set(years);
+  years = [...set];
+  console.log("login_new_years : " + years);
   
   if (userId === loginid) {
 	console.log("===========================================");
